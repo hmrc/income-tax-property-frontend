@@ -38,6 +38,8 @@ class ReliefAmountFormProvider @Inject() extends Mappings {
               maxAllowedRelief
             )
           )
-          .verifying(maximumValue(maxAllowedRelief, s"ukrentaroom.reliefAmount.error.maxAllowedClaim.$individualOrAgent"))
+          .verifying(
+            maximumValue(maxAllowedRelief, s"ukrentaroom.reliefAmount.error.maxAllowedClaim.$individualOrAgent")
+          )
     )
 }

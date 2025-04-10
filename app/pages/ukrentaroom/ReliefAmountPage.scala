@@ -21,7 +21,7 @@ import pages.PageConstants.aboutPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case class ReliefAmountPage(propertyType: PropertyType) extends QuestionPage[BigDecimal]{
+case class ReliefAmountPage(propertyType: PropertyType) extends QuestionPage[BigDecimal] {
 
   override def path: JsPath = JsPath \ aboutPath(propertyType) \ toString
 
