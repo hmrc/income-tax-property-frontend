@@ -21,10 +21,10 @@ import forms.foreignincome.dividends.CountryReceiveDividendIncomeFormProvider
 
 import javax.inject.Inject
 import models.Mode
-import navigation.Navigator
+import navigation.ForeignIncomeNavigator
 import pages.foreignincome.CountryReceiveDividendIncomePage
 import play.api.data.Form
-import play.api.i18n.{I18nSupport, MessagesApi}
+import play.api.i18n.{MessagesApi, I18nSupport}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import service.CountryNamesDataSource
@@ -39,7 +39,7 @@ import scala.util.Failure
 class CountryReceiveDividendIncomeController @Inject()(
                                         override val messagesApi: MessagesApi,
                                         sessionRepository: SessionRepository,
-                                        navigator: Navigator,
+                                        navigator: ForeignIncomeNavigator,
                                         identify: IdentifierAction,
                                         getData: DataRetrievalAction,
                                         requireData: DataRequiredAction,

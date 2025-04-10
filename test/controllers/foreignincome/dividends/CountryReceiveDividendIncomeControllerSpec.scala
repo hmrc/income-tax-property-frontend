@@ -20,7 +20,7 @@ import base.SpecBase
 import controllers.routes
 import forms.foreignincome.dividends.CountryReceiveDividendIncomeFormProvider
 import models.{UserAnswers, NormalMode}
-import navigation.{Navigator, FakeNavigator}
+import navigation.{ForeignIncomeNavigator, FakeForeignIncomeNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -40,7 +40,7 @@ import scala.concurrent.Future
 
 class CountryReceiveDividendIncomeControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute: Call = Call("GET", "/update-and-submit-income-tax-return/property/2024/dividends/country-receive-dividend-income")
+  def onwardRoute: Call = Call("GET", "/foo")
 
   val taxYear = 2024
   val country: Country = Country(name = "India", code = "IND")
@@ -115,7 +115,7 @@ class CountryReceiveDividendIncomeControllerSpec extends SpecBase with MockitoSu
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true)
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+            bind[ForeignIncomeNavigator].toInstance(new FakeForeignIncomeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
           )
           .build()
