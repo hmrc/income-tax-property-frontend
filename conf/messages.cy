@@ -3141,8 +3141,10 @@ foreignDividendsStart.p1 = *Missing Welsh*
 foreignDividendsStart.p2 = *Missing Welsh*
 foreignDividendsStart.p3 = *Missing Welsh*
 
-countryReceiveDividendIncome.title = *Missing Welsh*
-countryReceiveDividendIncome.heading = *Missing Welsh*
+countryReceiveDividendIncome.title.individual = *Missing Welsh*
+countryReceiveDividendIncome.title.agent = *Missing Welsh*
+countryReceiveDividendIncome.heading.individual = *Missing Welsh*
+countryReceiveDividendIncome.heading.agent = *Missing Welsh*
 countryReceiveDividendIncome.info = *Missing Welsh*
 countryReceiveDividendIncome.legend = *Missing Welsh*
 countryReceiveDividendIncome.hint = *Missing Welsh*

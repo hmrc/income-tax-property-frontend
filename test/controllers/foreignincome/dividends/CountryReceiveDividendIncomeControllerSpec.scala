@@ -32,6 +32,7 @@ import play.api.test.Helpers._
 import repositories.SessionRepository
 import controllers.foreignincome.dividends.routes.CountryReceiveDividendIncomeController
 import pages.foreign.Country
+import play.api.data.Form
 import service.CountryNamesDataSource.countrySelectItemsWithUSA
 import views.html.foreignincome.dividends.CountryReceiveDividendIncomeView
 
@@ -39,7 +40,7 @@ import scala.concurrent.Future
 
 class CountryReceiveDividendIncomeControllerSpec extends SpecBase with MockitoSugar {
 
-  def onwardRoute = Call("GET", "/update-and-submit-income-tax-return/property/2024/dividends/country-receive-dividend-income")
+  def onwardRoute: Call = Call("GET", "/update-and-submit-income-tax-return/property/2024/dividends/country-receive-dividend-income")
 
   val taxYear = 2024
   val country: Country = Country(name = "India", code = "IND")
@@ -47,9 +48,9 @@ class CountryReceiveDividendIncomeControllerSpec extends SpecBase with MockitoSu
   val userType = "agent"
   val userAnswers: UserAnswers = UserAnswers(userAnswersId).set(CountryReceiveDividendIncomePage(index), country).success.value
   val formProvider = new CountryReceiveDividendIncomeFormProvider()
-  val form = formProvider(userAnswers)
+  val form: Form[String] = formProvider(userAnswers)
 
-  lazy val countryReceiveDividendIncomeRoute = CountryReceiveDividendIncomeController.onPageLoad(taxYear, index, NormalMode).url
+  lazy val countryReceiveDividendIncomeRoute: String = CountryReceiveDividendIncomeController.onPageLoad(taxYear, index, NormalMode).url
 
   "CountryReceiveDividendIncome Controller" - {
 
@@ -65,7 +66,17 @@ class CountryReceiveDividendIncomeControllerSpec extends SpecBase with MockitoSu
         val view = application.injector.instanceOf[CountryReceiveDividendIncomeView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, index, NormalMode, countrySelectItemsWithUSA("en"))(request, messages(application)).toString
+        contentAsString(result) mustEqual view(
+          form,
+          taxYear,
+          index,
+          userType,
+          NormalMode,
+          countrySelectItemsWithUSA("en")
+        )(
+          request,
+          messages(application)
+        ).toString
       }
     }
 
@@ -85,6 +96,7 @@ class CountryReceiveDividendIncomeControllerSpec extends SpecBase with MockitoSu
           form.fill("IND"),
           taxYear,
           index,
+          userType,
           NormalMode,
           countrySelectItemsWithUSA("en")
         )(
@@ -136,7 +148,17 @@ class CountryReceiveDividendIncomeControllerSpec extends SpecBase with MockitoSu
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, index, NormalMode, countrySelectItemsWithUSA("en"))(request, messages(application)).toString
+        contentAsString(result) mustEqual view(
+          boundForm,
+          taxYear,
+          index,
+          userType,
+          NormalMode,
+          countrySelectItemsWithUSA("en")
+        )(
+          request,
+          messages(application)
+        ).toString
       }
     }
 

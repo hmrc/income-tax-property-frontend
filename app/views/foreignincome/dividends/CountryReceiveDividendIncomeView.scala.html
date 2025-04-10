@@ -26,9 +26,9 @@
 )
 
 
-@(form: Form[_], taxYear: Int, index: Int, mode: Mode, countries: Seq[SelectItem])(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, index: Int, individualOrAgent: String, mode: Mode, countries: Seq[SelectItem])(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages("countryReceiveDividendIncome.title"))) {
+@layout(pageTitle = title(form, messages(s"countryReceiveDividendIncome.title.${individualOrAgent}"))) {
 
     @formHelper(action = CountryReceiveDividendIncomeController.onSubmit(taxYear, index, mode)) {
 
@@ -36,7 +36,7 @@
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
-        <h1 class="govuk-heading-l">@messages("countryReceiveDividendIncome.title")</h1>
+        <h1 class="govuk-heading-l">@messages(s"countryReceiveDividendIncome.title.${individualOrAgent}")</h1>
 
         <div class="govuk-inset-text">
             <p class="govuk-body">@messages("countryReceiveDividendIncome.info")</p>
@@ -48,7 +48,7 @@
         @govukSelect(Select(
             id = "country-autocomplete",
             items = countries,
-            label = LabelViewModel(messages("countryReceiveDividendIncome.title")).withCssClass("govuk-visually-hidden")
+            label = LabelViewModel(messages(s"countryReceiveDividendIncome.title.${individualOrAgent}")).withCssClass("govuk-visually-hidden")
         ).asAccessibleAutocomplete().withFormField(form("country-autocomplete")))
 
         </div>

@@ -57,7 +57,7 @@ class CountryReceiveDividendIncomeController @Inject()(
         case Some(value) => form.fill(value.code)
       }
 
-      Ok(view(preparedForm, taxYear, index, mode, countrySelectItemsWithUSA(languageUtils.getCurrentLang.locale.toString)))
+      Ok(view(preparedForm, taxYear, index, request.user.isAgentMessageKey, mode, countrySelectItemsWithUSA(languageUtils.getCurrentLang.locale.toString)))
   }
 
   def onSubmit(taxYear: Int, index: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
@@ -65,7 +65,7 @@ class CountryReceiveDividendIncomeController @Inject()(
       val form: Form[String] = formProvider(request.userAnswers)
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, index, mode, countrySelectItemsWithUSA(languageUtils.getCurrentLang.locale.toString)))),
+          Future.successful(BadRequest(view(formWithErrors, taxYear, index, request.user.isAgentMessageKey, mode, countrySelectItemsWithUSA(languageUtils.getCurrentLang.locale.toString)))),
 
         countryCode =>
           for {
