@@ -27,17 +27,17 @@ class ReliefAmountFormProvider @Inject() extends Mappings {
     Form(
       "reliefAmount" ->
         currency(
-          requiredKey = s"ukrentaroom.income.reliefAmount.error.required.$individualOrAgent",
-          twoDecimalPlacesKey = s"ukrentaroom.income.reliefAmount.error.twoDecimalPlaces.$individualOrAgent",
-          nonNumericKey = s"ukrentaroom.income.reliefAmount.error.nonNumeric.$individualOrAgent"
+          requiredKey = s"ukrentaroom.reliefAmount.error.required.$individualOrAgent",
+          twoDecimalPlacesKey = s"ukrentaroom.reliefAmount.error.twoDecimalPlaces.$individualOrAgent",
+          nonNumericKey = s"ukrentaroom.reliefAmount.error.nonNumeric.$individualOrAgent"
         )
           .verifying(
             minimumValueWithCustomArgument(
               BigDecimal(0),
-              "ukrentaroom.income.reliefAmount.error.outOfRange",
+              s"ukrentaroom.reliefAmount.error.outOfRange.$individualOrAgent",
               maxAllowedRelief
             )
           )
-          .verifying(maximumValue(maxAllowedRelief, "ukrentaroom.income.reliefAmount.error.maxAllowedClaim"))
+          .verifying(maximumValue(maxAllowedRelief, s"ukrentaroom.reliefAmount.error.maxAllowedClaim.$individualOrAgent"))
     )
 }
