@@ -70,11 +70,11 @@ class TotalIncomeAmountController @Inject() (
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(TotalIncomeAmountPage(propertyType), value))
               _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(next_location(TotalIncomeAmountPage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers))
+            } yield Redirect(nextLocation(TotalIncomeAmountPage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers))
         )
     }
 
-  private def next_location(
+  private def nextLocation(
     page: Page,
     taxYear: Int,
     mode: Mode,

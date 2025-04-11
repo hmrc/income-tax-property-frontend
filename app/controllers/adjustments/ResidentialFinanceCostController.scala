@@ -77,7 +77,7 @@ class ResidentialFinanceCostController @Inject() (
               updatedAnswers <- Future.fromTry(request.userAnswers.set(ResidentialFinanceCostPage(propertyType), value))
               _              <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
-              next_location(
+              nextLocation(
                 ResidentialFinanceCostPage(propertyType),
                 taxYear: Int,
                 mode,
@@ -88,7 +88,7 @@ class ResidentialFinanceCostController @Inject() (
         )
     }
 
-  private def next_location(
+  private def nextLocation(
      page: Page,
      taxYear: Int,
      mode: Mode,

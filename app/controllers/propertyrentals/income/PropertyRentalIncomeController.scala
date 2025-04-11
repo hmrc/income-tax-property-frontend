@@ -80,7 +80,7 @@ class PropertyRentalIncomeController @Inject() (
                 Future.fromTry(request.userAnswers.set(PropertyRentalIncomePage(propertyType), value))
               _ <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
-              next_location(
+              nextLocation(
                 PropertyRentalIncomePage(propertyType),
                 taxYear,
                 mode,
@@ -91,7 +91,7 @@ class PropertyRentalIncomeController @Inject() (
         )
     }
 
-  private def next_location(
+  private def nextLocation(
     page: Page,
     taxYear: Int,
     mode: Mode,
