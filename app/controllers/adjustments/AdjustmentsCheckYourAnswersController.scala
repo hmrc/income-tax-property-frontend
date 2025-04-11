@@ -87,7 +87,7 @@ class AdjustmentsCheckYourAnswersController @Inject() (
 
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      // TODO - Remove
+      // TODO - Remove once updated models & backend
       if (isUkAndForeignAboutJourneyComplete(request.userAnswers)) {
         Future.successful(
           Redirect(
