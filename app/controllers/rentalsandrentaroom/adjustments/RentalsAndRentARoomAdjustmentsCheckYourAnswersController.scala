@@ -17,12 +17,14 @@
 package controllers.rentalsandrentaroom.adjustments
 
 import audit.{AuditModel, AuditService}
+import pages.isUkAndForeignAboutJourneyComplete
 import controllers.actions._
 import controllers.exceptions.InternalErrorFailure
 import models.JourneyPath.RentalsAndRentARoomAdjustments
 import models.{RentalsRentARoom, _}
 import models.backend.PropertyDetails
 import models.requests.DataRequest
+import pages.adjustments.UnusedLossesBroughtForwardPage
 import pages.foreign.Country
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
@@ -30,6 +32,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import service.{BusinessService, PropertySubmissionService}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import viewmodels.checkAnswers.adjustments
 import viewmodels.checkAnswers.adjustments._
 import viewmodels.govuk.SummaryListFluency
 import views.html.rentalsandrentaroom.adjustments.RentalsAndRentARoomAdjustmentsCheckYourAnswersView
@@ -52,6 +55,7 @@ class RentalsAndRentARoomAdjustmentsCheckYourAnswersController @Inject() (
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
+      val unusedLossesBroughtForwardAmount = request.userAnswers.get(UnusedLossesBroughtForwardPage(RentalsRentARoom)).flatMap(_.unusedLossesBroughtForwardAmount).getOrElse(BigDecimal(0))
       val list = SummaryListViewModel(
         rows = Seq(
           PrivateUseAdjustmentSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
@@ -60,7 +64,9 @@ class RentalsAndRentARoomAdjustmentsCheckYourAnswersController @Inject() (
             .row(taxYear, request.userAnswers, RentalsRentARoom, request.user.isAgentMessageKey),
           BusinessPremisesRenovationAllowanceBalancingChargeSummary.row(taxYear, request.userAnswers),
           ResidentialFinanceCostSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
-          UnusedResidentialFinanceCostSummary.row(taxYear, request.userAnswers, RentalsRentARoom)
+          UnusedResidentialFinanceCostSummary.row(taxYear, request.userAnswers, RentalsRentARoom),
+          UnusedLossesBroughtForwardSummary.row(taxYear, request.userAnswers, RentalsRentARoom, request.user.isAgentMessageKey),
+          WhenYouReportedTheLossSummary.row(taxYear, request.userAnswers, RentalsRentARoom, request.user.isAgentMessageKey, unusedLossesBroughtForwardAmount)
         ).flatten
       )
       Ok(view(list, taxYear))
@@ -68,16 +74,27 @@ class RentalsAndRentARoomAdjustmentsCheckYourAnswersController @Inject() (
 
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      businessService
-        .getUkPropertyDetails(request.user.nino, request.user.mtditid)
-        .flatMap {
-          case Right(Some(details)) => saveAdjustments(request, taxYear, details)
-          case Left(_) =>
-            val errormessage =
-              s"Failed to retrieve property details for user with nino ${request.user.nino} and mtditid ${request.user.mtditid}"
-            logger.error(errormessage)
-            Future.failed(InternalErrorFailure(errormessage))
-        }
+      // TODO - Remove once updated models & backend
+      if(isUkAndForeignAboutJourneyComplete(request.userAnswers)){
+        Future.successful(
+          Redirect(
+            controllers.rentalsandrentaroom.adjustments.routes.RentalsRaRAdjustmentsCompleteController
+              .onPageLoad(taxYear)
+          )
+        )
+      } else {
+
+        businessService
+          .getUkPropertyDetails(request.user.nino, request.user.mtditid)
+          .flatMap {
+            case Right(Some(details)) => saveAdjustments(request, taxYear, details)
+            case Left(_) =>
+              val errormessage =
+                s"Failed to retrieve property details for user with nino ${request.user.nino} and mtditid ${request.user.mtditid}"
+              logger.error(errormessage)
+              Future.failed(InternalErrorFailure(errormessage))
+          }
+      }
   }
 
   private def saveAdjustments(
