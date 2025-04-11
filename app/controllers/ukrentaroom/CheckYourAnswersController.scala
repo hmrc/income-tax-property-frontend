@@ -28,6 +28,7 @@ import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import service.PropertySubmissionService
+import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.ukrentaroom.{ClaimExpensesOrReliefSummary, JointlyLetSummary, TotalIncomeAmountSummary}
@@ -56,9 +57,15 @@ class CheckYourAnswersController @Inject() (
         TotalIncomeAmountSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey, RentARoom)
       val claimExpensesOrReliefSummary =
         ClaimExpensesOrReliefSummary.rows(taxYear, request.user.isAgentMessageKey, request.userAnswers, RentARoom)
+        // TODO - Update once 'Relief Amount' page/summary is created
+      val claimReliefAmountSummary = None
 
       val list = SummaryListViewModel(
-        rows = (Seq(ukRentARoomJointlyLetSummary, totalIncomeAmountSummary) ++ claimExpensesOrReliefSummary).flatten
+        rows = if (isUkAndForeignAboutJourneyComplete(request.userAnswers)) {
+          (Seq(ukRentARoomJointlyLetSummary, totalIncomeAmountSummary) ++ claimReliefAmountSummary).flatten
+        } else {
+          (Seq(ukRentARoomJointlyLetSummary, totalIncomeAmountSummary) ++ claimExpensesOrReliefSummary).flatten
+        }
       )
 
       Ok(view(list, taxYear))
