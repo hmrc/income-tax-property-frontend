@@ -126,7 +126,7 @@ class UkAndForeignPropertyCheckYourAnswersControllerSpec extends SpecBase with S
 
       when(
         propertySubmissionService
-          .saveJourneyAnswers(ArgumentMatchers.eq(context), ArgumentMatchers.eq(ukAndForeignAbout))(
+          .saveUkAndForeignPropertyJourneyAnswers(ArgumentMatchers.eq(context), ArgumentMatchers.eq(ukAndForeignAbout))(
             any(),
             any()
           )
@@ -157,7 +157,7 @@ class UkAndForeignPropertyCheckYourAnswersControllerSpec extends SpecBase with S
 
       when(
         propertySubmissionService
-          .saveJourneyAnswers(ArgumentMatchers.eq(context), ArgumentMatchers.eq(ukAndForeignAbout))(
+          .saveUkAndForeignPropertyJourneyAnswers(ArgumentMatchers.eq(context), ArgumentMatchers.eq(ukAndForeignAbout))(
             any(),
             any()
           )

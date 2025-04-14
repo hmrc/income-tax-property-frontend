@@ -54,7 +54,7 @@ class JourneyAnswersConnector @Inject() (httpClient: HttpClientV2, appConfig: Fr
     hc: HeaderCarrier
   ): Future[Either[ApiError, String]] = {
     val updateStatusUrl =
-      s"${appConfig.propertyServiceBaseUrl}/completed-section/$incomeSourceId/$journeyName/$taxYear"
+      s"${appConfig.propertyServiceBaseUrl}/property/completed-section/$incomeSourceId/$journeyName/$taxYear"
 
     httpClient
       .put(url"$updateStatusUrl")
@@ -76,7 +76,7 @@ class JourneyAnswersConnector @Inject() (httpClient: HttpClientV2, appConfig: Fr
                       (implicit hc: HeaderCarrier
   ): Future[Either[ApiError, String]] = {
     val updateStatusUrl =
-      s"${appConfig.propertyServiceBaseUrl}/completed-section/$incomeSourceId/$journeyName/$taxYear/$countryCode"
+      s"${appConfig.propertyServiceBaseUrl}/property/completed-section/$incomeSourceId/$journeyName/$taxYear/$countryCode"
 
     httpClient
       .put(url"$updateStatusUrl")

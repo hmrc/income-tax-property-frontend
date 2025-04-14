@@ -58,14 +58,15 @@ class PropertySubmissionConnector @Inject() (httpClient: HttpClientV2, appConfig
       }
   }
 
-  def saveJourneyAnswers[A: Writes](
+  private def saveJourneyAnswers[A: Writes](
+    prefix: String,
     ctx: JourneyContext,
     body: A,
     incomeSourceId: String
   )(implicit hc: HeaderCarrier): Future[Either[ApiError, Unit]] = {
 
     val propertyUrl =
-      s"${appConfig.propertyServiceBaseUrl}/property/${ctx.taxYear}/$incomeSourceId/${ctx.journeyPath}/${ctx.nino}/answers"
+      s"${appConfig.propertyServiceBaseUrl}/$prefix/${ctx.taxYear}/$incomeSourceId/${ctx.journeyPath}/${ctx.nino}/answers"
 
     httpClient
       .post(url"$propertyUrl")
@@ -87,13 +88,34 @@ class PropertySubmissionConnector @Inject() (httpClient: HttpClientV2, appConfig
       }
   }
 
-  def deleteJourneyAnswers(
+  def saveJourneyAnswers[A: Writes](
+    ctx: JourneyContext,
+    body: A,
+    incomeSourceId: String
+  )(implicit hc: HeaderCarrier): Future[Either[ApiError, Unit]] =
+    saveJourneyAnswers("uk-property", ctx, body, incomeSourceId)
+
+  def saveForeignPropertyJourneyAnswers[A: Writes](
+                                     ctx: JourneyContext,
+                                     body: A,
+                                     incomeSourceId: String
+                                   )(implicit hc: HeaderCarrier): Future[Either[ApiError, Unit]] =
+    saveJourneyAnswers("foreign-property", ctx, body, incomeSourceId)
+
+  def saveUkAndForeignPropertyJourneyAnswers[A: Writes](
+                                            ctx: JourneyContext,
+                                            body: A,
+                                            incomeSourceId: String
+                                          )(implicit hc: HeaderCarrier): Future[Either[ApiError, Unit]] =
+    saveJourneyAnswers("uk-and-foreign-property", ctx, body, incomeSourceId)
+
+  def deleteForeignPropertyJourneyAnswers(
     ctx: JourneyContext,
     deleteJourneyAnswers: DeleteJourneyAnswers,
     incomeSourceId: String
   )(implicit hc: HeaderCarrier): Future[Either[ApiError, Unit]] = {
     val propertyUrl =
-      s"${appConfig.propertyServiceBaseUrl}/property/${ctx.taxYear}/$incomeSourceId/foreign-property-delete/${ctx.nino}/answers"
+      s"${appConfig.propertyServiceBaseUrl}/foreign-property/${ctx.taxYear}/$incomeSourceId/foreign-property-delete/${ctx.nino}/answers"
 
     httpClient
       .post(url"$propertyUrl")

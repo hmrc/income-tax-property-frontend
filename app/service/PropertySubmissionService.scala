@@ -100,6 +100,7 @@ class PropertySubmissionService @Inject() (
           }
           .getOrElse(Future.successful(Left(UKPropertyDetailsError(ctx.nino, ctx.mtditid))))
     }
+
   def saveForeignPropertyJourneyAnswers[A: Writes](
     ctx: JourneyContext,
     body: A
@@ -109,12 +110,29 @@ class PropertySubmissionService @Inject() (
       case Right(propertyDetails) =>
         propertyDetails
           .map { foreignProperty =>
-            propertyConnector.saveJourneyAnswers(ctx, body, foreignProperty.incomeSourceId).map {
+            propertyConnector.saveForeignPropertyJourneyAnswers(ctx, body, foreignProperty.incomeSourceId).map {
               case Left(error) => Left(HttpParserError(error.status))
               case Right(_)    => Right(())
             }
           }
           .getOrElse(Future.successful(Left(ForeignPropertyDetailsError(ctx.nino, ctx.mtditid))))
+    }
+
+  def saveUkAndForeignPropertyJourneyAnswers[A: Writes](
+    ctx: JourneyContext,
+    body: A
+  )(implicit hc: HeaderCarrier): Future[Either[ServiceError, Unit]] =
+    businessService.getUkPropertyDetails(ctx.nino, ctx.mtditid).flatMap {
+      case Left(error: ApiError) => Future.successful(Left(HttpParserError(error.status)))
+      case Right(propertyDetails) =>
+        propertyDetails
+          .map { ukProperty =>
+            propertyConnector.saveUkAndForeignPropertyJourneyAnswers(ctx, body, ukProperty.incomeSourceId).map {
+              case Left(error) => Left(HttpParserError(error.status))
+              case Right(_)    => Right(())
+            }
+          }
+          .getOrElse(Future.successful(Left(UKPropertyDetailsError(ctx.nino, ctx.mtditid))))
     }
 
   def deleteForeignPropertyJourneyAnswers(
@@ -126,7 +144,7 @@ class PropertySubmissionService @Inject() (
       case Right(propertyDetails) =>
         propertyDetails
           .map { foreignProperty =>
-            propertyConnector.deleteJourneyAnswers(ctx, deleteJourneyAnswers, foreignProperty.incomeSourceId).map {
+            propertyConnector.deleteForeignPropertyJourneyAnswers(ctx, deleteJourneyAnswers, foreignProperty.incomeSourceId).map {
               case Left(error) => Left(HttpParserError(error.status))
               case Right(_)    => Right(())
             }

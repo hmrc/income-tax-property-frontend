@@ -36,7 +36,7 @@ class BusinessConnector @Inject() (httpClient: HttpClientV2, appConfig: Frontend
     hc: HeaderCarrier
   ): Future[Either[ApiError, BusinessDetails]] = {
 
-    val propertyBEUrl = appConfig.propertyServiceBaseUrl + s"/business-details/nino/$nino"
+    val propertyBEUrl = appConfig.propertyServiceBaseUrl + s"/property/business-details/nino/$nino"
 
     httpClient
       .get(url"$propertyBEUrl")
