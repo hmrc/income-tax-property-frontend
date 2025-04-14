@@ -18,7 +18,7 @@ package service
 
 import models.{Mode, NormalMode, UserAnswers}
 import pages.QuestionPage
-import pages.foreignincome.dividends.ForeignDividendsCompletePage
+import pages.foreignincome.dividends.DividendsSectionFinishedPage
 import play.api.mvc.Call
 import queries.Gettable
 
@@ -33,7 +33,7 @@ class ForeignIncomeCYADiversionService @Inject() {
     block: => T
   )(transform: Call => T): PartialFunction[(Mode, String), T] = {
     case (NormalMode, ForeignIncomeCYADiversionService.DIVIDENDS) =>
-      divert(ForeignDividendsCompletePage, userAnswers, block)(
+      divert(DividendsSectionFinishedPage, userAnswers, block)(
         cyaDiversion = controllers.routes.IndexController.onPageLoad
       )(transform)
   }

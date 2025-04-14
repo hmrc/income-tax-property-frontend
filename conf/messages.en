@@ -3199,3 +3199,7 @@ dividendsClaimForeignTaxCreditRelief.checkYourAnswersLabel.agent = Does your cli
 dividendsClaimForeignTaxCreditRelief.error.required.individual = Select yes if you want to claim Foreign Tax Credit Relief
 dividendsClaimForeignTaxCreditRelief.error.required.agent = Select yes if your client wants to claim Foreign Tax Credit Relief
 dividendsClaimForeignTaxCreditRelief.change.hidden = Do you want to claim Foreign Tax Credit Relief?
+
+foreignIncomeDividendsComplete.title = Have you completed this section?
+foreignIncomeDividendsComplete.heading = Have you completed this section?
+foreignIncomeDividendsComplete.hint = You''ll still be able to go back and review the information that you''ve given us once you''ve completed it.

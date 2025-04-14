@@ -14,16 +14,17 @@
  * limitations under the License.
  */
 
-package pages.foreignincome.dividends
+package forms.foreignincome.dividends
 
-import models.ForeignIncome
-import pages.PageConstants.foreignDividendsPath
-import pages.QuestionPage
-import play.api.libs.json.JsPath
+import forms.mappings.Mappings
+import play.api.data.Form
 
-object ForeignDividendsCompletePage extends QuestionPage[Boolean] {
+import javax.inject.Inject
 
-  override def path: JsPath = JsPath \ foreignDividendsPath(ForeignIncome) \ toString
+class DividendsSectionFinishedFormProvider @Inject() extends Mappings {
 
-  override def toString: String = "sectionComplete"
+  def apply(): Form[Boolean] =
+    Form(
+      "dividendsSectionFinished" -> boolean("haveYouFinishedThisSection.error.required")
+    )
 }

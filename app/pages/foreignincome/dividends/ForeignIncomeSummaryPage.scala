@@ -39,7 +39,9 @@ object ForeignIncomeSummaryPage {
           .redirectCallToCYAIfFinished(taxYear, userAnswers, ForeignIncomeCYADiversionService.DIVIDENDS) {
             controllers.foreignincome.dividends.routes.ForeignDividendsStartController.onPageLoad(taxYear)
           },
-        TaskListTag.NotStarted,
+        userAnswers.flatMap(_.get(DividendsSectionFinishedPage)).map(isFinished =>
+          if(isFinished){TaskListTag.Completed} else {TaskListTag.InProgress}
+        ).getOrElse(TaskListTag.NotStarted),
         "foreign_income_dividends"
       ),
       TaskListItem(
