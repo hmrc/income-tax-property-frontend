@@ -141,7 +141,7 @@ class SbaClaimsController @Inject() (
     val sbaInfoOpt = getSBA(request.userAnswers, propertyType)
     sbaInfoOpt
       .map { sbaInfo =>
-        propertySubmissionService.saveJourneyAnswers(context, sbaInfo, propertyDetails.incomeSourceId).flatMap {
+        propertySubmissionService.saveUkPropertyJourneyAnswers(context, sbaInfo, propertyDetails.incomeSourceId).flatMap {
           case Right(_) =>
             auditSBAClaims(
               taxYear,

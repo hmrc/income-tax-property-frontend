@@ -74,17 +74,17 @@ class PropertySubmissionService @Inject() (
   def savePropertyRentalsIncome(ctx: JourneyContext, propertyRentalsIncome: RentalsIncome)(implicit
     hc: HeaderCarrier
   ): Future[Either[ServiceError, Unit]] =
-    saveJourneyAnswers(ctx, propertyRentalsIncome)
+    saveUkPropertyJourneyAnswers(ctx, propertyRentalsIncome)
 
-  def saveJourneyAnswers[A: Writes](ctx: JourneyContext, body: A, incomeSourceId: String)(implicit
-    hc: HeaderCarrier
+  def saveUkPropertyJourneyAnswers[A: Writes](ctx: JourneyContext, body: A, incomeSourceId: String)(implicit
+                                                                                                    hc: HeaderCarrier
   ): Future[Either[ServiceError, Unit]] =
-    propertyConnector.saveJourneyAnswers(ctx, body, incomeSourceId).map {
+    propertyConnector.saveUkPropertyJourneyAnswers(ctx, body, incomeSourceId).map {
       case Left(error) => Left(HttpParserError(error.status))
       case Right(_)    => Right()
     }
 
-  def saveJourneyAnswers[A: Writes](
+  def saveUkPropertyJourneyAnswers[A: Writes](
     ctx: JourneyContext,
     body: A
   )(implicit hc: HeaderCarrier): Future[Either[ServiceError, Unit]] =
@@ -93,13 +93,14 @@ class PropertySubmissionService @Inject() (
       case Right(propertyDetails) =>
         propertyDetails
           .map { ukProperty =>
-            propertyConnector.saveJourneyAnswers(ctx, body, ukProperty.incomeSourceId).map {
+            propertyConnector.saveUkPropertyJourneyAnswers(ctx, body, ukProperty.incomeSourceId).map {
               case Left(error) => Left(HttpParserError(error.status))
               case Right(_)    => Right(())
             }
           }
           .getOrElse(Future.successful(Left(UKPropertyDetailsError(ctx.nino, ctx.mtditid))))
     }
+
   def saveForeignPropertyJourneyAnswers[A: Writes](
     ctx: JourneyContext,
     body: A
@@ -109,12 +110,29 @@ class PropertySubmissionService @Inject() (
       case Right(propertyDetails) =>
         propertyDetails
           .map { foreignProperty =>
-            propertyConnector.saveJourneyAnswers(ctx, body, foreignProperty.incomeSourceId).map {
+            propertyConnector.saveForeignPropertyJourneyAnswers(ctx, body, foreignProperty.incomeSourceId).map {
               case Left(error) => Left(HttpParserError(error.status))
               case Right(_)    => Right(())
             }
           }
           .getOrElse(Future.successful(Left(ForeignPropertyDetailsError(ctx.nino, ctx.mtditid))))
+    }
+
+  def saveUkAndForeignPropertyJourneyAnswers[A: Writes](
+    ctx: JourneyContext,
+    body: A
+  )(implicit hc: HeaderCarrier): Future[Either[ServiceError, Unit]] =
+    businessService.getUkPropertyDetails(ctx.nino, ctx.mtditid).flatMap {
+      case Left(error: ApiError) => Future.successful(Left(HttpParserError(error.status)))
+      case Right(propertyDetails) =>
+        propertyDetails
+          .map { ukProperty =>
+            propertyConnector.saveUkAndForeignPropertyJourneyAnswers(ctx, body, ukProperty.incomeSourceId).map {
+              case Left(error) => Left(HttpParserError(error.status))
+              case Right(_)    => Right(())
+            }
+          }
+          .getOrElse(Future.successful(Left(UKPropertyDetailsError(ctx.nino, ctx.mtditid))))
     }
 
   def deleteForeignPropertyJourneyAnswers(
@@ -126,7 +144,7 @@ class PropertySubmissionService @Inject() (
       case Right(propertyDetails) =>
         propertyDetails
           .map { foreignProperty =>
-            propertyConnector.deleteJourneyAnswers(ctx, deleteJourneyAnswers, foreignProperty.incomeSourceId).map {
+            propertyConnector.deleteForeignPropertyJourneyAnswers(ctx, deleteJourneyAnswers, foreignProperty.incomeSourceId).map {
               case Left(error) => Left(HttpParserError(error.status))
               case Right(_)    => Right(())
             }

@@ -98,7 +98,7 @@ class AdjustmentsCheckYourAnswersController @Inject() (
     hc: HeaderCarrier
   ) = {
     val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, PropertyRentalAdjustments)
-    propertySubmissionService.saveJourneyAnswers(context, adjustments).flatMap {
+    propertySubmissionService.saveUkPropertyJourneyAnswers(context, adjustments).flatMap {
       case Right(_) =>
         auditCYA(taxYear, request, adjustments, isFailed = false, AccountingMethod.Traditional)
         Future

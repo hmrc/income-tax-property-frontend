@@ -76,7 +76,7 @@ class RentalsAndRentARoomAllowancesCheckYourAnswersController @Inject() (
       request.userAnswers.get(RentalsAndRentARoomAllowance) match {
         case Some(rentalsAndRentARoomAllowance) =>
           propertySubmissionService
-            .saveJourneyAnswers(context, rentalsAndRentARoomAllowance)
+            .saveUkPropertyJourneyAnswers(context, rentalsAndRentARoomAllowance)
             .flatMap {
               case Right(_) =>
                 auditAllowancesCYA(taxYear, request, rentalsAndRentARoomAllowance, isFailed = false)

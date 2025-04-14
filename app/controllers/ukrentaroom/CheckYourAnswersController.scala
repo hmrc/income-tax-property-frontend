@@ -74,7 +74,7 @@ class CheckYourAnswersController @Inject() (
         Future.successful(Redirect(controllers.routes.JourneyRecoveryController.onPageLoad()))
       } { rarAbout =>
         propertySubmissionService
-          .saveJourneyAnswers[RaRAbout](context, rarAbout)
+          .saveUkPropertyJourneyAnswers[RaRAbout](context, rarAbout)
           .flatMap {
             case Right(_) =>
               auditCYA(taxYear, request, rarAbout)

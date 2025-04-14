@@ -109,7 +109,7 @@ class UkAndForeignPropertyCheckYourAnswersController @Inject() (
     val context =
       JourneyContext(taxYear, request.user.mtditid, request.user.nino, JourneyPath.UkAndForeignPropertyAbout)
 
-    propertySubmissionService.saveJourneyAnswers(context, ukAndForeignAbout).flatMap {
+    propertySubmissionService.saveUkAndForeignPropertyJourneyAnswers(context, ukAndForeignAbout).flatMap {
       case Right(_) =>
         // TODO : Update logic once backend endpoint has been created
         Future.successful(

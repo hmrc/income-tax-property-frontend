@@ -245,7 +245,7 @@ class SbaClaimsControllerSpec extends SpecBase with MockitoSugar {
       val mockPropertySubmissionService = mock[PropertySubmissionService]
       val mockBusinessService = mock[BusinessService]
 
-      when(mockPropertySubmissionService.saveJourneyAnswers(any(), any(), any())(any(), any())) thenReturn Future
+      when(mockPropertySubmissionService.saveUkPropertyJourneyAnswers(any(), any(), any())(any(), any())) thenReturn Future
         .successful(
           Right(())
         )

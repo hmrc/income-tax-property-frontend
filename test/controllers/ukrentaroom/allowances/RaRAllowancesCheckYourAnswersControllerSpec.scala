@@ -117,7 +117,7 @@ class RaRAllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryL
       val propertySubmissionService = mock[PropertySubmissionService]
       val auditService = mock[AuditService]
 
-      when(propertySubmissionService.saveJourneyAnswers(any(), any())(any(), any())) thenReturn Future.successful(
+      when(propertySubmissionService.saveUkPropertyJourneyAnswers(any(), any())(any(), any())) thenReturn Future.successful(
         Right(())
       )
 

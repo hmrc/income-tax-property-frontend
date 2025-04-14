@@ -93,7 +93,7 @@ class RaRAdjustmentsCYAControllerSpec extends SpecBase with SummaryListFluency {
       val propertySubmissionService = mock[PropertySubmissionService]
       val audit = mock[AuditService]
 
-      when(propertySubmissionService.saveJourneyAnswers(any(), any())(any(), any())) thenReturn Future.successful(
+      when(propertySubmissionService.saveUkPropertyJourneyAnswers(any(), any())(any(), any())) thenReturn Future.successful(
         Right(())
       )
 

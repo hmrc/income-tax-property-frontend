@@ -91,7 +91,7 @@ class RentalsAndRaRCheckYourAnswersController @Inject() (
       Future.failed(InternalErrorFailure("Rentals and Rent A Room Section is not present in userAnswers"))
     } { about =>
       propertySubmissionService
-        .saveJourneyAnswers[RentalsAndRaRAbout](context, about)
+        .saveUkPropertyJourneyAnswers[RentalsAndRaRAbout](context, about)
         .flatMap {
           case Right(_) =>
             auditCYA(taxYear, request, about, isFailed = false)

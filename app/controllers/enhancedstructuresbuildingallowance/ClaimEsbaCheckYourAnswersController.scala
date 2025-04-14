@@ -101,7 +101,7 @@ class ClaimEsbaCheckYourAnswersController @Inject() (
     for {
       accountingMethod <- checkAccountingMethod(propertyDetails)
       result <-
-        propertySubmissionService.saveJourneyAnswers(context, esbaAnswers, propertyDetails.incomeSourceId).flatMap {
+        propertySubmissionService.saveUkPropertyJourneyAnswers(context, esbaAnswers, propertyDetails.incomeSourceId).flatMap {
           case Right(_) =>
             auditESBAClaims(
               taxYear = taxYear,

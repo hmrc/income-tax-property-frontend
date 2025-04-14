@@ -86,7 +86,7 @@ class CheckYourAnswersControllerSpec extends SpecBase with MockitoSugar with Sum
 
       when(
         propertySubmissionService
-          .saveJourneyAnswers(ArgumentMatchers.eq(context), ArgumentMatchers.eq(propertyAbout))(
+          .saveUkPropertyJourneyAnswers(ArgumentMatchers.eq(context), ArgumentMatchers.eq(propertyAbout))(
             any(),
             any()
           )

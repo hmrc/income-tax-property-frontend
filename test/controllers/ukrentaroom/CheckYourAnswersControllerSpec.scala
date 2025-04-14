@@ -100,7 +100,7 @@ class CheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency wi
       val audit: AuditService = mock[AuditService]
 
       when(
-        propertyPeriodSubmissionService.saveJourneyAnswers(any(), ArgumentMatchers.eq(rarAbout))(any(), any())
+        propertyPeriodSubmissionService.saveUkPropertyJourneyAnswers(any(), ArgumentMatchers.eq(rarAbout))(any(), any())
       ) thenReturn Future.successful(Right(()))
 
       val application = applicationBuilder(userAnswers = Some(userAnswersWithRaRAbout), isAgent = false)

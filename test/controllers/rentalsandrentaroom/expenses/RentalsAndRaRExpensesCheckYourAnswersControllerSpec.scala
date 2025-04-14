@@ -113,7 +113,7 @@ class RentalsAndRaRExpensesCheckYourAnswersControllerSpec extends SpecBase with 
 
       when(
         propertySubmissionService
-          .saveJourneyAnswers(
+          .saveUkPropertyJourneyAnswers(
             ArgumentMatchers.eq(context),
             ArgumentMatchers.eq(rentalsExpense),
             ArgumentMatchers.eq("incomeSourceId")

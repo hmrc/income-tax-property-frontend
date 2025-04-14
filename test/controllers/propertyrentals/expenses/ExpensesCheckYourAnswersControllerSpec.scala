@@ -90,7 +90,7 @@ class ExpensesCheckYourAnswersControllerSpec extends SpecBase with MockitoSugar 
 
       when(
         propertySubmissionService
-          .saveJourneyAnswers(ArgumentMatchers.eq(context), ArgumentMatchers.eq(rentalsExpense))(
+          .saveUkPropertyJourneyAnswers(ArgumentMatchers.eq(context), ArgumentMatchers.eq(rentalsExpense))(
             any(),
             any()
           )

@@ -86,7 +86,7 @@ class PropertyRentalsCheckYourAnswersControllerSpec extends SpecBase with Mockit
 
       when(
         propertySubmissionService
-          .saveJourneyAnswers(ArgumentMatchers.eq(context), ArgumentMatchers.eq(propertyRentalsAbout))(
+          .saveUkPropertyJourneyAnswers(ArgumentMatchers.eq(context), ArgumentMatchers.eq(propertyRentalsAbout))(
             any(),
             any()
           )
