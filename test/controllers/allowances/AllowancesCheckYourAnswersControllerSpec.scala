@@ -129,7 +129,7 @@ class AllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryList
       when(businessService.getUkPropertyDetails(anyString(), anyString())(any())) thenReturn Future.successful(
         Right(Some(propertyDetails))
       )
-      when(propertySubmissionService.saveJourneyAnswers(any(), any())(any(), any())) thenReturn Future.successful(
+      when(propertySubmissionService.saveUkPropertyJourneyAnswers(any(), any())(any(), any())) thenReturn Future.successful(
         Right(())
       )
       doNothing().when(auditService).sendRentalsAuditEvent(any())(any(), any())

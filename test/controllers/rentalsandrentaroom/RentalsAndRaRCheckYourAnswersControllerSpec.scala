@@ -111,7 +111,7 @@ class RentalsAndRaRCheckYourAnswersControllerSpec extends SpecBase with SummaryL
       val audit: AuditService = mock[AuditService]
 
       when(
-        propertyPeriodSubmissionService.saveJourneyAnswers(any(), ArgumentMatchers.eq(rentalsAndRaRAbout))(any(), any())
+        propertyPeriodSubmissionService.saveUkPropertyJourneyAnswers(any(), ArgumentMatchers.eq(rentalsAndRaRAbout))(any(), any())
       ) thenReturn Future.successful(Right(()))
 
       val application = applicationBuilder(userAnswers = Some(userAnswersWithRaRAbout), isAgent = false)

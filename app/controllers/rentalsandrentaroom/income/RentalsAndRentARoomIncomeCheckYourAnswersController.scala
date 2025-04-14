@@ -90,7 +90,7 @@ class RentalsAndRentARoomIncomeCheckYourAnswersController @Inject() (
     val context =
       JourneyContext(taxYear, request.user.mtditid, request.user.nino, JourneyPath.RentalsAndRentARoomIncome)
     propertySubmissionService
-      .saveJourneyAnswers(context, propertyRentalsIncome)
+      .saveUkPropertyJourneyAnswers(context, propertyRentalsIncome)
       .flatMap {
         case Right(_) =>
           auditIncomeCYA(taxYear, request, propertyRentalsIncome, isFailed = false)

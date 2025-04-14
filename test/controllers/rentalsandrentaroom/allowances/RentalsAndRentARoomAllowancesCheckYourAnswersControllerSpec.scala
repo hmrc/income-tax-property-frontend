@@ -91,7 +91,7 @@ class RentalsAndRentARoomAllowancesCheckYourAnswersControllerSpec extends SpecBa
             ua7 <- ua6.set(OtherCapitalAllowancePage(RentalsRentARoom), BigDecimal(1.01))
           } yield ua7).success.value
 
-        when(mockPropertySubmissionService.saveJourneyAnswers(any(), any())(any(), any())) thenReturn Future.successful(
+        when(mockPropertySubmissionService.saveUkPropertyJourneyAnswers(any(), any())(any(), any())) thenReturn Future.successful(
           Right(())
         )
 
@@ -127,7 +127,7 @@ class RentalsAndRentARoomAllowancesCheckYourAnswersControllerSpec extends SpecBa
           val result = route(application, request).value
 
           whenReady(result) { _ =>
-            verify(mockPropertySubmissionService, times(1)).saveJourneyAnswers(any(), any())(any(), any())
+            verify(mockPropertySubmissionService, times(1)).saveUkPropertyJourneyAnswers(any(), any())(any(), any())
             verify(mockAuditService, times(1)).sendAuditEvent(any())(any(), any())
           }
 

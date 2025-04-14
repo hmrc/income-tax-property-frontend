@@ -81,7 +81,7 @@ class CheckYourAnswersController @Inject() (
     hc: HeaderCarrier
   ): Future[Result] = {
     val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, JourneyPath.PropertyAbout)
-    propertySubmissionService.saveJourneyAnswers(context, propertyAbout).flatMap {
+    propertySubmissionService.saveUkPropertyJourneyAnswers(context, propertyAbout).flatMap {
       case Right(_) =>
         auditCYA(taxYear, request, propertyAbout, isFailed = false)
         Future.successful(Redirect(controllers.about.routes.AboutPropertyCompleteController.onPageLoad(taxYear)))

@@ -110,7 +110,7 @@ class RentalsAndRaRExpensesCheckYourAnswersController @Inject() (
     request.userAnswers.get(RentalsAndRentARoomExpenses) match {
       case Some(rentalsRentARoomExpenses) =>
         propertySubmissionService
-          .saveJourneyAnswers(context, rentalsRentARoomExpenses, propertyDetails.incomeSourceId)
+          .saveUkPropertyJourneyAnswers(context, rentalsRentARoomExpenses, propertyDetails.incomeSourceId)
           .flatMap {
             case Right(_) =>
               auditExpensesCYA(

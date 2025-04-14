@@ -189,7 +189,7 @@ class EsbaClaimsControllerSpec extends SpecBase with MockitoSugar {
             )
           )
           val mockPropertySubmissionService = mock[PropertySubmissionService]
-          when(mockPropertySubmissionService.saveJourneyAnswers(any(), any(), any())(any(), any())) thenReturn Future
+          when(mockPropertySubmissionService.saveUkPropertyJourneyAnswers(any(), any(), any())(any(), any())) thenReturn Future
             .successful(
               Right(())
             )
@@ -218,7 +218,7 @@ class EsbaClaimsControllerSpec extends SpecBase with MockitoSugar {
                 whenReady(result) { _ =>
                   val timesForSubmission = if (addNewClaim) 0 else 1
                   verify(mockPropertySubmissionService, times(timesForSubmission))
-                    .saveJourneyAnswers(any(), any(), any())(any(), any())
+                    .saveUkPropertyJourneyAnswers(any(), any(), any())(any(), any())
                   verify(mockBusinessService, times(timesForSubmission)).getUkPropertyDetails(any(), any())(any())
                   verify(mockAuditService, times(timesForSubmission)).sendAuditEvent(any())(any(), any())
                 }

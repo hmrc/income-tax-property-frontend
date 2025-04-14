@@ -143,7 +143,7 @@ class EsbaClaimsController @Inject() (
       result <- request.userAnswers.get(EsbasWithSupportingQuestionsPage(propertyType)) match {
                   case Some(esbaAnswers) =>
                     propertySubmissionService
-                      .saveJourneyAnswers(context, esbaAnswers, propertyDetails.incomeSourceId)
+                      .saveUkPropertyJourneyAnswers(context, esbaAnswers, propertyDetails.incomeSourceId)
                       .flatMap {
                         case Right(_) =>
                           auditESBAClaims(

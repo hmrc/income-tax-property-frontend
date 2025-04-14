@@ -102,7 +102,7 @@ class ExpensesCheckYourAnswersRRController @Inject() (
     hc: HeaderCarrier
   ): Future[Result] = {
     val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, JourneyPath.RentARoomExpenses)
-    propertySubmissionService.saveJourneyAnswers(context, rentARoomExpenses).flatMap {
+    propertySubmissionService.saveUkPropertyJourneyAnswers(context, rentARoomExpenses).flatMap {
       case Right(_) =>
         auditCYA(taxYear, request, rentARoomExpenses)
         Future.successful(

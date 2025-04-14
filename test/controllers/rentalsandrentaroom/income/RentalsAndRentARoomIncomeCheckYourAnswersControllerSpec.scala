@@ -95,7 +95,7 @@ class RentalsAndRentARoomIncomeCheckYourAnswersControllerSpec
                    )
           } yield ua5).success.value
 
-        when(mockPropertySubmissionService.saveJourneyAnswers(any(), any())(any(), any())) thenReturn Future.successful(
+        when(mockPropertySubmissionService.saveUkPropertyJourneyAnswers(any(), any())(any(), any())) thenReturn Future.successful(
           Right(())
         )
         when(mockBusinessService.getUkPropertyDetails(any(), any())(any())) thenReturn Future

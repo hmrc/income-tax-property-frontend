@@ -96,7 +96,7 @@ class ExpensesCheckYourAnswersController @Inject() (
   ): Future[Result] = {
     val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, PropertyRentalExpenses)
 
-    propertySubmissionService.saveJourneyAnswers(context, expenses).flatMap {
+    propertySubmissionService.saveUkPropertyJourneyAnswers(context, expenses).flatMap {
       case Right(_) =>
         auditCYA(taxYear, request, expenses, isFailed = false, AccountingMethod.Traditional)
         Future.successful(Redirect(routes.ExpensesSectionFinishedController.onPageLoad(taxYear)))

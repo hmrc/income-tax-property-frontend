@@ -88,7 +88,7 @@ class PropertySubmissionConnector @Inject() (httpClient: HttpClientV2, appConfig
       }
   }
 
-  def saveJourneyAnswers[A: Writes](
+  def saveUkPropertyJourneyAnswers[A: Writes](
     ctx: JourneyContext,
     body: A,
     incomeSourceId: String

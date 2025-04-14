@@ -111,7 +111,7 @@ class RentalsAndRentARoomAdjustmentsCheckYourAnswersControllerSpec extends SpecB
       when(businessService.getUkPropertyDetails(anyString(), anyString())(any())) thenReturn Future.successful(
         Right(Some(propertyDetails))
       )
-      when(propertySubmissionService.saveJourneyAnswers(any(), any(), any())(any(), any())) thenReturn Future
+      when(propertySubmissionService.saveUkPropertyJourneyAnswers(any(), any(), any())(any(), any())) thenReturn Future
         .successful(
           Right(())
         )

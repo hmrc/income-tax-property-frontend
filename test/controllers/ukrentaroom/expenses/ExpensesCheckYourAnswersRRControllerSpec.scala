@@ -111,7 +111,7 @@ class ExpensesCheckYourAnswersRRControllerSpec extends SpecBase with SummaryList
 
       when(
         propertySubmissionService
-          .saveJourneyAnswers(
+          .saveUkPropertyJourneyAnswers(
             ArgumentMatchers.eq(context),
             ArgumentMatchers.eq(
               RentARoomExpenses(

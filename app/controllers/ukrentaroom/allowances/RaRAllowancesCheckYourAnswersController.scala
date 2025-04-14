@@ -99,7 +99,7 @@ class RaRAllowancesCheckYourAnswersController @Inject() (
       nino = request.user.nino,
       journeyPath = RentARoomAllowances
     )
-    propertySubmissionService.saveJourneyAnswers[RentARoomAllowance](context, allowance)
+    propertySubmissionService.saveUkPropertyJourneyAnswers[RentARoomAllowance](context, allowance)
   }
 
   private def auditAllowanceCYA(taxYear: Int, request: DataRequest[AnyContent], allowance: RentARoomAllowance)(implicit

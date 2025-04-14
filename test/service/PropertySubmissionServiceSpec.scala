@@ -151,7 +151,7 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
         Left(ApiError(INTERNAL_SERVER_ERROR, SingleErrorBody.parsingError))
       )
 
-      await(propertyPeriodSubmissionService.saveJourneyAnswers(context, propertyAbout)) mustBe Left(
+      await(propertyPeriodSubmissionService.saveUkPropertyJourneyAnswers(context, propertyAbout)) mustBe Left(
         HttpParserError(INTERNAL_SERVER_ERROR)
       )
     }
@@ -163,10 +163,10 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
       when(mockBusinessConnector.getUkPropertyDetails(user.nino, user.mtditid)) thenReturn Future(Right(Some(details)))
 
       when(
-        propertyPeriodicSubmissionConnector.saveJourneyAnswers[PropertyAbout](context, propertyAbout, "incomeSourceId")
+        propertyPeriodicSubmissionConnector.saveUkPropertyJourneyAnswers[PropertyAbout](context, propertyAbout, "incomeSourceId")
       ) thenReturn Future(Right())
 
-      await(propertyPeriodSubmissionService.saveJourneyAnswers(context, propertyAbout)) mustBe Right()
+      await(propertyPeriodSubmissionService.saveUkPropertyJourneyAnswers(context, propertyAbout)) mustBe Right()
     }
 
     "return error for failure save" in {
@@ -176,10 +176,10 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
       when(mockBusinessConnector.getUkPropertyDetails(user.nino, user.mtditid)) thenReturn Future(Right(Some(details)))
 
       when(
-        propertyPeriodicSubmissionConnector.saveJourneyAnswers[PropertyAbout](context, propertyAbout, "incomeSourceId")
+        propertyPeriodicSubmissionConnector.saveUkPropertyJourneyAnswers[PropertyAbout](context, propertyAbout, "incomeSourceId")
       ) thenReturn Future(Left(ApiError(INTERNAL_SERVER_ERROR, SingleErrorBody.parsingError)))
 
-      await(propertyPeriodSubmissionService.saveJourneyAnswers(context, propertyAbout)) mustBe Left(
+      await(propertyPeriodSubmissionService.saveUkPropertyJourneyAnswers(context, propertyAbout)) mustBe Left(
         HttpParserError(INTERNAL_SERVER_ERROR)
       )
     }

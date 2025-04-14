@@ -79,7 +79,7 @@ class PropertyRentalsCheckYourAnswersController @Inject() (
     hc: HeaderCarrier
   ): Future[Result] = {
     val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, PropertyRentalAbout)
-    propertySubmissionService.saveJourneyAnswers(context, propertyRentalsAbout).flatMap {
+    propertySubmissionService.saveUkPropertyJourneyAnswers(context, propertyRentalsAbout).flatMap {
       case Right(_) =>
         auditCYA(taxYear, request, propertyRentalsAbout, isFailed = false, AccountingMethod.Traditional)
         Future.successful(

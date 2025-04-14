@@ -107,7 +107,7 @@ class RentalsAndRentARoomAdjustmentsCheckYourAnswersController @Inject() (
       JourneyContext(taxYear, request.user.mtditid, request.user.nino, RentalsAndRentARoomAdjustments)
     details.accountingMethod.flatMap { accountingMethod =>
       propertySubmissionService
-        .saveJourneyAnswers(context, rentalsRentARoomAdjustments, details.incomeSourceId)
+        .saveUkPropertyJourneyAnswers(context, rentalsRentARoomAdjustments, details.incomeSourceId)
         .flatMap {
           case Right(_) =>
             auditAdjustments(
