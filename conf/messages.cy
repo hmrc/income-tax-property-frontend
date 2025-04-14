@@ -1322,6 +1322,28 @@ ukrentaroom.income.totalIncomeAmount.error.outOfRange.agent = Nodwch swm rhwng �
 ukrentaroom.income.totalIncomeAmount.change.hidden.agent = Beth oedd cyfanswm yr incwm a gafodd eich cleient drwy’r Cynllun Rhentu Ystafell?
 ukrentaroom.income.totalIncomeAmount.checkYourAnswersLabel.agent = Beth oedd cyfanswm yr incwm a gafodd eich cleient drwy’r Cynllun Rhentu Ystafell?
 
+
+ukrentaroom.reliefAmount.title = *Missing Welsh*
+ukrentaroom.reliefAmount.heading.individual = *Missing Welsh*
+ukrentaroom.reliefAmount.p1.individual = *Missing Welsh*
+ukrentaroom.reliefAmount.label.individual = *Missing Welsh*
+ukrentaroom.reliefAmount.error.required.individual = *Missing Welsh*
+ukrentaroom.reliefAmount.error.twoDecimalPlaces.individual = *Missing Welsh*
+ukrentaroom.reliefAmount.error.nonNumeric.individual = *Missing Welsh*
+ukrentaroom.reliefAmount.error.outOfRange.individual = *Missing Welsh*
+ukrentaroom.reliefAmount.error.maxAllowedClaim.individual = *Missing Welsh*
+ukrentaroom.reliefAmount.heading.agent = *Missing Welsh*
+ukrentaroom.reliefAmount.p1.agent = *Missing Welsh*
+ukrentaroom.reliefAmount.label.agent = *Missing Welsh*
+ukrentaroom.reliefAmount.error.required.agent = *Missing Welsh*
+ukrentaroom.reliefAmount.error.twoDecimalPlaces.agent = *Missing Welsh*
+ukrentaroom.reliefAmount.error.nonNumeric.agent = *Missing Welsh*
+ukrentaroom.reliefAmount.error.outOfRange.agent = *Missing Welsh*
+ukrentaroom.reliefAmount.error.maxAllowedClaim.agent = *Missing Welsh*
+ukrentaroom.reliefAmount.checkYourAnswersLabel = *Missing Welsh*
+ukrentaroom.reliefAmount.change.hidden =  *Missing Welsh*
+
+
 rentARoomJointlyLet.title = Trefniant Rhentu Ystafell wedi’i osod ar y cyd
 
 jointlyLet.title.individual = Trefniant Rhentu Ystafell wedi’i osod ar y cyd
