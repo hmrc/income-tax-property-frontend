@@ -364,6 +364,7 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
     case WhenYouReportedTheLossPage(propertyType) => taxYear => _ => _ =>
       propertyType match {
         case Rentals          => AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+        case RentARoom        => RaRAdjustmentsCYAController.onPageLoad(taxYear)
         case RentalsRentARoom => RentalsAndRentARoomAdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
       }
     // Rentals-Expenses
@@ -892,6 +893,8 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
         _ =>
           _ =>
             AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+    case WhenYouReportedTheLossPage(RentARoom) =>
+      taxYear => _ => _ => RaRAdjustmentsCYAController.onPageLoad(taxYear)
         // TODO add the correct property type here i.e. RentalsRentARoom
       case PrivateUseAdjustmentPage(RentalsRentARoom) | PropertyIncomeAllowancePage(RentalsRentARoom) |
         BusinessPremisesRenovationAllowanceBalancingChargePage | BalancingChargePage(RentalsRentARoom) |
