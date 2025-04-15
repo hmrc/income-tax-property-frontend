@@ -425,6 +425,12 @@ POST        /:taxYear/rent-a-room/expenses/check-your-answers                   
 GET         /:taxYear/rent-a-room/expenses/complete-yes-no                                                               controllers.ukrentaroom.expenses.ExpensesRRSectionCompleteController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
 POST        /:taxYear/rent-a-room/expenses/complete-yes-no                                                               controllers.ukrentaroom.expenses.ExpensesRRSectionCompleteController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
 
+#################### Expenses for Rent A Room  ##########################
+
+GET         /:taxYear/rent-a-room/adjustments/when-you-reported-the-loss                                                    controllers.adjustments.WhenYouReportedTheLossController.onPageLoad(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentARoom)
+POST        /:taxYear/rent-a-room/adjustments/when-you-reported-the-loss                                                    controllers.adjustments.WhenYouReportedTheLossController.onSubmit(taxYear: Int, mode: Mode = NormalMode, propertyType: PropertyType = RentARoom)
+GET         /:taxYear/rent-a-room/adjustments/change-when-you-reported-the-loss                                             controllers.adjustments.WhenYouReportedTheLossController.onPageLoad(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentARoom)
+POST        /:taxYear/rent-a-room/adjustments/change-when-you-reported-the-loss                                             controllers.adjustments.WhenYouReportedTheLossController.onSubmit(taxYear: Int, mode: Mode = CheckMode, propertyType: PropertyType = RentARoom)
 
 #################### Rentals And Rent A Room  ##########################
 

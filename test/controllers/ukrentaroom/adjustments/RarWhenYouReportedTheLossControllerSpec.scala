@@ -18,19 +18,20 @@ package controllers.ukrentaroom.adjustments
 
 import base.SpecBase
 import controllers.routes
-import forms.ukrentaroom.adjustments.RarWhenYouReportedTheLossFormProvider
-import models.{NormalMode, UnusedLossesBroughtForward, WhenYouReportedTheLoss, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import forms.adjustments.WhenYouReportedTheLossFormProvider
+import models.{UserAnswers, NormalMode, WhenYouReportedTheLoss, UnusedLossesBroughtForward, RentARoom}
+import navigation.{Navigator, FakeNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.ukrentaroom.adjustments.{RaRUnusedLossesBroughtForwardPage, RarWhenYouReportedTheLossPage}
+import pages.adjustments.WhenYouReportedTheLossPage
+import pages.ukrentaroom.adjustments.RaRUnusedLossesBroughtForwardPage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.ukrentaroom.adjustments.RarWhenYouReportedTheLossView
+import views.html.adjustments.WhenYouReportedTheLossView
 
 import scala.concurrent.Future
 import scala.math.BigDecimal.RoundingMode
@@ -40,9 +41,9 @@ class RarWhenYouReportedTheLossControllerSpec extends SpecBase with MockitoSugar
   def onwardRoute = Call("GET", "/foo")
   val taxYear: Int = 2024
   val isAgentMessageString: String = "individual"
-  lazy val rarWhenYouReportedTheLossRoute: String = controllers.ukrentaroom.adjustments.routes.RarWhenYouReportedTheLossController.onPageLoad(taxYear, NormalMode).url
+  lazy val rarWhenYouReportedTheLossRoute: String = controllers.adjustments.routes.WhenYouReportedTheLossController.onPageLoad(taxYear, NormalMode, RentARoom).url
   val previousLoss: BigDecimal = 123
-  val formProvider = new RarWhenYouReportedTheLossFormProvider()
+  val formProvider = new WhenYouReportedTheLossFormProvider()
   val form = formProvider(isAgentMessageString)
 
   "RarWhenYouReportedTheLoss Controller" - {
@@ -61,16 +62,16 @@ class RarWhenYouReportedTheLossControllerSpec extends SpecBase with MockitoSugar
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[RarWhenYouReportedTheLossView]
+        val view = application.injector.instanceOf[WhenYouReportedTheLossView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, isAgentMessageString, previousLoss.setScale(2, RoundingMode.DOWN).toString, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, isAgentMessageString, previousLoss.setScale(2, RoundingMode.DOWN).toString, NormalMode, RentARoom)(request, messages(application)).toString
       }
     }
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(RarWhenYouReportedTheLossPage, WhenYouReportedTheLoss.values.head).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(WhenYouReportedTheLossPage(RentARoom), WhenYouReportedTheLoss.values.head).success.value
       val userAnswersWithLoss = userAnswers.set(RaRUnusedLossesBroughtForwardPage,
         UnusedLossesBroughtForward(
           isUnusedLossesBroughtForward = true,
@@ -82,12 +83,12 @@ class RarWhenYouReportedTheLossControllerSpec extends SpecBase with MockitoSugar
       running(application) {
         val request = FakeRequest(GET, rarWhenYouReportedTheLossRoute)
 
-        val view = application.injector.instanceOf[RarWhenYouReportedTheLossView]
+        val view = application.injector.instanceOf[WhenYouReportedTheLossView]
 
         val result = route(application, request).value
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form.fill(WhenYouReportedTheLoss.values.head), taxYear, isAgentMessageString, previousLoss.setScale(2, RoundingMode.DOWN).toString, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form.fill(WhenYouReportedTheLoss.values.head), taxYear, isAgentMessageString, previousLoss.setScale(2, RoundingMode.DOWN).toString, NormalMode, RentARoom)(request, messages(application)).toString
       }
     }
 
@@ -114,7 +115,7 @@ class RarWhenYouReportedTheLossControllerSpec extends SpecBase with MockitoSugar
       running(application) {
         val request =
           FakeRequest(POST, rarWhenYouReportedTheLossRoute)
-            .withFormUrlEncodedBody(("rarWhenYouReportedTheLoss", WhenYouReportedTheLoss.values.head.toString))
+            .withFormUrlEncodedBody(("whenYouReportedTheLoss", WhenYouReportedTheLoss.values.head.toString))
 
         val result = route(application, request).value
 
@@ -136,16 +137,16 @@ class RarWhenYouReportedTheLossControllerSpec extends SpecBase with MockitoSugar
       running(application) {
         val request =
           FakeRequest(POST, rarWhenYouReportedTheLossRoute)
-            .withFormUrlEncodedBody(("rarWhenYouReportedTheLoss", "invalid value"))
+            .withFormUrlEncodedBody(("whenYouReportedTheLoss", "invalid value"))
 
-        val boundForm = form.bind(Map("rarWhenYouReportedTheLoss" -> "invalid value"))
+        val boundForm = form.bind(Map("whenYouReportedTheLoss" -> "invalid value"))
 
-        val view = application.injector.instanceOf[RarWhenYouReportedTheLossView]
+        val view = application.injector.instanceOf[WhenYouReportedTheLossView]
 
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, isAgentMessageString, previousLoss.setScale(2, RoundingMode.DOWN).toString,NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, taxYear, isAgentMessageString, previousLoss.setScale(2, RoundingMode.DOWN).toString,NormalMode, RentARoom)(request, messages(application)).toString
       }
     }
 

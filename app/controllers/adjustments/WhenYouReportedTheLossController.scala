@@ -19,10 +19,11 @@ package controllers.adjustments
 import controllers.actions._
 import controllers.routes
 import forms.adjustments.WhenYouReportedTheLossFormProvider
-import models.{Mode, PropertyType}
+import models.{Mode, PropertyType, RentARoom}
 import navigation.Navigator
 import pages.adjustments.{UnusedLossesBroughtForwardPage, WhenYouReportedTheLossPage}
-import play.api.i18n.{I18nSupport, MessagesApi}
+import pages.ukrentaroom.adjustments.RaRUnusedLossesBroughtForwardPage
+import play.api.i18n.{MessagesApi, I18nSupport}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -52,22 +53,43 @@ class WhenYouReportedTheLossController @Inject() (
         case None        => form
         case Some(value) => form.fill(value)
       }
-      request.userAnswers
-        .get(UnusedLossesBroughtForwardPage(propertyType))
-        .flatMap(_.unusedLossesBroughtForwardAmount) match {
-        case Some(amount) =>
-          Ok(
-            view(
-              preparedForm,
-              taxYear,
-              request.user.isAgentMessageKey,
-              amount.setScale(2, RoundingMode.DOWN).toString,
-              mode,
-              propertyType
-            )
-          )
-        case None =>
-          Redirect(routes.JourneyRecoveryController.onPageLoad())
+      propertyType match {
+        case RentARoom =>
+          request.userAnswers
+            .get(RaRUnusedLossesBroughtForwardPage)
+            .flatMap(_.unusedLossesBroughtForwardAmount) match {
+            case Some(amount) =>
+              Ok(
+                view(
+                  preparedForm,
+                  taxYear,
+                  request.user.isAgentMessageKey,
+                  amount.setScale(2, RoundingMode.DOWN).toString,
+                  mode,
+                  propertyType
+                )
+              )
+            case None =>
+              Redirect(routes.JourneyRecoveryController.onPageLoad())
+          }
+        case _ =>
+          request.userAnswers
+            .get(UnusedLossesBroughtForwardPage(propertyType))
+            .flatMap(_.unusedLossesBroughtForwardAmount) match {
+            case Some(amount) =>
+              Ok(
+                view(
+                  preparedForm,
+                  taxYear,
+                  request.user.isAgentMessageKey,
+                  amount.setScale(2, RoundingMode.DOWN).toString,
+                  mode,
+                  propertyType
+                )
+              )
+            case None =>
+              Redirect(routes.JourneyRecoveryController.onPageLoad())
+          }
       }
     }
 
