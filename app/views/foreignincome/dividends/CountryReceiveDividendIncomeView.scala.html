@@ -1,5 +1,5 @@
 @*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,42 +14,41 @@
  * limitations under the License.
  *@
 
-@import controllers.foreign.routes.SelectIncomeCountryController
+@import controllers.foreignincome.dividends.routes.CountryReceiveDividendIncomeController
 @import uk.gov.hmrc.govukfrontend.views.Implicits.RichSelect
-@import play.api.libs.json.Json
 
 @this(
-        layout: templates.Layout,
-        formHelper: FormWithCSRF,
-        govukErrorSummary: GovukErrorSummary,
-        govukButton: GovukButton,
-        govukSelect: GovukSelect
+    layout: templates.Layout,
+    formHelper: FormWithCSRF,
+    govukErrorSummary: GovukErrorSummary,
+    govukSelect: GovukSelect,
+    govukButton: GovukButton
 )
 
 
-@(form: Form[_], taxYear: Int, index: Int, userType: String, mode: Mode, countries: Seq[SelectItem])(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, index: Int, individualOrAgent: String, mode: Mode, countries: Seq[SelectItem])(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages(s"selectIncomeCountry.title.$userType"))) {
+@layout(pageTitle = title(form, messages(s"countryReceiveDividendIncome.title.${individualOrAgent}"))) {
 
-    @formHelper(action = SelectIncomeCountryController.onSubmit(taxYear, index, mode)) {
+    @formHelper(action = CountryReceiveDividendIncomeController.onSubmit(taxYear, index, mode)) {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))
         }
 
-        <h1 class="govuk-heading-l">@messages(s"selectIncomeCountry.title.$userType")</h1>
+        <h1 class="govuk-heading-l">@messages(s"countryReceiveDividendIncome.title.${individualOrAgent}")</h1>
 
         <div class="govuk-inset-text">
-            <p class="govuk-body">@messages("selectIncomeCountry.info")</p>
+            <p class="govuk-body">@messages("countryReceiveDividendIncome.info")</p>
         </div>
 
-        <h1 class="govuk-heading-m">@messages("selectIncomeCountry.legend")</h1>
+        <h1 class="govuk-heading-m">@messages("countryReceiveDividendIncome.legend")</h1>
 
         <div class="govuk-!-width-one-half">
         @govukSelect(Select(
             id = "country-autocomplete",
             items = countries,
-            label = LabelViewModel(messages("selectIncomeCountry.title")).withCssClass("govuk-visually-hidden")
+            label = LabelViewModel(messages(s"countryReceiveDividendIncome.title.${individualOrAgent}")).withCssClass("govuk-visually-hidden")
         ).asAccessibleAutocomplete().withFormField(form("country-autocomplete")))
 
         </div>
@@ -58,7 +57,7 @@
             ButtonViewModel(messages("site.continue")).withId("continue")
         )
     }
-    <!-- Load external JS file -->
+        <!-- Load external JS file -->
     <script src="@routes.Assets.versioned("javascripts/countryAutoComplete.js")"></script>
 }
 
@@ -66,4 +65,3 @@
 @{
     // $COVERAGE-OFF$
 }
-

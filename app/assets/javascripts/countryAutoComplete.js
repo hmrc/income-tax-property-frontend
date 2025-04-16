@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const matched = optionData.find(item =>
           item.text.toLowerCase() === typedName
         );
-        hiddenSelect.value = matched ? matched.value : "";
+        hiddenSelect.value = matched ? matched.value : "Invalid Country";
     }
   }
 
