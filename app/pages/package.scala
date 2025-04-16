@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
+import models.requests.DataRequest
 import models.{ForeignProperty, PropertyType, Rentals, RentalsRentARoom, UKPropertySelect, UkAndForeignPropertyRentalTypeUk, UserAnswers}
-import pages.foreign.ClaimPropertyIncomeAllowanceOrExpensesPage
+import pages.foreign.{ClaimPropertyIncomeAllowanceOrExpensesPage, Country, IncomeSourceCountries}
 import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
-import pages.ukandforeignproperty.{SectionCompletePage, UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage}
+import pages.ukandforeignproperty.{SectionCompletePage, SelectCountryPage, UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage}
+import service.CountryNamesDataSource
 
 package object pages {
   def isSelected(userAnswers: Option[UserAnswers], select: UKPropertySelect): Boolean =
@@ -44,5 +46,18 @@ package object pages {
           }
         }.getOrElse(false)
     }
+
+  def getIncomeCountry(request: DataRequest[_], countryCode: String, lang: String): Option[Country] = {
+    val countries: List[Country] = {
+      if (isUkAndForeignAboutJourneyComplete(request.userAnswers)) {
+        request.userAnswers.get(SelectCountryPage).getOrElse(List.empty)
+      } else {
+        request.userAnswers.get(IncomeSourceCountries).map(_.array.toList).getOrElse(List.empty)
+      }
+    }
+    countries.flatMap { country =>
+      CountryNamesDataSource.getCountry(country.code, lang)
+    }.find(_.code == countryCode)
+  }
 
 }

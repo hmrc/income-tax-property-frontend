@@ -17,13 +17,11 @@
 package controllers.foreign.adjustments
 
 import controllers.actions._
-import models.{ForeignProperty, NormalMode}
 import controllers.foreign.adjustments.routes.{ForeignPrivateUseAdjustmentController, ForeignUnusedLossesPreviousYearsController}
-import pages.{getIsClaimPIA, isUkAndForeignAboutJourneyComplete}
-import pages.foreign.IncomeSourceCountries
+import models.NormalMode
+import pages.{getIncomeCountry, isUkAndForeignAboutJourneyComplete}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import service.CountryNamesDataSource
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import uk.gov.hmrc.play.language.LanguageUtils
 import views.html.foreign.adjustments.ForeignAdjustmentsStartView
@@ -42,15 +40,8 @@ class ForeignAdjustmentsStartController @Inject() (
 
   def onPageLoad(taxYear: Int, countryCode: String, isPIA: Boolean): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
-      val maybeCountryName =
-        request.userAnswers
-          .get(IncomeSourceCountries)
-          .map(_.array.toList.flatMap { country =>
-            CountryNamesDataSource.getCountry(country.code, languageUtils.getCurrentLang.locale.toString)
-          })
-          .flatMap(country => country.find(_.code == countryCode))
-          .map(_.name)
-      val countryName = maybeCountryName.getOrElse("")
+      val maybeCountry = getIncomeCountry( request, countryCode, languageUtils.getCurrentLang.locale.toString)
+      val countryName = maybeCountry.map(_.name).getOrElse("")
       val isUkAndForeignJourney: Boolean = isUkAndForeignAboutJourneyComplete(request.userAnswers)
       val continueLink: String =
         if(isUkAndForeignJourney && isPIA){
@@ -59,6 +50,5 @@ class ForeignAdjustmentsStartController @Inject() (
         ForeignPrivateUseAdjustmentController.onPageLoad(taxYear, countryCode, NormalMode).url
       }
       Ok(view(taxYear, countryName, countryCode, isPIA, isUkAndForeignJourney, continueLink))
-
     }
 }

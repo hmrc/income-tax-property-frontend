@@ -39,7 +39,6 @@ import views.html.adjustments.AdjustmentsCheckYourAnswersView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
-import scala.math.BigDecimal.RoundingMode
 
 class AdjustmentsCheckYourAnswersController @Inject() (
   override val messagesApi: MessagesApi,
