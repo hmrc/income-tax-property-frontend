@@ -22,3 +22,6 @@ GET        /:taxYear/foreign-income/dividends/:countryCode/claim-foreign-tax-cre
 POST       /:taxYear/foreign-income/dividends/:countryCode/claim-foreign-tax-credit-relief                         controllers.foreignincome.dividends.ClaimForeignTaxCreditReliefController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = NormalMode)
 GET        /:taxYear/foreign-income/dividends/:countryCode/change-claim-foreign-tax-credit-relief                    controllers.foreignincome.dividends.ClaimForeignTaxCreditReliefController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
 POST       /:taxYear/foreign-income/dividends/:countryCode/change-claim-foreign-tax-credit-relief                   controllers.foreignincome.dividends.ClaimForeignTaxCreditReliefController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
+
+GET        /:taxYear/foreign-income/dividends/section-finished                     controllers.foreignincome.dividends.DividendsSectionFinishedController.onPageLoad(taxYear: Int)
+POST       /:taxYear/foreign-income/dividends/section-finished                      controllers.foreignincome.dividends.DividendsSectionFinishedController.onSubmit(taxYear: Int)

@@ -3169,3 +3169,7 @@ dividendsClaimForeignTaxCreditRelief.checkYourAnswersLabel.agent = *Missing Wels
 dividendsClaimForeignTaxCreditRelief.error.required.individual = *Missing Welsh*
 dividendsClaimForeignTaxCreditRelief.error.required.agent = *Missing Welsh*
 dividendsClaimForeignTaxCreditRelief.change.hidden = *Missing Welsh*
+
+foreignIncomeDividendsComplete.title = *Missing Welsh*
+foreignIncomeDividendsComplete.heading = *Missing Welsh*
+foreignIncomeDividendsComplete.hint = *Missing Welsh*
