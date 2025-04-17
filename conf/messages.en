@@ -3204,3 +3204,12 @@ dividendsClaimForeignTaxCreditRelief.change.hidden = Do you want to claim Foreig
 foreignIncomeDividendsComplete.title = Have you completed this section?
 foreignIncomeDividendsComplete.heading = Have you completed this section?
 foreignIncomeDividendsComplete.hint = You''ll still be able to go back and review the information that you''ve given us once you''ve completed it.
+
+yourForeignDividendsByCountry.title.individual = Your foreign dividends by country
+yourForeignDividendsByCountry.title.agent = Your client foreign dividends by country
+yourForeignDividendsByCountry.heading.individual = Your foreign dividends by country
+yourForeignDividendsByCountry.heading.agent = Your client foreign dividends by country
+yourForeignDividendsByCountry.legend = Do you want to add dividend income from another country?
+yourForeignDividendsByCountry.checkYourAnswersLabel = Your foreign dividends by country
+yourForeignDividendsByCountry.error.required = Select yes if you want to add dividend income from another country
+yourForeignDividendsByCountry.change.hidden = Your foreign dividends by country
