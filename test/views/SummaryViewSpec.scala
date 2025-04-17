@@ -20,7 +20,7 @@ import controllers.routes
 import org.scalatest.matchers.must.Matchers
 import pages.UKPropertySummaryPage
 import pages.foreign.ForeignPropertySummaryPage
-import pages.foreignincome.dividends.ForeignIncomeSummaryViewModel
+import pages.foreignincome.ForeignIncomeSummaryViewModel
 import pages.ukandforeignproperty.UkAndForeignPropertySummaryPage
 import play.api.Application
 import play.api.i18n.{Messages, MessagesApi}

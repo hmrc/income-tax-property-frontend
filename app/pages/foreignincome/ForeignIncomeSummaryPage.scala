@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-package pages.foreignincome.dividends
+package pages.foreignincome
 
 import models.UserAnswers
+import pages.foreignincome.dividends.DividendsSectionFinishedPage
 import service.ForeignIncomeCYADiversionService
 import viewmodels.summary.{TaskListItem, TaskListTag}
 

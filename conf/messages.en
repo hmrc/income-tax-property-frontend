@@ -3237,3 +3237,12 @@ howMuchForeignTaxDeductedFromDividendIncome.error.required = Enter an amount bet
 howMuchForeignTaxDeductedFromDividendIncome.error.twoDecimalPlaces = The amount entered can only include pounds and pence
 howMuchForeignTaxDeductedFromDividendIncome.error.outOfRange = Enter an amount between £{0} and £{1}
 howMuchForeignTaxDeductedFromDividendIncome.change.hidden = How much foreign tax was deducted from your dividend income from {0}?
+
+yourForeignDividendsByCountry.title.individual = Your foreign dividends by country
+yourForeignDividendsByCountry.title.agent = Your client foreign dividends by country
+yourForeignDividendsByCountry.heading.individual = Your foreign dividends by country
+yourForeignDividendsByCountry.heading.agent = Your client foreign dividends by country
+yourForeignDividendsByCountry.legend = Do you want to add dividend income from another country?
+yourForeignDividendsByCountry.checkYourAnswersLabel = Your foreign dividends by country
+yourForeignDividendsByCountry.error.required = Select yes if you want to add dividend income from another country
+yourForeignDividendsByCountry.change.hidden = Your foreign dividends by country
