@@ -3090,6 +3090,7 @@ rarWhenYouReportedTheLoss.error.required.individual = Select when you reported t
 rarWhenYouReportedTheLoss.error.required.agent = Select when your client reported the loss
 rarWhenYouReportedTheLoss.change.hidden = When you reported the loss
 
+foreignCapitalAllowancesForACar.title = Capital allowances for a car
 foreignCapitalAllowancesForACar.checkYourAnswersLabel = Capital allowances for a car
 foreignCapitalAllowancesForACar.change.hidden = Capital allowances for a car
 foreignCapitalAllowancesForACar.inputLabel = Enter the amount
