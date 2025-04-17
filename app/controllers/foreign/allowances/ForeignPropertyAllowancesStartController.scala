@@ -20,10 +20,10 @@ import controllers.actions._
 import controllers.{PropertyDetailsHandler, routes}
 import models.backend.PropertyDetails
 import navigation.ForeignPropertyNavigator
-import pages.foreign.IncomeSourceCountries
+import pages.getIncomeCountry
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
-import service.{BusinessService, CountryNamesDataSource}
+import service.BusinessService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
 import uk.gov.hmrc.play.language.LanguageUtils
@@ -47,15 +47,8 @@ class ForeignPropertyAllowancesStartController @Inject() (
 
   def onPageLoad(taxYear: Int, countryCode: String): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
-      val maybeCountryName =
-        request.userAnswers
-          .get(IncomeSourceCountries)
-          .map(_.array.toList.flatMap { country =>
-            CountryNamesDataSource.getCountry(country.code, languageUtils.getCurrentLang.locale.toString)
-          })
-          .flatMap(country => country.find(_.code == countryCode))
-          .map(_.name)
-      val countryName = maybeCountryName.getOrElse("")
+      val maybeCountry = getIncomeCountry(request, countryCode, languageUtils.getCurrentLang.locale.toString)
+      val countryName = maybeCountry.map(_.name).getOrElse("")
 
       val hc = HeaderCarrierConverter.fromRequestAndSession(request, request.session)
       withForeignPropertyDetails[Result](businessService, request.user.nino, request.user.mtditid) {
@@ -76,5 +69,4 @@ class ForeignPropertyAllowancesStartController @Inject() (
           }
       }(hc, ec)
     }
-
 }

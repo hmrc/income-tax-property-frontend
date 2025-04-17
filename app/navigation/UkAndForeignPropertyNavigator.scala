@@ -17,11 +17,16 @@
 package navigation
 
 import com.google.inject.Singleton
+import controllers.adjustments.routes.{UnusedLossesBroughtForwardController, UnusedResidentialFinanceCostController}
+import controllers.premiumlease.routes.PremiumForLeaseController
 import controllers.ukandforeignproperty.routes
 import models.TotalPropertyIncome.{LessThan, Maximum}
 import models._
-import models.ukAndForeign.{UKPremiumsGrantLease, UkAndForeignPropertyPremiumGrantLeaseTax}
+import models.ukAndForeign.UkAndForeignPropertyPremiumGrantLeaseTax
+import pages.adjustments.ResidentialFinanceCostPage
+import pages.propertyrentals.income.PropertyRentalIncomePage
 import pages.ukandforeignproperty._
+import pages.ukrentaroom.TotalIncomeAmountPage
 import pages.{Page, UkAndForeignPropertyRentalTypeUkPage}
 import play.api.mvc.Call
 
@@ -84,6 +89,22 @@ class UkAndForeignPropertyNavigator {
       taxYear => _ => _ => routes.UkAndForeignPropertyCheckYourAnswersController.onPageLoad(taxYear)
     case SectionCompletePage =>
       taxYear => _ => _ => controllers.routes.SummaryController.show(taxYear)
+      // Rentals - Income
+    case PropertyRentalIncomePage(Rentals) =>
+      taxYear => _ => _ => PremiumForLeaseController.onPageLoad(taxYear, NormalMode, Rentals)
+      // Rent a Room - About
+    case TotalIncomeAmountPage(RentARoom) =>
+      taxYear => _ => userAnswers => totalRARIncomeNavigation(taxYear, userAnswers, NormalMode)
+      // Rentals & Rent a Room - About
+    case TotalIncomeAmountPage(RentalsRentARoom) =>
+      taxYear => _ => userAnswers => totalRentalsRARIncomeNavigation(taxYear, userAnswers, NormalMode)
+      // Rentals & Rent a Room - Income
+    case PropertyRentalIncomePage(RentalsRentARoom) =>
+      taxYear => _ => _ => PremiumForLeaseController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+      // Rentals & Rent a Room - Adjustments
+    case ResidentialFinanceCostPage(RentalsRentARoom) =>
+      taxYear => _ => userAnswers => rentalsRARResidentialFinanceCostNavigation(taxYear, userAnswers, NormalMode)
+
 
     case _ => _ => _ => _ => controllers.routes.IndexController.onPageLoad
   }
@@ -151,6 +172,22 @@ class UkAndForeignPropertyNavigator {
       taxYear => _ => _ => routes.UkAndForeignPropertyCheckYourAnswersController.onPageLoad(taxYear)
     case UkAndForeignPropertyIncomeAllowanceClaimPage =>
       taxYear => _ => _ => routes.UkAndForeignPropertyCheckYourAnswersController.onPageLoad(taxYear)
+      // Rentals - Income
+    case PropertyRentalIncomePage(Rentals) =>
+      taxYear => _ => _ => controllers.propertyrentals.income.routes.PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear)
+      // Rent a Room - About
+    case TotalIncomeAmountPage(RentARoom) =>
+      taxYear => _ => userAnswers => controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear)
+      // Rentals & Rent a Room - About
+    case TotalIncomeAmountPage(RentalsRentARoom) =>
+      taxYear => _ => userAnswers => controllers.rentalsandrentaroom.routes.RentalsAndRaRCheckYourAnswersController.onPageLoad(taxYear)
+      // Rentals & Rent a Room - Income
+    case PropertyRentalIncomePage(RentalsRentARoom) =>
+      taxYear => _ => _ => controllers.rentalsandrentaroom.income.routes.RentalsAndRentARoomIncomeCheckYourAnswersController.onPageLoad(taxYear)
+      // Rentals & Rent a Room - Adjustments
+    case ResidentialFinanceCostPage(RentalsRentARoom) =>
+      taxYear => _ => _ =>  controllers.rentalsandrentaroom.adjustments.routes.RentalsAndRentARoomAdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+
 
     case _ => _ => _ => _ => controllers.routes.IndexController.onPageLoad
   }
@@ -327,6 +364,36 @@ class UkAndForeignPropertyNavigator {
     userAnswers.get(ReportIncomePage) match {
       case Some(ReportIncome.WantToReport) => routes.UkAndForeignPropertyRentalTypeUkController.onPageLoad(taxYear, NormalMode)
       case Some(ReportIncome.DoNoWantToReport) => routes.UkAndForeignPropertyCheckYourAnswersController.onPageLoad(taxYear)
+    }
+  }
+
+  private def totalRARIncomeNavigation(taxYear: Int, userAnswers: UserAnswers, mode: Mode): Call = {
+    userAnswers.get(UkAndForeignPropertyClaimExpensesOrReliefPage) match {
+      case Some(UkAndForeignPropertyClaimExpensesOrRelief(true)) =>
+        // TODO - redirect to rent a room relief amount page once created
+        controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear)
+      case Some(UkAndForeignPropertyClaimExpensesOrRelief(false)) =>
+        controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear)
+    }
+  }
+
+  private def totalRentalsRARIncomeNavigation(taxYear: Int, userAnswers: UserAnswers, mode: Mode): Call = {
+    userAnswers.get(UkAndForeignPropertyClaimExpensesOrReliefPage) match {
+      case Some(UkAndForeignPropertyClaimExpensesOrRelief(true)) =>
+        // TODO - redirect to rent a room relief amount page once created
+        controllers.rentalsandrentaroom.routes.RentalsAndRaRCheckYourAnswersController.onPageLoad(taxYear)
+      case Some(UkAndForeignPropertyClaimExpensesOrRelief(false)) =>
+        controllers.rentalsandrentaroom.routes.RentalsAndRaRCheckYourAnswersController.onPageLoad(taxYear)
+    }
+  }
+  private def rentalsRARResidentialFinanceCostNavigation(taxYear: Int, userAnswers: UserAnswers, mode:Mode): Call = {
+    (userAnswers.get(UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage).map(_.isClaimPropertyIncomeAllowanceOrExpenses),
+      userAnswers.get(UkAndForeignPropertyClaimExpensesOrReliefPage).map(_.isClaimExpensesOrRelief)
+    ) match {
+      case (Some(true), Some(true)) =>
+        UnusedLossesBroughtForwardController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+      case _ =>
+        UnusedResidentialFinanceCostController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
     }
   }
 

@@ -19,8 +19,9 @@ package controllers.ukrentaroom.expenses
 import controllers.actions._
 import controllers.routes
 import models.TotalIncomeUtils.isTotalIncomeUnder85K
-import models.{NormalMode, RentARoom, TotalIncome}
-import pages.TotalIncomePage
+import models.{NormalMode, RentARoom, TotalIncome, TotalPropertyIncome}
+import pages.ukandforeignproperty.TotalPropertyIncomePage
+import pages.{TotalIncomePage, isUkAndForeignAboutJourneyComplete}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import service.CYADiversionService
@@ -41,7 +42,7 @@ class UkRentARoomExpensesIntroController @Inject() (
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val under85KUrl =
+      val under85KUrl = {
         if (isTotalIncomeUnder85K(request.userAnswers, RentARoom)) {
           controllers.ukrentaroom.expenses.routes.ConsolidatedExpensesRRController
             .onPageLoad(taxYear, NormalMode)
@@ -51,9 +52,18 @@ class UkRentARoomExpensesIntroController @Inject() (
             .onPageLoad(taxYear, NormalMode)
             .url
         }
-      request.userAnswers.get(TotalIncomePage) match {
-        case None        => Redirect(routes.JourneyRecoveryController.onPageLoad())
-        case Some(value) => Ok(view(value != TotalIncome.Over, under85KUrl))
       }
+      if(isUkAndForeignAboutJourneyComplete(request.userAnswers)){
+        request.userAnswers.get(TotalPropertyIncomePage) match {
+          case None        => Redirect(routes.JourneyRecoveryController.onPageLoad())
+          case Some(value) => Ok(view(value != TotalPropertyIncome.Maximum, under85KUrl))
+        }
+      }else{
+        request.userAnswers.get(TotalIncomePage) match {
+          case None        => Redirect(routes.JourneyRecoveryController.onPageLoad())
+          case Some(value) => Ok(view(value != TotalIncome.Over, under85KUrl))
+        }
+      }
+
   }
 }

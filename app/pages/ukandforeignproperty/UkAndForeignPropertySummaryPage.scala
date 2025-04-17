@@ -163,7 +163,7 @@ object UkAndForeignPropertySummaryPage {
     claimPIA match {
       case true =>
         Seq(
-          ukSummary.propertyRentalsAdjustmentsItem(userAnswers, taxYear)
+          ukSummary.propertyRentalsAdjustmentsItem(userAnswers, taxYear, isUkAndForeignJourney = true)
         )
       case false if isAccruals =>
         Seq(
@@ -173,14 +173,14 @@ object UkAndForeignPropertySummaryPage {
           ukSummary.structuresAndBuildingAllowanceItem(userAnswers, taxYear),
           ukSummary.rentalsEsbaItem(userAnswers, taxYear),
           ukSummary
-            .propertyRentalsAdjustmentsItem(userAnswers, taxYear)
+            .propertyRentalsAdjustmentsItem(userAnswers, taxYear, isUkAndForeignJourney = true)
         )
       case false =>
         Seq(
           ukSummary.propertyRentalsIncomeItem(userAnswers, taxYear),
           ukSummary.propertyRentalsExpensesItem(userAnswers, taxYear),
           ukSummary.propertyAllowancesItem(taxYear, userAnswers),
-          ukSummary.propertyRentalsAdjustmentsItem(userAnswers, taxYear)
+          ukSummary.propertyRentalsAdjustmentsItem(userAnswers, taxYear, isUkAndForeignJourney = true)
         )
     }
   }
@@ -227,7 +227,7 @@ object UkAndForeignPropertySummaryPage {
         case (true, true) =>
           Seq(
             ukSummary.rentalsAndRaRAboutItem(taxYear, userAnswers),
-            ukSummary.rentalsAndRaRAdjustmentsItem(taxYear, userAnswers)
+            ukSummary.rentalsAndRaRAdjustmentsItem(taxYear, userAnswers, isUkAndForeignJourney = true)
           )
         case (true, false) if isAccruals =>
           Seq(
@@ -237,7 +237,7 @@ object UkAndForeignPropertySummaryPage {
             ukSummary.rentalsAndRaRAllowancesItem(taxYear, userAnswers),
             ukSummary.rentalsAndRaRSBAItem(taxYear, userAnswers),
             ukSummary.rentalsAndRaRESBAItem(taxYear, userAnswers),
-            ukSummary.rentalsAndRaRAdjustmentsItem(taxYear, userAnswers)
+            ukSummary.rentalsAndRaRAdjustmentsItem(taxYear, userAnswers, isUkAndForeignJourney = true)
           )
         case (true, false) =>
           Seq(
@@ -245,14 +245,14 @@ object UkAndForeignPropertySummaryPage {
             ukSummary.rentalsAndRaRIncomeItem(taxYear, userAnswers),
             ukSummary.rentalsAndRaRExpensesItem(taxYear, userAnswers),
             ukSummary.rentalsAndRaRAllowancesItem(taxYear, userAnswers),
-            ukSummary.rentalsAndRaRAdjustmentsItem(taxYear, userAnswers)
+            ukSummary.rentalsAndRaRAdjustmentsItem(taxYear, userAnswers, isUkAndForeignJourney = true)
           )
         case (false, true) =>
           Seq(
             ukSummary.rentalsAndRaRAboutItem(taxYear, userAnswers),
             ukSummary.rentalsAndRaRExpensesItem(taxYear, userAnswers),
             ukSummary.rentalsAndRaRAllowancesItem(taxYear, userAnswers),
-            ukSummary.rentalsAndRaRAdjustmentsItem(taxYear, userAnswers)
+            ukSummary.rentalsAndRaRAdjustmentsItem(taxYear, userAnswers, isUkAndForeignJourney = true)
           )
         case (false, false) if isAccruals =>
           Seq(
@@ -262,7 +262,7 @@ object UkAndForeignPropertySummaryPage {
             ukSummary.rentalsAndRaRAllowancesItem(taxYear, userAnswers),
             ukSummary.rentalsAndRaRSBAItem(taxYear, userAnswers),
             ukSummary.rentalsAndRaRESBAItem(taxYear, userAnswers),
-            ukSummary.rentalsAndRaRAdjustmentsItem(taxYear, userAnswers)
+            ukSummary.rentalsAndRaRAdjustmentsItem(taxYear, userAnswers, isUkAndForeignJourney = true)
           )
         case (false, false) =>
           Seq(
@@ -270,7 +270,7 @@ object UkAndForeignPropertySummaryPage {
             ukSummary.rentalsAndRaRIncomeItem(taxYear, userAnswers),
             ukSummary.rentalsAndRaRExpensesItem(taxYear, userAnswers),
             ukSummary.rentalsAndRaRAllowancesItem(taxYear, userAnswers),
-            ukSummary.rentalsAndRaRAdjustmentsItem(taxYear, userAnswers)
+            ukSummary.rentalsAndRaRAdjustmentsItem(taxYear, userAnswers, isUkAndForeignJourney = true)
           )
       }
     }

@@ -25,6 +25,7 @@ import models._
 import models.requests.DataRequest
 import pages.adjustments.UnusedLossesBroughtForwardPage
 import pages.foreign.Country
+import pages.isUkAndForeignAboutJourneyComplete
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -38,7 +39,6 @@ import views.html.adjustments.AdjustmentsCheckYourAnswersView
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
-import scala.math.BigDecimal.RoundingMode
 
 class AdjustmentsCheckYourAnswersController @Inject() (
   override val messagesApi: MessagesApi,
@@ -86,11 +86,21 @@ class AdjustmentsCheckYourAnswersController @Inject() (
 
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      request.userAnswers.get(RentalsAdjustment) match {
-        case Some(adjustments) => saveAdjustments(taxYear, request, adjustments)
-        case None =>
-          logger.error("Adjustments Section is not present in userAnswers")
-          Future.failed(InternalErrorFailure("Adjustments Section is not present in userAnswers"))
+      // TODO - Remove once updated models & backend
+      if (isUkAndForeignAboutJourneyComplete(request.userAnswers)) {
+        Future.successful(
+          Redirect(
+            controllers.adjustments.routes.RentalsAdjustmentsCompleteController
+              .onPageLoad(taxYear)
+          )
+        )
+      } else {
+        request.userAnswers.get(RentalsAdjustment) match {
+          case Some(adjustments) => saveAdjustments(taxYear, request, adjustments)
+          case None =>
+            logger.error("Adjustments Section is not present in userAnswers")
+            Future.failed(InternalErrorFailure("Adjustments Section is not present in userAnswers"))
+        }
       }
   }
 

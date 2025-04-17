@@ -19,10 +19,11 @@ package controllers.adjustments
 import controllers.actions._
 import forms.adjustments.ResidentialFinanceCostFormProvider
 import models.{Mode, PropertyType, UserAnswers}
-import navigation.Navigator
+import navigation.{Navigator, UkAndForeignPropertyNavigator}
+import pages.{Page, isUkAndForeignAboutJourneyComplete}
 import pages.adjustments.ResidentialFinanceCostPage
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
 import service.SessionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -35,6 +36,7 @@ class ResidentialFinanceCostController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   navigator: Navigator,
+  ukAndForeignNavigator: UkAndForeignPropertyNavigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
@@ -75,7 +77,7 @@ class ResidentialFinanceCostController @Inject() (
               updatedAnswers <- Future.fromTry(request.userAnswers.set(ResidentialFinanceCostPage(propertyType), value))
               _              <- sessionRepository.set(updatedAnswers)
             } yield Redirect(
-              navigator.nextPage(
+              nextLocation(
                 ResidentialFinanceCostPage(propertyType),
                 taxYear: Int,
                 mode,
@@ -84,5 +86,19 @@ class ResidentialFinanceCostController @Inject() (
               )
             )
         )
+    }
+
+  private def nextLocation(
+     page: Page,
+     taxYear: Int,
+     mode: Mode,
+     userAnswers: UserAnswers,
+     updatedAnswers: UserAnswers
+  ): Call =
+    if (isUkAndForeignAboutJourneyComplete(userAnswers)) {
+      ukAndForeignNavigator.nextPage(page, taxYear, mode, userAnswers, updatedAnswers)
+    } else {
+      navigator
+        .nextPage(page, taxYear, mode, userAnswers, updatedAnswers)
     }
 }

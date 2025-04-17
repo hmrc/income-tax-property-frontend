@@ -25,6 +25,7 @@ import models.JourneyPath.RentalsAndRentARoomAbout
 import models._
 import models.requests.DataRequest
 import pages.foreign.Country
+import pages.isUkAndForeignAboutJourneyComplete
 import play.api.Logging
 import play.api.i18n.{I18nSupport, Messages, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
@@ -62,11 +63,20 @@ class RentalsAndRaRCheckYourAnswersController @Inject() (
 
   def onSubmit(taxYear: Int): Action[AnyContent] =
     (identify andThen getData andThen requireData).async { implicit request =>
-      val context =
-        JourneyContext(taxYear, request.user.mtditid, request.user.nino, RentalsAndRentARoomAbout)
+      // TODO - Remove once updated models & backend
+      if (isUkAndForeignAboutJourneyComplete(request.userAnswers)) {
+        Future.successful(
+          Redirect(
+            controllers.rentalsandrentaroom.routes.RentalsRaRAboutCompleteController.onPageLoad(taxYear)
+          )
+        )
+      } else {
+        val context =
+          JourneyContext(taxYear, request.user.mtditid, request.user.nino, RentalsAndRentARoomAbout)
 
-      val rentalsAndRaRAboutMaybe = request.userAnswers.get(RentalsAndRaRAbout)
-      sendRentalsAndRaRAbout(taxYear, request, context, rentalsAndRaRAboutMaybe)
+        val rentalsAndRaRAboutMaybe = request.userAnswers.get(RentalsAndRaRAbout)
+        sendRentalsAndRaRAbout(taxYear, request, context, rentalsAndRaRAboutMaybe)
+      }
     }
 
   private def buildSummaryRows(taxYear: Int, userAnswers: UserAnswers, isAgent: String)(implicit messages: Messages) =

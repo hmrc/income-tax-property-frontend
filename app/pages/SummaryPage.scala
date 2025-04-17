@@ -431,7 +431,8 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
 
   def rentalsAndRaRAdjustmentsItem(
     taxYear: Int,
-    userAnswers: Option[UserAnswers]
+    userAnswers: Option[UserAnswers],
+    isUkAndForeignJourney: Boolean = false
   ): TaskListItem =
     TaskListItem(
       "summary.adjustments",
@@ -443,7 +444,14 @@ case class SummaryPage(cyaDiversionService: CYADiversionService) {
               getIsClaimPIA(userAnswers, RentalsRentARoom).getOrElse(false)
             )
         }(identity), {
-        getTaskListTagStatus(userAnswers, RentalsRentARoom)
+        if (isUkAndForeignJourney) {
+          val sectionComplete = userAnswers.flatMap(_.get(RentalsRaRAdjustmentsCompletePage))
+          sectionComplete
+            .map { isComplete =>
+              if (isComplete) TaskListTag.Completed else TaskListTag.InProgress
+            }
+            .getOrElse(TaskListTag.NotStarted)
+        } else { getTaskListTagStatus(userAnswers, RentalsRentARoom) }
       },
       "rentals_and_rent_a_room_adjustments_link"
     )

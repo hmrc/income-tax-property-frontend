@@ -39,7 +39,7 @@ class RentARoomStartControllerSpec extends SpecBase {
         val view = application.injector.instanceOf[RentARoomStartView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(taxYear, "agent")(request, messages(application)).toString
+        contentAsString(result) mustEqual view(taxYear, "agent", isUkAndForeignJourney = false)(request, messages(application)).toString
       }
     }
   }

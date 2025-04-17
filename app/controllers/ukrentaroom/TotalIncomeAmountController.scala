@@ -18,11 +18,12 @@ package controllers.ukrentaroom
 
 import controllers.actions._
 import forms.ukrentaroom.TotalIncomeAmountFormProvider
-import models.{Mode, PropertyType}
-import navigation.Navigator
+import models.{Mode, PropertyType, UserAnswers}
+import navigation.{Navigator, UkAndForeignPropertyNavigator}
+import pages.{Page, isUkAndForeignAboutJourneyComplete}
 import pages.ukrentaroom.TotalIncomeAmountPage
 import play.api.i18n.{I18nSupport, MessagesApi}
-import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import play.api.mvc.{Action, AnyContent, Call, MessagesControllerComponents}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.ukrentaroom.TotalIncomeAmountView
@@ -34,6 +35,7 @@ class TotalIncomeAmountController @Inject() (
   override val messagesApi: MessagesApi,
   sessionRepository: SessionRepository,
   navigator: Navigator,
+  ukAndForeignNavigator: UkAndForeignPropertyNavigator,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
@@ -68,10 +70,21 @@ class TotalIncomeAmountController @Inject() (
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(TotalIncomeAmountPage(propertyType), value))
               _              <- sessionRepository.set(updatedAnswers)
-            } yield Redirect(
-              navigator
-                .nextPage(TotalIncomeAmountPage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers)
-            )
+            } yield Redirect(nextLocation(TotalIncomeAmountPage(propertyType), taxYear, mode, request.userAnswers, updatedAnswers))
         )
+    }
+
+  private def nextLocation(
+    page: Page,
+    taxYear: Int,
+    mode: Mode,
+    userAnswers: UserAnswers,
+    updatedAnswers: UserAnswers
+  ): Call =
+    if (isUkAndForeignAboutJourneyComplete(userAnswers)) {
+      ukAndForeignNavigator.nextPage(page, taxYear, mode, userAnswers, updatedAnswers)
+    } else {
+      navigator
+        .nextPage(page, taxYear, mode, userAnswers, updatedAnswers)
     }
 }
