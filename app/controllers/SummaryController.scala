@@ -23,7 +23,7 @@ import models.backend.{NoPropertyDataError, UnexpectedPropertyDataError}
 import models.requests.OptionalDataRequest
 import pages._
 import pages.foreign.{ForeignPropertySummaryPage, ForeignSummaryPage, IncomeSourceCountries}
-import pages.foreignincome.dividends.{ForeignIncomeSummaryPage, ForeignIncomeSummaryViewModel}
+import pages.foreignincome.ForeignIncomeSummaryPage
 import pages.ukandforeignproperty.UkAndForeignPropertySummaryPage
 import play.api.i18n.I18nSupport
 import play.api.i18n.Lang.logger
