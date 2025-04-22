@@ -3196,3 +3196,17 @@ dividendsClaimForeignTaxCreditRelief.change.hidden = *Missing Welsh*
 foreignIncomeDividendsComplete.title = *Missing Welsh*
 foreignIncomeDividendsComplete.heading = *Missing Welsh*
 foreignIncomeDividendsComplete.hint = *Missing Welsh*
+
+howMuchForeignTaxDeductedFromDividendIncome.title.individual = *Missing Welsh*
+howMuchForeignTaxDeductedFromDividendIncome.title.agent = *Missing Welsh*
+howMuchForeignTaxDeductedFromDividendIncome.heading.individual = *Missing Welsh*
+howMuchForeignTaxDeductedFromDividendIncome.heading.agent = *Missing Welsh*
+howMuchForeignTaxDeductedFromDividendIncome.p1 = *Missing Welsh*
+howMuchForeignTaxDeductedFromDividendIncome.hint = *Missing Welsh*
+howMuchForeignTaxDeductedFromDividendIncome.checkYourAnswersLabel.individual = *Missing Welsh*
+howMuchForeignTaxDeductedFromDividendIncome.checkYourAnswersLabel.agent = *Missing Welsh*
+howMuchForeignTaxDeductedFromDividendIncome.error.nonNumeric = *Missing Welsh*
+howMuchForeignTaxDeductedFromDividendIncome.error.required = *Missing Welsh*
+howMuchForeignTaxDeductedFromDividendIncome.error.twoDecimalPlaces = *Missing Welsh*
+howMuchForeignTaxDeductedFromDividendIncome.error.outOfRange = *Missing Welsh*
+howMuchForeignTaxDeductedFromDividendIncome.change.hidden = *Missing Welsh*
