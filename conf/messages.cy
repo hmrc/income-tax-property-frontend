@@ -63,7 +63,7 @@ income.from.otherCountry.info = *Missing Welsh*
 
 businessDetails.accruals	=	Traddodiadol (ar sail croniadau)
 businessDetails.cash	=	Sail arian parod
-amount.hint = *Missing Welsh*
+amount.hint = Er enghraifft, £900 neu £100.20
 
 checkYourAnswers.title	=	Gwirio’ch atebion
 checkYourAnswers.heading	=	Gwirio’ch atebion
