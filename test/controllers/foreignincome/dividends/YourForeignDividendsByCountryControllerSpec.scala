@@ -18,12 +18,11 @@ package controllers.foreignincome.dividends
 
 import base.SpecBase
 import forms.foreignincome.dividends.YourForeignDividendsByCountryFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{NormalMode, YourForeignDividendsByCountryRow}
 import navigation.{FakeForeignIncomeNavigator, ForeignIncomeNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.foreignincome.dividends.YourForeignDividendsByCountryPage
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
@@ -40,8 +39,9 @@ class YourForeignDividendsByCountryControllerSpec extends SpecBase with MockitoS
   val taxYear = 2025
 
   val formProvider = new YourForeignDividendsByCountryFormProvider()
-  val form: Form[Boolean] = formProvider()
   val individualOrAgent = "individual"
+  val form: Form[Boolean] = formProvider(individualOrAgent)
+  val rows: Seq[YourForeignDividendsByCountryRow] = Seq()
 
   lazy val yourForeignDividendsByCountryRoute: String = routes.YourForeignDividendsByCountryController.onPageLoad(taxYear, NormalMode).url
 
@@ -59,7 +59,7 @@ class YourForeignDividendsByCountryControllerSpec extends SpecBase with MockitoS
         val view = application.injector.instanceOf[YourForeignDividendsByCountryView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, taxYear, individualOrAgent, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, rows, taxYear, individualOrAgent, NormalMode)(request, messages(application)).toString
       }
     }
 
@@ -105,7 +105,7 @@ class YourForeignDividendsByCountryControllerSpec extends SpecBase with MockitoS
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, taxYear, individualOrAgent, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, rows, taxYear, individualOrAgent, NormalMode)(request, messages(application)).toString
       }
     }
 

@@ -14,17 +14,11 @@
  * limitations under the License.
  */
 
-package forms.foreignincome.dividends
+package models
 
-import javax.inject.Inject
+import pages.foreign.Country
 
-import forms.mappings.Mappings
-import play.api.data.Form
-
-class YourForeignDividendsByCountryFormProvider @Inject() extends Mappings {
-
-  def apply(individualOrAgent: String): Form[Boolean] =
-    Form(
-      "yourForeignDividendsByCountry" -> boolean(s"yourForeignDividendsByCountry.error.required.$individualOrAgent")
-    )
-}
+case class YourForeignDividendsByCountryRow(
+  country: Country,
+  income: BigDecimal
+)

@@ -18,14 +18,18 @@ package controllers.foreignincome.dividends
 
 import controllers.actions._
 import forms.foreignincome.dividends.YourForeignDividendsByCountryFormProvider
-import models.Mode
+import models.{Mode, UserAnswers, YourForeignDividendsByCountryRow}
 import navigation.ForeignIncomeNavigator
+import pages.foreignincome.DividendIncomeSourceCountries
 import pages.foreignincome.dividends.YourForeignDividendsByCountryPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import service.CountryNamesDataSource
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
+import uk.gov.hmrc.play.language.LanguageUtils
+import viewmodels.checkAnswers.foreignincome.dividends.YourForeignDividendsByCountrySummary
 import views.html.foreignincome.dividends.YourForeignDividendsByCountryView
 
 import javax.inject.Inject
@@ -40,27 +44,46 @@ class YourForeignDividendsByCountryController @Inject()(
   requireData: DataRequiredAction,
   formProvider: YourForeignDividendsByCountryFormProvider,
   val controllerComponents: MessagesControllerComponents,
-  view: YourForeignDividendsByCountryView
+  view: YourForeignDividendsByCountryView,
+  languageUtils: LanguageUtils
 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form: Form[Boolean] = formProvider()
 
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-
-      Ok(view(form, taxYear, request.user.isAgentMessageKey, mode))
+      val currentLang = languageUtils.getCurrentLang.locale.toString
+      val rows = tableRows(request.userAnswers, currentLang)
+      val form: Form[Boolean] = formProvider(request.user.isAgentMessageKey)
+      Ok(view(form, rows, taxYear, request.user.isAgentMessageKey, mode))
   }
 
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
+      val currentLang = languageUtils.getCurrentLang.locale.toString
+      val rows = tableRows(request.userAnswers, currentLang)
+      val form: Form[Boolean] = formProvider(request.user.isAgentMessageKey)
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, taxYear, request.user.isAgentMessageKey, mode))),
+          Future.successful(BadRequest(view(formWithErrors, rows, taxYear, request.user.isAgentMessageKey, mode))),
         addAnotherCountry =>
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(YourForeignDividendsByCountryPage, addAnotherCountry))
             _ <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(YourForeignDividendsByCountryPage, taxYear, mode, request.userAnswers, updatedAnswers))
       )
+  }
+
+  private def tableRows(userAnswers: UserAnswers, currentLanguage: String)
+  : Seq[YourForeignDividendsByCountryRow] = {
+    val countries = userAnswers
+      .get(DividendIncomeSourceCountries)
+      .map(_.array.toList.flatMap { country =>
+        CountryNamesDataSource.getCountry(country.code, currentLanguage)
+      })
+      .toSeq
+      .flatten
+    countries.zipWithIndex.flatMap { case (_, idx) =>
+      YourForeignDividendsByCountrySummary.row(idx, userAnswers, currentLanguage)
+    }
   }
 }

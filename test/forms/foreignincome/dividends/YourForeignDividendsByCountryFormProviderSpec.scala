@@ -21,10 +21,11 @@ import play.api.data.FormError
 
 class YourForeignDividendsByCountryFormProviderSpec extends BooleanFieldBehaviours {
 
-  val requiredKey = "yourForeignDividendsByCountry.error.required"
+  val individualOrAgent = "individual"
+  val requiredKey = s"yourForeignDividendsByCountry.error.required.$individualOrAgent"
   val invalidKey = "error.boolean"
 
-  val form = new YourForeignDividendsByCountryFormProvider()()
+  val form = new YourForeignDividendsByCountryFormProvider()(individualOrAgent)
 
   ".yourForeignDividendsByCountry" - {
 
