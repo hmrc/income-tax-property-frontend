@@ -1302,6 +1302,27 @@ ukrentaroom.income.totalIncomeAmount.error.outOfRange.agent = Enter an amount be
 ukrentaroom.income.totalIncomeAmount.change.hidden.agent = How much total rent a room income did your client receive?
 ukrentaroom.income.totalIncomeAmount.checkYourAnswersLabel.agent = How much total rent a room income did your client receive?
 
+
+ukrentaroom.reliefAmount.title = Rent a room relief amount
+ukrentaroom.reliefAmount.heading.individual = Rent a room relief amount
+ukrentaroom.reliefAmount.p1.individual = You can earn up to £{0} a year tax free by renting out a room in your home. If you claim this relief you cannot also claim expenses for the same property.
+ukrentaroom.reliefAmount.label.individual = How much rent a room relief do you want to claim?
+ukrentaroom.reliefAmount.error.required.individual = Enter the amount of rent a room relief you want to claim
+ukrentaroom.reliefAmount.error.twoDecimalPlaces.individual = The total amount of rent a room relief claimed can only include pounds and pence, for example £600 or £600.20
+ukrentaroom.reliefAmount.error.nonNumeric.individual = The total amount of rent a room relief claimed can only include pounds and pence, for example £600 or £600.20
+ukrentaroom.reliefAmount.error.outOfRange.individual = Enter an amount between £{0} and £{1}
+ukrentaroom.reliefAmount.error.maxAllowedClaim.individual = The amount of rent a room relief claimed can not be more than your rent a room income
+ukrentaroom.reliefAmount.heading.agent = Rent a room relief amount
+ukrentaroom.reliefAmount.p1.agent = Your client can earn up to £{0} a year tax free by renting out a room in their home. If they claim this relief they cannot also claim expenses for the same property.
+ukrentaroom.reliefAmount.label.agent = How much rent a room relief does your client want to claim?
+ukrentaroom.reliefAmount.error.required.agent = Enter the amount of rent a room relief your client wants to claim
+ukrentaroom.reliefAmount.error.twoDecimalPlaces.agent = The total amount of rent a room relief claimed can only include pounds and pence, for example £600 or £600.20
+ukrentaroom.reliefAmount.error.nonNumeric.agent = The total amount of rent a room relief claimed can only include pounds and pence, for example £600 or £600.20
+ukrentaroom.reliefAmount.error.outOfRange.agent = Enter an amount between £{0} and £{1}
+ukrentaroom.reliefAmount.error.maxAllowedClaim.agent = The amount of rent a room relief claimed can not be more than your client''s rent a room income
+ukrentaroom.reliefAmount.checkYourAnswersLabel = Rent a room relief amount
+ukrentaroom.reliefAmount.change.hidden = Rent a room relief amount
+
 jointlyLet.title = Jointly let rent a room
 jointlyLet.title.individual = Jointly let rent a room
 jointlyLet.heading.individual = Is your rent a room jointly let?
