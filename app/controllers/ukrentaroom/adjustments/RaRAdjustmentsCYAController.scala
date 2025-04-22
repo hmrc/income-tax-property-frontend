@@ -19,9 +19,9 @@ package controllers.ukrentaroom.adjustments
 import audit.{AuditService, RentARoomAdjustments, RentARoomAuditModel}
 import com.google.inject.Inject
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
-import models.{JourneyContext, JourneyPath}
 import models.requests.DataRequest
-import pages.ukrentaroom.adjustments.RaRUnusedLossesBroughtForwardPage
+import models.{JourneyContext, JourneyPath, RentARoom}
+import pages.adjustments.UnusedLossesBroughtForwardPage
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
@@ -29,7 +29,8 @@ import service.PropertySubmissionService
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import viewmodels.checkAnswers.ukrentaroom.adjustments.{RaRBalancingChargeSummary, RaRUnusedLossesBroughtForwardSummary, RarWhenYouReportedTheLossSummary, UnusedResidentialPropertyFinanceCostsBroughtFwdSummary}
+import viewmodels.checkAnswers.adjustments.{UnusedLossesBroughtForwardSummary, WhenYouReportedTheLossSummary}
+import viewmodels.checkAnswers.ukrentaroom.adjustments.{RaRBalancingChargeSummary, UnusedResidentialPropertyFinanceCostsBroughtFwdSummary}
 import viewmodels.govuk.summarylist._
 import views.html.ukrentaroom.adjustments.RaRAdjustmentsCYAView
 
@@ -50,7 +51,7 @@ class RaRAdjustmentsCYAController @Inject() (
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val hasLossesBroughtForward: Boolean = request.userAnswers
-        .get(RaRUnusedLossesBroughtForwardPage)
+        .get(UnusedLossesBroughtForwardPage(RentARoom))
         .exists(_.isUnusedLossesBroughtForward)
       val rows: Seq[SummaryListRow] =
         Seq(
@@ -61,19 +62,20 @@ class RaRAdjustmentsCYAController @Inject() (
       val unusedLossesBroughtForwardRows =
         if (hasLossesBroughtForward) {
           Seq(
-            RaRUnusedLossesBroughtForwardSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey),
-            RarWhenYouReportedTheLossSummary.row(
+            UnusedLossesBroughtForwardSummary.row(taxYear, request.userAnswers, RentARoom, request.user.isAgentMessageKey),
+            WhenYouReportedTheLossSummary.row(
               taxYear,
               request.userAnswers,
+              RentARoom,
               request.user.isAgentMessageKey,
               request.userAnswers
-                .get(RaRUnusedLossesBroughtForwardPage)
+                .get(UnusedLossesBroughtForwardPage(RentARoom))
                 .flatMap(_.unusedLossesBroughtForwardAmount)
                 .getOrElse(BigDecimal(0))
             )
           ).flatten
         } else {
-          RaRUnusedLossesBroughtForwardSummary.row(taxYear, request.userAnswers, request.user.isAgentMessageKey)
+          UnusedLossesBroughtForwardSummary.row(taxYear, request.userAnswers, RentARoom, request.user.isAgentMessageKey)
         }
       val list = SummaryListViewModel(
         rows = rows

@@ -359,11 +359,13 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
           propertyType match {
             case Rentals          => AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
             case RentalsRentARoom => RentalsAndRentARoomAdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+            case RentARoom => RaRAdjustmentsCYAController.onPageLoad(taxYear)
           }
       }
     case WhenYouReportedTheLossPage(propertyType) => taxYear => _ => _ =>
       propertyType match {
         case Rentals          => AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+        case RentARoom        => RaRAdjustmentsCYAController.onPageLoad(taxYear)
         case RentalsRentARoom => RentalsAndRentARoomAdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
       }
     // Rentals-Expenses
@@ -649,16 +651,8 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
               RaRUnusedResidentialCostsController.onPageLoad(taxYear, NormalMode)
             }
     case RaRUnusedResidentialCostsPage =>
-      taxYear => _ => _ => RaRUnusedLossesBroughtForwardController.onPageLoad(taxYear, NormalMode)
-    case RaRUnusedLossesBroughtForwardPage =>
-      taxYear => _ => userAnswers =>
-        userAnswers.get(RaRUnusedLossesBroughtForwardPage) match {
-          case Some(UnusedLossesBroughtForward(true, _)) => RarWhenYouReportedTheLossController.onPageLoad(taxYear, NormalMode)
-          case _ => RaRAdjustmentsCYAController.onPageLoad(taxYear)
-        }
+      taxYear => _ => _ => UnusedLossesBroughtForwardController.onPageLoad(taxYear, NormalMode, RentARoom)
 
-    case RarWhenYouReportedTheLossPage =>
-      taxYear => _ => _ => RaRAdjustmentsCYAController.onPageLoad(taxYear)
     case RaRAdjustmentsCompletePage     => taxYear => _ => _ => SummaryController.show(taxYear)
     case RentalsAdjustmentsCompletePage => taxYear => _ => _ => SummaryController.show(taxYear)
     case AboutPropertyCompletePage      => taxYear => _ => _ => SummaryController.show(taxYear)
@@ -892,6 +886,8 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
         _ =>
           _ =>
             AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+    case WhenYouReportedTheLossPage(RentARoom) =>
+      taxYear => _ => _ => RaRAdjustmentsCYAController.onPageLoad(taxYear)
         // TODO add the correct property type here i.e. RentalsRentARoom
       case PrivateUseAdjustmentPage(RentalsRentARoom) | PropertyIncomeAllowancePage(RentalsRentARoom) |
         BusinessPremisesRenovationAllowanceBalancingChargePage | BalancingChargePage(RentalsRentARoom) |
@@ -995,10 +991,6 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
       taxYear => _ => _ => RaRAdjustmentsCYAController.onPageLoad(taxYear)
 
     case RaRUnusedResidentialCostsPage =>
-      taxYear => _ => _ => RaRAdjustmentsCYAController.onPageLoad(taxYear)
-    case RaRUnusedLossesBroughtForwardPage =>
-      taxYear => previousUserAnswers => userAnswers => UnusedLossesBroughtForwardPNavigationCheckMode(taxYear, RentARoom, previousUserAnswers, userAnswers)
-    case RarWhenYouReportedTheLossPage =>
       taxYear => _ => _ => RaRAdjustmentsCYAController.onPageLoad(taxYear)
         // Rentals and Rent a Room
     case JointlyLetPage(RentalsRentARoom) =>

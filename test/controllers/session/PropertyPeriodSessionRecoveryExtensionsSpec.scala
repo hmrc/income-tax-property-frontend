@@ -22,10 +22,10 @@ import models._
 import org.scalatestplus.mockito.MockitoSugar
 import pages.adjustments._
 import pages.enhancedstructuresbuildingallowance._
-import pages.foreign.expenses._
 import pages.foreign._
 import pages.foreign.adjustments._
 import pages.foreign.allowances._
+import pages.foreign.expenses._
 import pages.foreign.income._
 import pages.foreign.structurebuildingallowance._
 import pages.premiumlease.{CalculatedFigureYourselfPage, ReceivedGrantLeaseAmountPage}
@@ -34,9 +34,9 @@ import pages.propertyrentals.expenses._
 import pages.propertyrentals.income.{IsNonUKLandlordPage, PropertyRentalIncomePage, ReversePremiumsReceivedPage}
 import pages.structurebuildingallowance._
 import pages.ukandforeignproperty.{ReportIncomePage, TotalPropertyIncomePage}
-import pages.ukrentaroom.adjustments.{RaRBalancingChargePage, RaRUnusedLossesBroughtForwardPage, RaRUnusedResidentialCostsPage, RarWhenYouReportedTheLossPage}
+import pages.ukrentaroom.adjustments.{RaRBalancingChargePage, RaRUnusedResidentialCostsPage}
 import pages.ukrentaroom.allowances._
-import pages.ukrentaroom.expenses.{CostOfServicesProvidedRRPage, LegalManagementOtherFeeRRPage, OtherPropertyExpensesRRPage, RentsRatesAndInsuranceRRPage, RepairsAndMaintenanceCostsRRPage}
+import pages.ukrentaroom.expenses._
 import pages.ukrentaroom.{ClaimExpensesOrReliefPage, JointlyLetPage, TotalIncomeAmountPage}
 import pages.{TotalIncomePage, UKPropertyPage}
 import play.api.libs.json.Json
@@ -376,8 +376,8 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
 
       updated.get(RaRBalancingChargePage).get mustBe BalancingCharge(isBalancingCharge = true, Some(BigDecimal(10)))
       updated.get(RaRUnusedResidentialCostsPage).get mustBe BigDecimal(45)
-      updated.get(RaRUnusedLossesBroughtForwardPage).get mustBe UnusedLossesBroughtForward(isUnusedLossesBroughtForward = true, Some(BigDecimal(5)))
-      updated.get(RarWhenYouReportedTheLossPage) mustBe Some(WhenYouReportedTheLoss.y2021to2022)
+      updated.get(UnusedLossesBroughtForwardPage(RentARoom)).get mustBe UnusedLossesBroughtForward(isUnusedLossesBroughtForward = true, Some(BigDecimal(5)))
+      updated.get(WhenYouReportedTheLossPage(RentARoom)) mustBe Some(WhenYouReportedTheLoss.y2021to2022)
 
       updated.get(RepairsAndMaintenanceCostsPage(Rentals)).get mustBe 7
       updated.get(LoanInterestPage(Rentals)).get mustBe 56

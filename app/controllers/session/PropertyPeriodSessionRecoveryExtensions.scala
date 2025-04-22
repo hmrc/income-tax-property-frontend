@@ -906,9 +906,9 @@ object PropertyPeriodSessionRecoveryExtensions {
               unusedResidentialPropertyFinanceCostsBroughtFwd =>
                 ua1.set(RaRUnusedResidentialCostsPage, unusedResidentialPropertyFinanceCostsBroughtFwd))
             ua3 <- rentARoomAdjustments.unusedLossesBroughtForward.fold[Try[UserAnswers]](Success(ua2))(unusedLossesBroughtForward =>
-              ua2.set(RaRUnusedLossesBroughtForwardPage, unusedLossesBroughtForward))
+              ua2.set(UnusedLossesBroughtForwardPage(RentARoom), unusedLossesBroughtForward))
             ua4 <- rentARoomAdjustments.whenYouReportedTheLoss.fold[Try[UserAnswers]](Success(ua3))(whenYouReportedTheLoss =>
-              ua3.set(RarWhenYouReportedTheLossPage, whenYouReportedTheLoss))
+              ua3.set(WhenYouReportedTheLossPage(RentARoom), whenYouReportedTheLoss))
           } yield ua4
       }
   }
