@@ -18,30 +18,21 @@ package audit
 
 import models.ForeignIncome
 import pages.PageConstants.foreignDividendsPath
-import queries.{Gettable, Settable}
+import pages.foreign.Country
 import play.api.libs.json.{Format, Json, JsPath}
+import queries.{Gettable, Settable}
 
 final case class ForeignDividends(
-  countryCode: String,
+  countryReceiveDividendIncome: Country,
   incomeBeforeForeignTaxDeducted: BigDecimal,
   //Was foreign tax deducted?,
   //How much foreign tax was deducted?,
   claimForeignTaxCreditRelief: Boolean
                                  )
 
-case object ForeignDividends
-  extends Gettable[ForeignDividends] with Settable[ForeignDividends] {
-
+object ForeignDividends extends Gettable[ForeignDividends] with Settable[ForeignDividends]{
   implicit val format: Format[ForeignDividends] = Json.format[ForeignDividends]
 
-  override def path: JsPath = JsPath \ toString
+  override def path: JsPath = JsPath \ foreignDividendsPath(ForeignIncome)
 
-  override def toString: String = foreignDividendsPath(ForeignIncome)
-}
-
-case class ReadForeignDividends(countryCode: String) extends Gettable[ForeignDividends] {
-
-  override def path: JsPath = JsPath \ foreignDividendsPath(ForeignIncome) \ toString
-
-  override def toString: String = countryCode.toUpperCase
 }

@@ -16,15 +16,24 @@
 
 package controllers.foreignincome.dividends
 
+import audit.ForeignDividends
 import controllers.actions._
+import controllers.exceptions.InternalErrorFailure
+import models.{JourneyContext, JourneyPath}
+import models.requests.DataRequest
+import play.api.i18n.Lang.logger
 
 import javax.inject.Inject
 import play.api.i18n.{MessagesApi, I18nSupport}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import uk.gov.hmrc.play.language.LanguageUtils
-import viewmodels.checkAnswers.foreignincome.dividends.{IncomeBeforeForeignTaxDeductedSummary, CountryReceiveDividendIncomeSummary, ClaimForeignTaxCreditReliefSummary}
+import viewmodels.checkAnswers.foreignincome.dividends.{ClaimForeignTaxCreditReliefSummary, IncomeBeforeForeignTaxDeductedSummary, CountryReceiveDividendIncomeSummary}
+import viewmodels.govuk.all.SummaryListViewModel
 import views.html.DividendsSectionCheckYourAnswersView
+
+import scala.concurrent.Future
 
 class DividendsSectionCheckYourAnswersController @Inject()(
                                        override val messagesApi: MessagesApi,
@@ -38,36 +47,40 @@ class DividendsSectionCheckYourAnswersController @Inject()(
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      val summaryListRows = Seq(
+      val summaryListRows = SummaryListViewModel(
+        rows = Seq(
         CountryReceiveDividendIncomeSummary.row(taxYear, index, request.userAnswers, languageUtils.getCurrentLang.locale.toString),
         IncomeBeforeForeignTaxDeductedSummary.row(taxYear, countryCode, request.userAnswers),
         //Was foreign tax deducted?,
         //How much foreign tax was deducted?,
         ClaimForeignTaxCreditReliefSummary.row(taxYear, countryCode, request.user.isAgentMessageKey, request.userAnswers)
       ).flatten
+    )
+      Ok(view(summaryListRows, taxYear))
+  }
 
-      val list = SummaryListViewModel(
-        rows = summaryListRows
-      )
-      Ok(view(list, taxYear))
+  def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+    implicit request =>
+      request.userAnswers
+        .get(ForeignDividends)
+      .fold {
+      val errorMsg =
+      s"Foreign dividends section is missing for userId: ${request.userId}, taxYear: $taxYear"
+      logger.error(errorMsg)
+      Future.successful(NotFound(errorMsg))
+      } { foreignDividends =>
+      saveDividends(taxYear, request, foreignDividends)
+      }
   }
 
   //got to here
 
-  def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
-      request.userAnswers.get(RentalsAdjustment) match {
-        case Some(adjustments) => saveAdjustments(taxYear, request, adjustments)
-        case None =>
-          logger.error("Adjustments Section is not present in userAnswers")
-          Future.failed(InternalErrorFailure("Adjustments Section is not present in userAnswers"))
-      }
-  }
-
-  private def saveAdjustments(taxYear: Int, request: DataRequest[AnyContent], adjustments: RentalsAdjustment)(implicit
-                                                                                                              hc: HeaderCarrier
-  ) = {
-    val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, PropertyRentalAdjustments)
+  private def saveDividends(
+  taxYear: Int,
+  request: DataRequest[AnyContent],
+  dividends: ForeignDividends
+  )(implicit hc: HeaderCarrier) = {
+    val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, JourneyPath.ForeignDividends)
     propertySubmissionService.saveUkPropertyJourneyAnswers(context, adjustments).flatMap {
       case Right(_) =>
         auditCYA(taxYear, request, adjustments, isFailed = false, AccountingMethod.Traditional)
