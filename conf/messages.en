@@ -2187,8 +2187,6 @@ calculatedPremiumLeaseTaxable.input.yesText = Yes
 calculatedPremiumLeaseTaxable.input.noText.individual = No, calculate it for me
 calculatedPremiumLeaseTaxable.input.noText.agent = No, we''ll calculate it for your client
 
-foreignIncomeSectionComplete.change.hidden = Have you finished this section?
-
 foreignPropertyRepairsAndMaintenance.title = Property repairs and maintenance
 foreignPropertyRepairsAndMaintenance.heading = Property repairs and maintenance
 foreignPropertyRepairsAndMaintenance.p1.individual = These are expenses you paid to maintain your property, for example:

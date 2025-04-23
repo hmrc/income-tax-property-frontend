@@ -1850,9 +1850,9 @@ foreign.summary.title = *Missing Welsh*
 foreign.selectCountry = *Missing Welsh*
 foreign.heading = *Missing Welsh*
 foreign.tax = *Missing Welsh*
-foreign.income = *Missing Welsh*
-foreign.expenses = *Missing Welsh*
-foreign.allowances = *Missing Welsh*
+foreign.income = Incwm
+foreign.expenses = Treuliau
+foreign.allowances = Lwfansau
 
 foreignCountriesRentList.title.individual = *Missing Welsh*
 foreignCountriesRentList.title.agent = *Missing Welsh*
@@ -2100,8 +2100,6 @@ calculatedPremiumLeaseTaxable.change.hidden = A ydych wedi cyfrifo’r swm treth
 calculatedPremiumLeaseTaxable.input.yesText = Iawn
 calculatedPremiumLeaseTaxable.input.noText.individual = Na, cyfrifwch y ffigur ar fy rhan
 calculatedPremiumLeaseTaxable.input.noText.agent = Na, byddwn yn ei gyfrifo’r ffigur ar gyfer eich cleient
-
-foreignIncomeSectionComplete.change.hidden = *Missing Welsh*
 
 foreignPropertyRentalIncome.title = Incwm rhent o eiddo tramor
 foreignPropertyRentalIncome.heading = Incwm rhent o eiddo tramor
