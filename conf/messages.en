@@ -312,7 +312,7 @@ propertyRentalIncome.para2.individual = How much total income did you get from y
 propertyRentalIncome.para2.agent = How much total income did your client get from their property rental?
 propertyRentalIncome.deductions.hint = This is the amount before any deductions have been made.
 propertyRentalIncome.error.nonNumeric.individual = Enter the amount for your property rental income
-propertyRentalIncome.error.nonNumeric.agent = Enter the amount for your client's property rental income
+propertyRentalIncome.error.nonNumeric.agent = Enter the amount for your client''s property rental income
 propertyRentalIncome.error.required.agent = Enter your client’s property rental income
 propertyRentalIncome.error.required.individual = Enter your property rental income
 propertyRentalIncome.error.twoDecimalPlaces = Amount can only include pounds and pence, for example £600 or £600.20
@@ -2207,8 +2207,6 @@ calculatedPremiumLeaseTaxable.change.hidden = Have you calculated the premium fo
 calculatedPremiumLeaseTaxable.input.yesText = Yes
 calculatedPremiumLeaseTaxable.input.noText.individual = No, calculate it for me
 calculatedPremiumLeaseTaxable.input.noText.agent = No, we''ll calculate it for your client
-
-foreignIncomeSectionComplete.change.hidden = Have you finished this section?
 
 foreignPropertyRepairsAndMaintenance.title = Property repairs and maintenance
 foreignPropertyRepairsAndMaintenance.heading = Property repairs and maintenance
