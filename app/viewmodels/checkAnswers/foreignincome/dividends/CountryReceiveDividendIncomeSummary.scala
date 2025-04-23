@@ -26,7 +26,7 @@ import viewmodels.implicits._
 import controllers.foreignincome.dividends.routes.CountryReceiveDividendIncomeController
 import pages.foreign.Country
 import service.CountryNamesDataSource
-import viewmodels.checkAnswers.FormatUtils.keyCssClass
+import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
 
 object CountryReceiveDividendIncomeSummary  {
 
@@ -36,7 +36,7 @@ object CountryReceiveDividendIncomeSummary  {
 
         SummaryListRowViewModel(
           key     = KeyViewModel("countryReceiveDividendIncome.checkYourAnswersLabel").withCssClass(keyCssClass),
-          value   = ValueViewModel(HtmlFormat.escape(CountryNamesDataSource.getCountry(answer.code, currentLang).getOrElse(Country("", "")).name).toString),
+          value   = ValueViewModel(HtmlFormat.escape(CountryNamesDataSource.getCountry(answer.code, currentLang).getOrElse(Country("", "")).name).toString).withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", CountryReceiveDividendIncomeController.onPageLoad(taxYear, index, CheckMode).url)
               .withVisuallyHiddenText(messages("countryReceiveDividendIncome.change.hidden"))

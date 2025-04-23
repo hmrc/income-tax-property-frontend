@@ -23,6 +23,7 @@ import service.PropertySubmissionService
 import models.{AuditPropertyType, JourneyPath, JourneyContext, SectionName, AccountingMethod}
 import models.requests.DataRequest
 import pages.foreign.Country
+import pages.foreignincome.CountryReceiveDividendIncomePage
 import play.api.i18n.Lang.logger
 
 import javax.inject.Inject
@@ -31,11 +32,11 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import uk.gov.hmrc.play.language.LanguageUtils
-import viewmodels.checkAnswers.foreignincome.dividends.{ClaimForeignTaxCreditReliefSummary, IncomeBeforeForeignTaxDeductedSummary, CountryReceiveDividendIncomeSummary}
+import viewmodels.checkAnswers.foreignincome.dividends.{ClaimForeignTaxCreditReliefSummary, IncomeBeforeForeignTaxDeductedSummary, CountryReceiveDividendIncomeSummary, ForeignTaxDeductedFromDividendIncomeSummary}
 import viewmodels.govuk.all.SummaryListViewModel
 import views.html.DividendsSectionCheckYourAnswersView
 
-import scala.concurrent.{Future, ExecutionContext}
+import scala.concurrent.{ExecutionContext, Future}
 
 class DividendsSectionCheckYourAnswersController @Inject()(
                                        override val messagesApi: MessagesApi,
@@ -48,15 +49,16 @@ class DividendsSectionCheckYourAnswersController @Inject()(
                                        propertySubmissionService: PropertySubmissionService,
                                      )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, countryCode: String): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
+      val country = request.userAnswers.get(CountryReceiveDividendIncomePage(0)).getOrElse(Country("", ""))
       val summaryListRows = SummaryListViewModel(
         rows = Seq(
         CountryReceiveDividendIncomeSummary.row(taxYear, 0, request.userAnswers, languageUtils.getCurrentLang.locale.toString),
-        IncomeBeforeForeignTaxDeductedSummary.row(taxYear, countryCode, request.userAnswers),
-        //Was foreign tax deducted?,
+        IncomeBeforeForeignTaxDeductedSummary.row(taxYear, country.code, request.userAnswers),
+        ForeignTaxDeductedFromDividendIncomeSummary.row(taxYear, country.code, request.user.isAgentMessageKey, country, request.userAnswers),
         //How much foreign tax was deducted?,
-        ClaimForeignTaxCreditReliefSummary.row(taxYear, countryCode, request.user.isAgentMessageKey, request.userAnswers)
+        ClaimForeignTaxCreditReliefSummary.row(taxYear, country.code, request.user.isAgentMessageKey, request.userAnswers)
       ).flatten
     )
       Ok(view(summaryListRows, taxYear))

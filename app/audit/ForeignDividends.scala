@@ -25,7 +25,7 @@ import queries.{Gettable, Settable}
 final case class ForeignDividends(
   countryReceiveDividendIncome: Country,
   incomeBeforeForeignTaxDeducted: BigDecimal,
-  //Was foreign tax deducted?,
+  foreignTaxDeductedFromDividendIncome: Boolean,
   //How much foreign tax was deducted?,
   claimForeignTaxCreditRelief: Boolean
                                  )

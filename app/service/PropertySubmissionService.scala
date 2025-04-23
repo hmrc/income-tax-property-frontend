@@ -161,12 +161,11 @@ class PropertySubmissionService @Inject() (
       case Right(propertyDetails) =>
         propertyDetails
           .map { foreignProperty =>
-            propertyConnector.saveUkPropertyJourneyAnswers(ctx, body, foreignProperty.incomeSourceId).map {
+            propertyConnector.saveForeignDividendsJourneyAnswers(ctx, body, foreignProperty.incomeSourceId).map {
               case Left(error) => Left(HttpParserError(error.status))
               case Right(_)    => Right(())
             }
           }
           .getOrElse(Future.successful(Left(UKPropertyDetailsError(ctx.nino, ctx.mtditid))))
     }
-                                 )
 }
