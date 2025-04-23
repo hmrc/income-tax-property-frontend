@@ -151,4 +151,22 @@ class PropertySubmissionService @Inject() (
           }
           .getOrElse(Future.successful(Left(ForeignPropertyDetailsError(ctx.nino, ctx.mtditid))))
     }
+
+  def saveForeignDividendsJourneyAnswers[A: Writes](
+                                   ctx: JourneyContext,
+                                   body: A
+                                 )(implicit hc: HeaderCarrier): Future[Either[ServiceError, Unit]] =
+    businessService.getForeignPropertyDetails(ctx.nino, ctx.mtditid).flatMap {
+      case Left(error: ApiError) => Future.successful(Left(HttpParserError(error.status)))
+      case Right(propertyDetails) =>
+        propertyDetails
+          .map { foreignProperty =>
+            propertyConnector.saveUkPropertyJourneyAnswers(ctx, body, foreignProperty.incomeSourceId).map {
+              case Left(error) => Left(HttpParserError(error.status))
+              case Right(_)    => Right(())
+            }
+          }
+          .getOrElse(Future.successful(Left(UKPropertyDetailsError(ctx.nino, ctx.mtditid))))
+    }
+                                 )
 }

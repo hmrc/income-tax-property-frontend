@@ -136,4 +136,11 @@ class PropertySubmissionConnector @Inject() (httpClient: HttpClientV2, appConfig
         response.result
       }
   }
+
+  def saveForeignDividendsJourneyAnswers[A: Writes](
+                                               ctx: JourneyContext,
+                                               body: A,
+                                               incomeSourceId: String
+                                             )(implicit hc: HeaderCarrier): Future[Either[ApiError, Unit]] =
+    saveJourneyAnswers("foreign-property", ctx, body, incomeSourceId)
 }
