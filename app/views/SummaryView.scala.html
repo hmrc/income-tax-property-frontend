@@ -17,9 +17,9 @@
 @import pages.UKPropertySummaryPage
 @import pages.foreign.ForeignPropertySummaryPage
 @import pages.ukandforeignproperty.UkAndForeignPropertySummaryPage
-@import pages.foreignincome.dividends.ForeignIncomeSummaryViewModel
 @import viewmodels.summary.TaskListItem
 @import viewmodels.summary.TaskListTag.{CanNotStart, Completed}
+@import pages.foreignincome.ForeignIncomeSummaryViewModel
 
 @this(
         layout: templates.Layout,
@@ -33,8 +33,6 @@
     ukAndForeignProperty: UkAndForeignPropertySummaryPage,
     foreignIncome: ForeignIncomeSummaryViewModel
 )(implicit request: Request[_], messages: Messages)
-
-
 
 @taskListSection(items: Seq[TaskListItem]) = {
     <ol class="govuk-task-list">

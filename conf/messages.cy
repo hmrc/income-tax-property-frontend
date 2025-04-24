@@ -3208,3 +3208,15 @@ howMuchForeignTaxDeductedFromDividendIncome.error.required = *Missing Welsh*
 howMuchForeignTaxDeductedFromDividendIncome.error.twoDecimalPlaces = *Missing Welsh*
 howMuchForeignTaxDeductedFromDividendIncome.error.outOfRange = *Missing Welsh*
 howMuchForeignTaxDeductedFromDividendIncome.change.hidden = *Missing Welsh*
+
+yourForeignDividendsByCountry.title.individual = *Missing Welsh*
+yourForeignDividendsByCountry.title.agent = *Missing Welsh*
+yourForeignDividendsByCountry.heading.individual = *Missing Welsh*
+yourForeignDividendsByCountry.heading.agent = *Missing Welsh*
+yourForeignDividendsByCountry.legend = *Missing Welsh*
+yourForeignDividendsByCountry.checkYourAnswersLabel = *Missing Welsh*
+yourForeignDividendsByCountry.error.required.individual = *Missing Welsh*
+yourForeignDividendsByCountry.error.required.agent = *Missing Welsh*
+yourForeignDividendsByCountry.change.hidden = *Missing Welsh*
+yourForeignDividendsByCountry.table.header.country = *Missing Welsh*
+yourForeignDividendsByCountry.table.header.income = *Missing Welsh*

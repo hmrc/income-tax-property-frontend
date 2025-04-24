@@ -28,6 +28,11 @@ POST       /:taxYear/foreign-income/dividends/:countryCode/how-much-foreign-tax-
 GET        /:taxYear/foreign-income/dividends/:countryCode/change-how-much-foreign-tax-deducted-from-dividend-income    controllers.foreignincome.dividends.HowMuchForeignTaxDeductedFromDividendIncomeController.onPageLoad(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
 POST       /:taxYear/foreign-income/dividends/:countryCode/change-how-much-foreign-tax-deducted-from-dividend-income    controllers.foreignincome.dividends.HowMuchForeignTaxDeductedFromDividendIncomeController.onSubmit(taxYear: Int, countryCode: String, mode: Mode = CheckMode)
 
+GET        /:taxYear/foreign-income/dividends/your-foreign-dividends-by-country                                         controllers.foreignincome.dividends.YourForeignDividendsByCountryController.onPageLoad(taxYear: Int, mode: Mode = NormalMode)
+POST       /:taxYear/foreign-income/dividends/your-foreign-dividends-by-country                                         controllers.foreignincome.dividends.YourForeignDividendsByCountryController.onSubmit(taxYear: Int, mode: Mode = NormalMode)
+GET        /:taxYear/foreign-income/dividends/change-your-foreign-dividends-by-country                                  controllers.foreignincome.dividends.YourForeignDividendsByCountryController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
+POST       /:taxYear/foreign-income/dividends/change-your-foreign-dividends-by-country                                  controllers.foreignincome.dividends.YourForeignDividendsByCountryController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
+
 GET        /:taxYear/foreign-income/dividends/section-finished                                                          controllers.foreignincome.dividends.DividendsSectionFinishedController.onPageLoad(taxYear: Int)
 POST       /:taxYear/foreign-income/dividends/section-finished                                                          controllers.foreignincome.dividends.DividendsSectionFinishedController.onSubmit(taxYear: Int)
 
