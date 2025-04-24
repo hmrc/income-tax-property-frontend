@@ -1332,15 +1332,15 @@ class NavigatorSpec extends SpecBase {
           .onPageLoad(taxYear)
       }
 
-      "must go from RaRUnusedResidentialCostsPage to RaRUnusedLossesBroughtForwardController" in {
+      "must go from RaRUnusedResidentialCostsPage to UnusedLossesBroughtForwardController" in {
         navigator.nextPage(
           RaRUnusedResidentialCostsPage,
           taxYear,
           NormalMode,
           UserAnswers("test"),
           UserAnswers("test")
-        ) mustBe controllers.ukrentaroom.adjustments.routes.RaRUnusedLossesBroughtForwardController
-          .onPageLoad(taxYear, NormalMode)
+        ) mustBe controllers.adjustments.routes.UnusedLossesBroughtForwardController
+          .onPageLoad(taxYear, NormalMode, RentARoom)
       }
 
       "must go from OtherPropertyExpensesRRPage to ExpensesCheckYourAnswersRRController" in {
