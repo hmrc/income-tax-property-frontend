@@ -33,7 +33,7 @@ class ForeignPropertyRentalIncomeFormProviderSpec extends CurrencyFieldBehaviour
     val form = formProvider(individualOrAgent)
     val requiredKey = s"foreignPropertyRentalIncome.error.required.$individualOrAgent"
     val outOutRangeErrorKey = "foreignPropertyRentalIncome.error.outOfRange"
-    val nonNumericErrorKey = s"foreignPropertyRentalIncome.error.nonNumeric.$individualOrAgent"
+    val nonNumericErrorKey = "foreignPropertyRentalIncome.error.nonNumeric"
     val twoDecimalErrorKey = s"foreignPropertyRentalIncome.error.twoDecimalPlaces"
 
     s".foreignPropertyRentalIncome for an $individualOrAgent" - {

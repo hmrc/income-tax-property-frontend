@@ -15,65 +15,69 @@
  *@
 
 @import viewmodels.InputWidth._
-@import viewmodels.LabelSize
-@import controllers.foreign.income.routes
 
 @this(
-layout: templates.Layout,
-formHelper: FormWithCSRF,
-govukErrorSummary: GovukErrorSummary,
-govukInput: GovukInput,
-govukButton: GovukButton
+        layout: templates.Layout,
+        formHelper: FormWithCSRF,
+        govukErrorSummary: GovukErrorSummary,
+        govukInput: GovukInput,
+        govukButton: GovukButton
 )
 
-@(form: Form[_], taxYear: Int, individualOrAgent: String, mode: Mode, countryCode:String)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], taxYear: Int, individualOrAgent: String, mode: Mode, countryCode: String)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = title(form, messages("foreignPropertyRentalIncome.title"))) {
 
+    @if(form.errors.nonEmpty) {
+        @govukErrorSummary(ErrorSummaryViewModel(form, errorLinkOverrides = Map("value" -> "value_0")))
+    }
 
-@formHelper(action = controllers.foreign.income.routes.ForeignPropertyRentalIncomeController.onSubmit(taxYear, mode,countryCode), Symbol("autoComplete") -> "off") {
+    <h1 class="govuk-heading-l">@messages("foreignPropertyRentalIncome.heading")</h1>
 
-@if(form.errors.nonEmpty) {
-@govukErrorSummary(ErrorSummaryViewModel(form, errorLinkOverrides = Map("value" -> "value_0")))
-}
+    <p class="govuk-body">@messages(s"foreignPropertyRentalIncome.para1.${individualOrAgent}")</p>
 
-<h1 class="govuk-heading-l">@messages("foreignPropertyRentalIncome.heading")</h1>
+    <ul class="govuk-list govuk-list--bullet">
+        <li>@messages(s"foreignPropertyRentalIncome.bullet1.${individualOrAgent}")</li>
+        <li>@messages(s"foreignPropertyRentalIncome.bullet2.${individualOrAgent}")</li>
+    </ul>
 
-<p class="  govuk-body">@messages(s"foreignPropertyRentalIncome.para1.${individualOrAgent}")</p>
+    <p class="govuk-body">
+        @messages("foreignPropertyRentalIncome.para") <a href="@{
+        messages("foreignPropertyRentalIncome.href1")
+    }" class="govuk-link" rel="noreferrer noopener" target="_blank">
+    @messages("foreignPropertyRentalIncome.link")</a>
+        @messages("foreignPropertyRentalIncome.link.p1")
+    </p>
 
-<ul class="govuk-list govuk-list--bullet">
-    <li>@messages(s"foreignPropertyRentalIncome.bullet1.${individualOrAgent}")</li>
-    <li>@messages(s"foreignPropertyRentalIncome.bullet2.${individualOrAgent}")</li>
-</ul>
+    <p class="govuk-body">
+        @messages("foreignPropertyRentalIncome.para3") <a href="@{
+        messages("foreignPropertyRentalIncome.href2")
+    }" class="govuk-link" rel="noreferrer noopener" target="_blank">@messages("foreignPropertyRentalIncome.link2")</a>
+        @messages("foreignPropertyRentalIncome.or") <a href="@{
+        messages("foreignPropertyRentalIncome.href3")
+    }" class="govuk-link" rel="noreferrer noopener" target="_blank">@messages("foreignPropertyRentalIncome.link3")</a>
+        @messages("foreignPropertyRentalIncome.link.p1")
+    </p>
 
-<p class="govuk-body">
-    @messages("foreignPropertyRentalIncome.para") <a href="@{
-   messages("foreignPropertyRentalIncome.href1")}" class="govuk-link">@messages("foreignPropertyRentalIncome.link")</a>
- @messages("foreignPropertyRentalIncome.link.p1")
-</p>
+    <h2 class="govuk-heading-m">@messages(s"foreignPropertyRentalIncome.para2.$individualOrAgent")</h2>
 
-<p class="govuk-body">
- @messages("foreignPropertyRentalIncome.para3") <a href="@{
-   messages("foreignPropertyRentalIncome.href2")}" class="govuk-link">@messages("foreignPropertyRentalIncome.link2")</a>
- @messages("foreignPropertyRentalIncome.or") <a href="@{
-   messages("foreignPropertyRentalIncome.href3")}"class="govuk-link">@messages("foreignPropertyRentalIncome.link3")</a> @messages("foreignPropertyRentalIncome.link.p1")
-</p>
-
-@govukInput(
-InputViewModel(
-field = form("rentIncome"),
-label = LabelViewModel(messages(s"foreignPropertyRentalIncome.para2.${individualOrAgent}")).asPageHeading(LabelSize.Medium)
-)
-.asNumeric()
-.withWidth(Fixed10).withPrefix(PrefixOrSuffix(content = Text("£")))
-.withHint(HintViewModel(messages("foreignPropertyRentalIncome.deductions.hint")))
-)
+    <p class="govuk-body">@messages(s"foreignPropertyRentalIncome.jointlyLet.$individualOrAgent")</p>
 
 
+    @formHelper(action = controllers.foreign.income.routes.ForeignPropertyRentalIncomeController.onSubmit(taxYear, mode, countryCode), Symbol("autoComplete") -> "off") {
+        @govukInput(
+            InputViewModel(
+                field = form("rentIncome"),
+                label = LabelViewModel(Empty)
+            )
+            .asNumeric()
+            .withWidth(Fixed10).withPrefix(PrefixOrSuffix(content = Text("£")))
+            .withHint(HintViewModel(messages("foreignPropertyRentalIncome.deductions.hint")))
+        )
 
-@govukButton(
-ButtonViewModel(messages("site.continue")).withId("continue")
-)
-}
+        @govukButton(
+            ButtonViewModel(messages("site.continue")).withId("continue")
+        )
+    }
 }
 
