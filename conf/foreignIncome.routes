@@ -36,5 +36,9 @@ POST       /:taxYear/foreign-income/dividends/change-your-foreign-dividends-by-c
 GET        /:taxYear/foreign-income/dividends/check-your-answers                                                        controllers.foreignincome.dividends.DividendsSectionCheckYourAnswersController.onPageLoad(taxYear: Int)
 POST       /:taxYear/foreign-income/dividends/check-your-answers                                                        controllers.foreignincome.dividends.DividendsSectionCheckYourAnswersController.onSubmit(taxYear: Int)
 
+GET        /:taxYear/foreign-income/dividends/:index/remove-foreign-dividend                                            controllers.foreignincome.dividends.RemoveForeignDividendController.onPageLoad(taxYear: Int, index: Int)
+POST       /:taxYear/foreign-income/dividends/:index/remove-foreign-dividend                                            controllers.foreignincome.dividends.RemoveForeignDividendController.onSubmit(taxYear: Int, index: Int)
+
 GET        /:taxYear/foreign-income/dividends/section-finished                                                          controllers.foreignincome.dividends.DividendsSectionFinishedController.onPageLoad(taxYear: Int)
 POST       /:taxYear/foreign-income/dividends/section-finished                                                          controllers.foreignincome.dividends.DividendsSectionFinishedController.onSubmit(taxYear: Int)
+

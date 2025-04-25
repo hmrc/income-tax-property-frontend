@@ -3222,3 +3222,10 @@ yourForeignDividendsByCountry.error.required.agent = *Missing Welsh*
 yourForeignDividendsByCountry.change.hidden = *Missing Welsh*
 yourForeignDividendsByCountry.table.header.country = *Missing Welsh*
 yourForeignDividendsByCountry.table.header.income = *Missing Welsh*
+
+
+removeForeignDividend.title = *Missing Welsh*
+removeForeignDividend.heading = *Missing Welsh*
+removeForeignDividend.error.required = *Missing Welsh*
+removeForeignDividend.table.header.country = *Missing Welsh*
+removeForeignDividend.table.header.income = *Missing Welsh*

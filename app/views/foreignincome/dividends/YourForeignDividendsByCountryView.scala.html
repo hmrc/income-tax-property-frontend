@@ -34,8 +34,8 @@
     <a href="@controllers.routes.IndexController.onPageLoad">@messages("site.change")</a>
 }
 
-@removeLink(countryCode: String) = {
-    <a href="@controllers.routes.IndexController.onPageLoad">@messages("site.remove")</a>
+@removeLink(taxYear: Int, index: Int, countryCode: String) = {
+    <a href="@routes.RemoveForeignDividendController.onPageLoad(taxYear, index)">@messages("site.remove")</a>
 }
 
 @layout(pageTitle = title(form, messages(s"yourForeignDividendsByCountry.title.$individualOrAgent"))) {
@@ -63,12 +63,12 @@
                 content = Empty
             )
         )),
-        rows = rows.map { row =>
+        rows = rows.zipWithIndex.map { case (row, idx) =>
             Seq(
                 TableRow(content = Text(row.country.name)),
                 TableRow(content = Text(bigDecimalCurrency(row.income)), classes = "govuk-!-text-align-right"),
                 TableRow(content = HtmlContent(changeLink(row.country.code)), classes = "govuk-!-text-align-right"),
-                TableRow(content = HtmlContent(removeLink(row.country.code)), classes = "govuk-!-text-align-right")
+                TableRow(content = HtmlContent(removeLink(taxYear, idx, row.country.code)), classes = "govuk-!-text-align-right")
             )
         }
     ))
