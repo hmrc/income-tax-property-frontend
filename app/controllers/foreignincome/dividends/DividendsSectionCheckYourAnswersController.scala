@@ -16,11 +16,11 @@
 
 package controllers.foreignincome.dividends
 
-import audit.{ForeignDividends, AuditModel}
+import audit.{ForeignDividends, ForeignDividendsByCountry, ReadForeignDividendsByCountry}
 import controllers.actions._
 import controllers.exceptions.SaveJourneyAnswersFailed
 import service.PropertySubmissionService
-import models.{AuditPropertyType, JourneyPath, JourneyContext, SectionName, AccountingMethod}
+import models.{JourneyPath, JourneyContext}
 import models.requests.DataRequest
 import pages.foreign.Country
 import pages.foreignincome.CountryReceiveDividendIncomePage
@@ -32,7 +32,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import uk.gov.hmrc.play.language.LanguageUtils
-import viewmodels.checkAnswers.foreignincome.dividends.{ClaimForeignTaxCreditReliefSummary, IncomeBeforeForeignTaxDeductedSummary, CountryReceiveDividendIncomeSummary, ForeignTaxDeductedFromDividendIncomeSummary}
+import viewmodels.checkAnswers.foreignincome.dividends._
 import viewmodels.govuk.all.SummaryListViewModel
 import views.html.DividendsSectionCheckYourAnswersView
 
@@ -57,7 +57,7 @@ class DividendsSectionCheckYourAnswersController @Inject()(
         CountryReceiveDividendIncomeSummary.row(taxYear, 0, request.userAnswers, languageUtils.getCurrentLang.locale.toString),
         IncomeBeforeForeignTaxDeductedSummary.row(taxYear, country.code, request.userAnswers),
         ForeignTaxDeductedFromDividendIncomeSummary.row(taxYear, country.code, request.user.isAgentMessageKey, country, request.userAnswers),
-        //How much foreign tax was deducted?,
+        // TO DO -Add How much foreign tax was deducted?,
         ClaimForeignTaxCreditReliefSummary.row(taxYear, country.code, request.user.isAgentMessageKey, request.userAnswers)
       ).flatten
     )
@@ -66,28 +66,48 @@ class DividendsSectionCheckYourAnswersController @Inject()(
 
   def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
+      val country = request.userAnswers.get(CountryReceiveDividendIncomePage(0)).getOrElse(Country("", ""))
       request.userAnswers
         .get(ForeignDividends)
-      .fold {
-      val errorMsg =
-      s"Foreign dividends section is missing for userId: ${request.userId}, taxYear: $taxYear"
-      logger.error(errorMsg)
-      Future.successful(NotFound(errorMsg))
-      } { foreignDividends =>
-      saveDividends(taxYear, request, foreignDividends)
-      }
-  }
+      // TO DO - Save functionality plus backend work and remove redirect
+//      .fold {
+//      val errorMsg =
+//      s"Foreign dividends section is missing for userId: ${request.userId}, taxYear: $taxYear"
+//      logger.error(errorMsg)
+//      Future.successful(NotFound(errorMsg))
+//      } { foreignDividends =>
+//        saveDividends(taxYear, request, Some(foreignDividends), None)
+//      }
+      request.userAnswers
+        .get(ReadForeignDividendsByCountry(country.code))
+//        .fold {
+//          val errorMsg =
+//            s"Foreign dividends by country section is missing for userId: ${request.userId}, taxYear: $taxYear"
+//            logger.error(errorMsg)
+//            Future.successful(NotFound(errorMsg))
+//          } { foreignDividendsByCountry =>
+//            saveDividends(taxYear, request, None, Some(foreignDividendsByCountry))
+//          }
+      Future(Redirect(controllers.foreignincome.dividends.routes.DividendsSectionFinishedController.onPageLoad(taxYear)))
+        }
 
   private def saveDividends(
   taxYear: Int,
   request: DataRequest[AnyContent],
-  dividends: ForeignDividends
+  dividends: Option[ForeignDividends] ,
+  dividendsByCountry: Option[ForeignDividendsByCountry]
   )(implicit hc: HeaderCarrier): Future[Result] = {
     val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, JourneyPath.ForeignDividends)
     propertySubmissionService.saveForeignDividendsJourneyAnswers(context,dividends).flatMap {
       case Right(_) =>
-        Future
-          .successful(Redirect(controllers.foreignincome.dividends.routes.DividendsSectionFinishedController.onPageLoad(taxYear)))
+        propertySubmissionService.saveForeignDividendsJourneyAnswers(context,dividendsByCountry).flatMap {
+          case Right(_) =>
+            Future
+              .successful(Redirect(controllers.foreignincome.dividends.routes.DividendsSectionFinishedController.onPageLoad(taxYear)))
+          case Left(error) =>
+            logger.error(s"Failed to save Dividends section: ${error.toString}")
+            Future.failed(SaveJourneyAnswersFailed("Failed to save Dividends section"))
+        }
       case Left(error) =>
         logger.error(s"Failed to save Dividends section: ${error.toString}")
         Future.failed(SaveJourneyAnswersFailed("Failed to save Dividends section"))

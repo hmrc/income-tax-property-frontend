@@ -23,11 +23,9 @@ import play.api.libs.json.{Format, Json, JsPath}
 import queries.{Gettable, Settable}
 
 final case class ForeignDividends(
-  countryReceiveDividendIncome: Country,
-  incomeBeforeForeignTaxDeducted: BigDecimal,
+  dividendIncomeCountries: Array[Country],
   foreignTaxDeductedFromDividendIncome: Boolean,
-  //How much foreign tax was deducted?,
-  claimForeignTaxCreditRelief: Boolean
+  //How much foreign tax was deducted?
                                  )
 
 object ForeignDividends extends Gettable[ForeignDividends] with Settable[ForeignDividends]{

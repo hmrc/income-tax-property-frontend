@@ -19,7 +19,7 @@ package connectors
 import config.FrontendAppConfig
 import connectors.error.ApiError
 import connectors.response.{CreateOrUpdateJourneyAnswersResponse, DeleteJourneyAnswersResponse, GetPropertyPeriodicSubmissionResponse}
-import models.{DeleteJourneyAnswers, FetchedPropertyData, JourneyContext, JourneyName, User}
+import models.{DeleteJourneyAnswers, FetchedPropertyData, JourneyContext, User}
 import play.api.Logging
 import play.api.libs.json.{Json, Writes}
 import uk.gov.hmrc.http.client.HttpClientV2
@@ -141,6 +141,7 @@ class PropertySubmissionConnector @Inject() (httpClient: HttpClientV2, appConfig
                                                ctx: JourneyContext,
                                                body: A,
                                                incomeSourceId: String
-                                             )(implicit hc: HeaderCarrier): Future[Either[ApiError, Unit]] =
-    saveJourneyAnswers("foreign-property", ctx, body, incomeSourceId)
+                                             )(implicit hc: HeaderCarrier): Future[Either[ApiError, Unit]] = {
+    saveJourneyAnswers("foreign-income", ctx, body, incomeSourceId)
+  }
 }
