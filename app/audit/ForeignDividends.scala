@@ -24,8 +24,7 @@ import queries.{Gettable, Settable}
 
 final case class ForeignDividends(
   dividendIncomeCountries: Array[Country],
-  foreignTaxDeductedFromDividendIncome: Boolean,
-  //How much foreign tax was deducted?
+  foreignTaxDeductedFromDividendIncome: Boolean
                                  )
 
 object ForeignDividends extends Gettable[ForeignDividends] with Settable[ForeignDividends]{

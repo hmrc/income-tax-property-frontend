@@ -34,7 +34,7 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import uk.gov.hmrc.play.language.LanguageUtils
 import viewmodels.checkAnswers.foreignincome.dividends._
 import viewmodels.govuk.all.SummaryListViewModel
-import views.html.DividendsSectionCheckYourAnswersView
+import views.html.foreignincome.dividends.DividendsSectionCheckYourAnswersView
 
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -57,7 +57,7 @@ class DividendsSectionCheckYourAnswersController @Inject()(
         CountryReceiveDividendIncomeSummary.row(taxYear, 0, request.userAnswers, languageUtils.getCurrentLang.locale.toString),
         IncomeBeforeForeignTaxDeductedSummary.row(taxYear, country.code, request.userAnswers),
         ForeignTaxDeductedFromDividendIncomeSummary.row(taxYear, country.code, request.user.isAgentMessageKey, country, request.userAnswers),
-        // TO DO -Add How much foreign tax was deducted?,
+        HowMuchForeignTaxDeductedFromDividendIncomeSummary.row(taxYear, country.code, request.userAnswers),
         ClaimForeignTaxCreditReliefSummary.row(taxYear, country.code, request.user.isAgentMessageKey, request.userAnswers)
       ).flatten
     )

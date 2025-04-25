@@ -166,6 +166,6 @@ class PropertySubmissionService @Inject() (
               case Right(_)    => Right(())
             }
           }
-          .getOrElse(Future.successful(Left(UKPropertyDetailsError(ctx.nino, ctx.mtditid))))
+          .getOrElse(Future.successful(Left(ForeignPropertyDetailsError(ctx.nino, ctx.mtditid))))
     }
 }

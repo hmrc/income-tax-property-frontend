@@ -23,7 +23,8 @@ import queries.{Gettable, Settable}
 
 case class ForeignDividendsByCountry(
                                    incomeBeforeForeignTaxDeducted: BigDecimal,
-                                   claimForeignTaxCreditRelief: Boolean
+                                   claimForeignTaxCreditRelief: Boolean,
+                                   howMuchForeignTaxDeductedFromDividendIncome: BigDecimal
                                  )
 
 case object ForeignDividendsByCountry
