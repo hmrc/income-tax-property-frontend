@@ -38,7 +38,7 @@
     <p class="govuk-body">@messages(s"foreignIncomeTax.p.1.$individualOrAgent")</p>
     <p class="govuk-body">
     @messages(s"foreignIncomeTax.href.text.1")
-        <a class="govuk-link"  rel="noreferrer noopener" target="_blank" href="@messages("foreignIncomeTax.href.link")">
+        <a class="govuk-link" rel="noreferrer noopener" target="_blank" href="@messages("foreignIncomeTax.href.link")">
         @messages(s"foreignIncomeTax.href.text.2")
         </a>
     </p>
@@ -55,10 +55,11 @@
                         govukInput(
                             InputViewModel(
                                 field = form("foreignTaxPaidOrDeducted"),
-                                label = LabelViewModel(messages(s"foreignIncomeTax.yes.text.$individualOrAgent"))
+                                label = LabelViewModel(messages("foreignIncomeTax.yes.text"))
                             )
                             .asNumeric()
                             .withWidth(Fixed10)
+                            .withHint(HintViewModel(messages("foreignIncomeTax.yes.text.hint")))
                             .withPrefix(PrefixOrSuffix(content = Text("£")))
                         )
                     )

@@ -29,7 +29,7 @@ class ForeignPropertyRentalIncomeFormProvider @Inject() extends Mappings {
       "rentIncome" -> currency(
         s"foreignPropertyRentalIncome.error.required.$agentOrIndividual",
         "foreignPropertyRentalIncome.error.twoDecimalPlaces",
-        s"foreignPropertyRentalIncome.error.nonNumeric.$agentOrIndividual")
+        "foreignPropertyRentalIncome.error.nonNumeric")
         .verifying(inRange(BigDecimal(minimum), BigDecimal(maximum), "foreignPropertyRentalIncome.error.outOfRange"))
     )
 }
