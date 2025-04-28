@@ -16,7 +16,7 @@
 
 @import controllers.foreignincome.dividends.routes
 @import viewmodels.LegendSize
-@import models.YourForeignDividendsByCountryRow
+@import models.ForeignDividendByCountryTableRow
 @import viewmodels.checkAnswers.FormatUtils.bigDecimalCurrency
 
 @this(
@@ -28,14 +28,14 @@
     govukTable: GovukTable
 )
 
-@(form: Form[_], rows: Seq[YourForeignDividendsByCountryRow], taxYear: Int, individualOrAgent: String, mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], rows: Seq[ForeignDividendByCountryTableRow], taxYear: Int, individualOrAgent: String, mode: Mode)(implicit request: Request[_], messages: Messages)
 
-@changeLink(countryCode: String) = {
-    <a href="@controllers.routes.IndexController.onPageLoad">@messages("site.change")</a>
+@changeLink(changeUrl: String) = {
+    <a href="@changeUrl">@messages("site.change")</a>
 }
 
-@removeLink(taxYear: Int, index: Int, countryCode: String) = {
-    <a href="@routes.RemoveForeignDividendController.onPageLoad(taxYear, index)">@messages("site.remove")</a>
+@removeLink(removeUrl: String) = {
+    <a href="@removeUrl">@messages("site.remove")</a>
 }
 
 @layout(pageTitle = title(form, messages(s"yourForeignDividendsByCountry.title.$individualOrAgent"))) {
@@ -63,12 +63,12 @@
                 content = Empty
             )
         )),
-        rows = rows.zipWithIndex.map { case (row, idx) =>
+        rows = rows.map { row =>
             Seq(
                 TableRow(content = Text(row.country.name)),
                 TableRow(content = Text(bigDecimalCurrency(row.income)), classes = "govuk-!-text-align-right"),
-                TableRow(content = HtmlContent(changeLink(row.country.code)), classes = "govuk-!-text-align-right"),
-                TableRow(content = HtmlContent(removeLink(taxYear, idx, row.country.code)), classes = "govuk-!-text-align-right")
+                TableRow(content = HtmlContent(changeLink(row.changeLink)), classes = "govuk-!-text-align-right"),
+                TableRow(content = HtmlContent(removeLink(row.removeLink)), classes = "govuk-!-text-align-right")
             )
         }
     ))

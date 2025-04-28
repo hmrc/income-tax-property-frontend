@@ -52,7 +52,7 @@ class YourForeignDividendsByCountryController @Inject()(
   def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val currentLang = languageUtils.getCurrentLang.locale.toString
-      val rows = tableRows(request.userAnswers, currentLang)
+      val rows = YourForeignDividendsByCountrySummary.tableRows(taxYear, request.userAnswers, currentLang)
       val form: Form[Boolean] = formProvider(request.user.isAgentMessageKey)
       Ok(view(form, rows, taxYear, request.user.isAgentMessageKey, mode))
   }
@@ -60,7 +60,7 @@ class YourForeignDividendsByCountryController @Inject()(
   def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val currentLang = languageUtils.getCurrentLang.locale.toString
-      val rows = tableRows(request.userAnswers, currentLang)
+      val rows = YourForeignDividendsByCountrySummary.tableRows(taxYear, request.userAnswers, currentLang)
       val form: Form[Boolean] = formProvider(request.user.isAgentMessageKey)
       form.bindFromRequest().fold(
         formWithErrors =>
@@ -71,19 +71,5 @@ class YourForeignDividendsByCountryController @Inject()(
             _ <- sessionRepository.set(updatedAnswers)
           } yield Redirect(navigator.nextPage(YourForeignDividendsByCountryPage, taxYear, mode, request.userAnswers, updatedAnswers))
       )
-  }
-
-  private def tableRows(userAnswers: UserAnswers, currentLanguage: String)
-  : Seq[YourForeignDividendsByCountryRow] = {
-    val countries = userAnswers
-      .get(DividendIncomeSourceCountries)
-      .map(_.array.toList.flatMap { country =>
-        CountryNamesDataSource.getCountry(country.code, currentLanguage)
-      })
-      .toSeq
-      .flatten
-    countries.zipWithIndex.flatMap { case (_, idx) =>
-      YourForeignDividendsByCountrySummary.row(idx, userAnswers, currentLanguage)
-    }
   }
 }

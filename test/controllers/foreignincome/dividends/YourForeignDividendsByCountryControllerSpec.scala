@@ -18,7 +18,7 @@ package controllers.foreignincome.dividends
 
 import base.SpecBase
 import forms.foreignincome.dividends.YourForeignDividendsByCountryFormProvider
-import models.{NormalMode, YourForeignDividendsByCountryRow}
+import models.{NormalMode, ForeignDividendByCountryTableRow}
 import navigation.{FakeForeignIncomeNavigator, ForeignIncomeNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -41,7 +41,7 @@ class YourForeignDividendsByCountryControllerSpec extends SpecBase with MockitoS
   val formProvider = new YourForeignDividendsByCountryFormProvider()
   val individualOrAgent = "individual"
   val form: Form[Boolean] = formProvider(individualOrAgent)
-  val rows: Seq[YourForeignDividendsByCountryRow] = Seq()
+  val rows: Seq[ForeignDividendByCountryTableRow] = Seq()
 
   lazy val yourForeignDividendsByCountryRoute: String = routes.YourForeignDividendsByCountryController.onPageLoad(taxYear, NormalMode).url
 

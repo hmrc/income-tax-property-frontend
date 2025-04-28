@@ -22,3 +22,10 @@ case class YourForeignDividendsByCountryRow(
   country: Country,
   income: BigDecimal
 )
+
+case class ForeignDividendByCountryTableRow(
+  country: Country,
+  income: BigDecimal,
+  changeLink: String,
+  removeLink: String
+)
