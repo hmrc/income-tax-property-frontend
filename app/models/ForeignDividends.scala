@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package audit
+package models
 
-import models.ForeignIncome
 import pages.PageConstants.foreignDividendsPath
 import pages.foreign.Country
 import play.api.libs.json.{Format, Json, JsPath}

@@ -16,11 +16,10 @@
 
 package controllers.foreignincome.dividends
 
-import audit.{ForeignDividends, ForeignDividendsByCountry, ReadForeignDividendsByCountry}
 import controllers.actions._
 import controllers.exceptions.SaveJourneyAnswersFailed
 import service.PropertySubmissionService
-import models.{JourneyPath, JourneyContext}
+import models.{ForeignDividends, JourneyPath, ReadForeignDividendsByCountry, JourneyContext, ForeignDividendsByCountry}
 import models.requests.DataRequest
 import pages.foreign.Country
 import pages.foreignincome.CountryReceiveDividendIncomePage

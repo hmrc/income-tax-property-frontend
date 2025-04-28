@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package audit
+package models
 
 import models.ForeignIncome
 import pages.PageConstants.foreignDividendsPath
