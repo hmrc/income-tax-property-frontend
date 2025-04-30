@@ -23,6 +23,7 @@ import views.html.foreignincome.dividends.ForeignDividendsStartView
 
 class ForeignDividendsStartControllerSpec extends SpecBase {
 
+  val index = 0
   val taxYear = 2024
 
   "ForeignDividendsStart Controller" - {
@@ -39,7 +40,7 @@ class ForeignDividendsStartControllerSpec extends SpecBase {
         val view = application.injector.instanceOf[ForeignDividendsStartView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(isAgentMessageString)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(taxYear, index, isAgentMessageString)(request, messages(application)).toString
       }
     }
   }

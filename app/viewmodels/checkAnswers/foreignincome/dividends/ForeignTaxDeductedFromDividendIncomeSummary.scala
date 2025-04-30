@@ -29,7 +29,7 @@ import viewmodels.implicits._
 object ForeignTaxDeductedFromDividendIncomeSummary  {
 
   def row(taxYear: Int, countryCode: String, individualOrAgent: String, country: Country, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(ForeignTaxDeductedFromDividendIncomePage).map {
+    answers.get(ForeignTaxDeductedFromDividendIncomePage(countryCode)).map {
       answer =>
 
         val value = if (answer) "site.yes" else "site.no"

@@ -20,7 +20,7 @@ import controllers.actions._
 import controllers.exceptions.InternalErrorFailure
 import forms.foreignincome.dividends.ForeignTaxDeductedFromDividendIncomeFormProvider
 import models.Mode
-import navigation.Navigator
+import navigation.ForeignIncomeNavigator
 import pages.foreignincome.dividends.ForeignTaxDeductedFromDividendIncomePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
@@ -36,7 +36,7 @@ import scala.concurrent.{ExecutionContext, Future}
 class ForeignTaxDeductedFromDividendIncomeController @Inject()(
                                          override val messagesApi: MessagesApi,
                                          sessionRepository: SessionRepository,
-                                         navigator: Navigator,
+                                         navigator: ForeignIncomeNavigator,
                                          identify: IdentifierAction,
                                          getData: DataRetrievalAction,
                                          requireData: DataRequiredAction,
@@ -51,7 +51,7 @@ class ForeignTaxDeductedFromDividendIncomeController @Inject()(
   def onPageLoad(taxYear: Int, countryCode: String, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val form = formProvider(request.user.isAgentMessageKey)
-      val preparedForm = request.userAnswers.get(ForeignTaxDeductedFromDividendIncomePage) match {
+      val preparedForm = request.userAnswers.get(ForeignTaxDeductedFromDividendIncomePage(countryCode)) match {
         case None => form
         case Some(value) => form.fill(value)
       }
@@ -76,9 +76,9 @@ class ForeignTaxDeductedFromDividendIncomeController @Inject()(
           },
         value =>
           for {
-            updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignTaxDeductedFromDividendIncomePage, value))
+            updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignTaxDeductedFromDividendIncomePage(countryCode), value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(ForeignTaxDeductedFromDividendIncomePage, taxYear, mode, request.userAnswers, updatedAnswers))
+          } yield Redirect(navigator.nextPage(ForeignTaxDeductedFromDividendIncomePage(countryCode), taxYear, mode, request.userAnswers, updatedAnswers))
       )
   }
 }

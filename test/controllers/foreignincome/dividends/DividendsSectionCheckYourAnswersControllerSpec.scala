@@ -40,13 +40,14 @@ import scala.concurrent.Future
 
 class DividendsSectionCheckYourAnswersControllerSpec extends SpecBase with MockitoSugar with SummaryListFluency {
   val taxYear = 2024
+  val countryCode = "ESP"
 
 
   "DividendsSectionCheckYourAnswers Controller" - {
 
     def submitOnwardRoute: Call = Call(
       "POST",
-      "/update-and-submit-income-tax-return/property/2024/foreign-income/dividends/section-finished"
+      "/update-and-submit-income-tax-return/property/2024/foreign-income/dividends/your-foreign-dividends-by-country"
     )
 
     "must return OK and the correct view for a GET" in {
@@ -55,14 +56,14 @@ class DividendsSectionCheckYourAnswersControllerSpec extends SpecBase with Mocki
       val list = SummaryListViewModel(Seq.empty)
 
       running(application) {
-        val request = FakeRequest(GET, DividendsSectionCheckYourAnswersController.onPageLoad(taxYear).url)
+        val request = FakeRequest(GET, DividendsSectionCheckYourAnswersController.onPageLoad(taxYear, countryCode).url)
 
         val result = route(application, request).value
 
         val view = application.injector.instanceOf[DividendsSectionCheckYourAnswersView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(list, taxYear)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(list, taxYear, countryCode)(request, messages(application)).toString
       }
     }
 
@@ -71,7 +72,7 @@ class DividendsSectionCheckYourAnswersControllerSpec extends SpecBase with Mocki
       val application = applicationBuilder(userAnswers = None, isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, DividendsSectionCheckYourAnswersController.onPageLoad(taxYear).url)
+        val request = FakeRequest(GET, DividendsSectionCheckYourAnswersController.onPageLoad(taxYear, countryCode).url)
 
         val result = route(application, request).value
 
@@ -113,7 +114,7 @@ class DividendsSectionCheckYourAnswersControllerSpec extends SpecBase with Mocki
 
       running(application) {
         val request =
-          FakeRequest(POST, DividendsSectionCheckYourAnswersController.onSubmit(taxYear).url)
+          FakeRequest(POST, DividendsSectionCheckYourAnswersController.onSubmit(taxYear, countryCode).url)
 
         val result = route(application, request).value
 

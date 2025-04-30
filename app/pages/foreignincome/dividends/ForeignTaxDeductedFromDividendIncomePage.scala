@@ -16,14 +16,28 @@
 
 package pages.foreignincome.dividends
 
-import models.ForeignIncome
+import models.{ForeignIncome, UserAnswers}
 import pages.PageConstants.foreignDividendsPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 
-case object ForeignTaxDeductedFromDividendIncomePage extends QuestionPage[Boolean] {
+import scala.util.Try
 
-  override def path: JsPath = JsPath \ foreignDividendsPath(ForeignIncome) \ toString
+case class ForeignTaxDeductedFromDividendIncomePage(countryCode: String) extends QuestionPage[Boolean] {
+
+  override def path: JsPath = JsPath \ foreignDividendsPath(ForeignIncome) \ countryCode.toUpperCase \ toString
 
   override def toString: String = "foreignTaxDeductedFromDividendIncome"
+
+  override def cleanup(value: Option[Boolean], userAnswers: UserAnswers): Try[UserAnswers] = {
+    if(value.contains(false)){
+      for {
+        howMuchForeignTaxDeducted <- userAnswers.remove(HowMuchForeignTaxDeductedFromDividendIncomePage(countryCode))
+        claimForeignTaxCreditRelief <- howMuchForeignTaxDeducted.remove(ClaimForeignTaxCreditReliefPage(countryCode))
+      } yield claimForeignTaxCreditRelief
+    } else {
+      super.cleanup(value, userAnswers)
+    }
+
+  }
 }

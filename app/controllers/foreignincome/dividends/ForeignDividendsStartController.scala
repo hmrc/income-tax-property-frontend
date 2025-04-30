@@ -17,6 +17,8 @@
 package controllers.foreignincome.dividends
 
 import controllers.actions._
+import models.UserAnswers
+import pages.foreignincome.DividendIncomeSourceCountries
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -35,6 +37,10 @@ class ForeignDividendsStartController @Inject()(
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData) {
     implicit request =>
-      Ok(view(request.user.isAgentMessageKey))
+      val nextIndex =
+        request.userAnswers.flatMap(userAnswers => userAnswers.get(DividendIncomeSourceCountries))
+          .map(_.toSeq.length)
+          .getOrElse(0)
+      Ok(view(taxYear, nextIndex, request.user.isAgentMessageKey))
   }
 }
