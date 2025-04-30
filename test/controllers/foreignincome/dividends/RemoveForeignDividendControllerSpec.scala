@@ -17,8 +17,8 @@
 package controllers.foreignincome.dividends
 
 import base.SpecBase
-import forms.foreignincome.dividends.YourForeignDividendsByCountryFormProvider
-import models.{NormalMode, ForeignDividendByCountryTableRow}
+import forms.foreignincome.dividends.RemoveForeignDividendFormProvider
+import models.YourForeignDividendsByCountryRow
 import navigation.{FakeForeignIncomeNavigator, ForeignIncomeNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -29,37 +29,37 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.foreignincome.dividends.YourForeignDividendsByCountryView
+import views.html.foreignincome.dividends.RemoveForeignDividendView
 
 import scala.concurrent.Future
 
-class YourForeignDividendsByCountryControllerSpec extends SpecBase with MockitoSugar {
+class RemoveForeignDividendControllerSpec extends SpecBase with MockitoSugar {
 
   def onwardRoute: Call = Call("GET", "/foo")
   val taxYear = 2025
 
-  val formProvider = new YourForeignDividendsByCountryFormProvider()
-  val individualOrAgent = "individual"
-  val form: Form[Boolean] = formProvider(individualOrAgent)
-  val rows: Seq[ForeignDividendByCountryTableRow] = Seq()
+  val formProvider = new RemoveForeignDividendFormProvider()
+  val index: Int = 0
+  val form: Form[Boolean] = formProvider("")
+  val row: Option[YourForeignDividendsByCountryRow] = None
 
-  lazy val yourForeignDividendsByCountryRoute: String = routes.YourForeignDividendsByCountryController.onPageLoad(taxYear, NormalMode).url
+  lazy val removeForeignDividendRoute: String = routes.RemoveForeignDividendController.onPageLoad(taxYear, index).url
 
-  "YourForeignDividendsByCountry Controller" - {
+  "RemoveForeignDividend Controller" - {
 
     "must return OK and the correct view for a GET" in {
 
       val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, yourForeignDividendsByCountryRoute)
+        val request = FakeRequest(GET, removeForeignDividendRoute)
 
         val result = route(application, request).value
 
-        val view = application.injector.instanceOf[YourForeignDividendsByCountryView]
+        val view = application.injector.instanceOf[RemoveForeignDividendView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, rows, taxYear, individualOrAgent, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, taxYear, index, row)(request, messages(application)).toString
       }
     }
 
@@ -79,8 +79,8 @@ class YourForeignDividendsByCountryControllerSpec extends SpecBase with MockitoS
 
       running(application) {
         val request =
-          FakeRequest(POST, yourForeignDividendsByCountryRoute)
-            .withFormUrlEncodedBody(("yourForeignDividendsByCountry", "true"))
+          FakeRequest(POST, removeForeignDividendRoute)
+            .withFormUrlEncodedBody(("removeForeignDividend", "true"))
 
         val result = route(application, request).value
 
@@ -95,31 +95,17 @@ class YourForeignDividendsByCountryControllerSpec extends SpecBase with MockitoS
 
       running(application) {
         val request =
-          FakeRequest(POST, yourForeignDividendsByCountryRoute)
+          FakeRequest(POST, removeForeignDividendRoute)
             .withFormUrlEncodedBody(("value", ""))
 
         val boundForm = form.bind(Map("value" -> ""))
 
-        val view = application.injector.instanceOf[YourForeignDividendsByCountryView]
+        val view = application.injector.instanceOf[RemoveForeignDividendView]
 
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, rows, taxYear, individualOrAgent, NormalMode)(request, messages(application)).toString
-      }
-    }
-
-    "must redirect to Journey Recovery for a GET if no existing data is found" in {
-
-      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
-
-      running(application) {
-        val request = FakeRequest(GET, yourForeignDividendsByCountryRoute)
-
-        val result = route(application, request).value
-
-        status(result) mustEqual SEE_OTHER
-        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
+        contentAsString(result) mustEqual view(boundForm, taxYear, index, row)(request, messages(application)).toString
       }
     }
 
@@ -129,7 +115,7 @@ class YourForeignDividendsByCountryControllerSpec extends SpecBase with MockitoS
 
       running(application) {
         val request =
-          FakeRequest(POST, yourForeignDividendsByCountryRoute)
+          FakeRequest(POST, removeForeignDividendRoute)
             .withFormUrlEncodedBody(("value", "true"))
 
         val result = route(application, request).value

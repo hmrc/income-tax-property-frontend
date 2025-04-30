@@ -14,18 +14,16 @@
  * limitations under the License.
  */
 
-package models
+package pages.foreignincome.dividends
 
-import pages.foreign.Country
+import models.ForeignIncome
+import pages.PageConstants.foreignDividendsPath
+import pages.QuestionPage
+import play.api.libs.json.JsPath
 
-case class YourForeignDividendsByCountryRow(
-  country: Country,
-  income: BigDecimal
-)
+case object RemoveForeignDividendPage extends QuestionPage[Boolean] {
 
-case class ForeignDividendByCountryTableRow(
-  country: Country,
-  income: BigDecimal,
-  changeLink: String,
-  removeLink: String
-)
+  override def path: JsPath = JsPath \ foreignDividendsPath(ForeignIncome) \ toString
+
+  override def toString: String = "removeForeignDividend"
+}

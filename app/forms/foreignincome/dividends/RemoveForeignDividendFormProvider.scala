@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 
-package models
+package forms.foreignincome.dividends
 
-import pages.foreign.Country
+import forms.mappings.Mappings
+import play.api.data.Form
 
-case class YourForeignDividendsByCountryRow(
-  country: Country,
-  income: BigDecimal
-)
+import javax.inject.Inject
 
-case class ForeignDividendByCountryTableRow(
-  country: Country,
-  income: BigDecimal,
-  changeLink: String,
-  removeLink: String
-)
+class RemoveForeignDividendFormProvider @Inject() extends Mappings {
+
+  def apply(countryName: String): Form[Boolean] =
+    Form(
+      "removeForeignDividend" -> boolean(s"removeForeignDividend.error.required", args=Seq(countryName))
+    )
+}
