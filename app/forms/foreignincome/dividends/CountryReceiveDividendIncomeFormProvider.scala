@@ -23,11 +23,11 @@ import play.api.data.Form
 
 class CountryReceiveDividendIncomeFormProvider @Inject() extends Mappings {
 
-  def apply(userAnswers: UserAnswers): Form[String] =
+  def apply(index: Int, userAnswers: UserAnswers): Form[String] =
     Form(
       "country-autocomplete" -> text("countryReceiveDividendIncome.error.required")
         .verifying(validCountry("countryReceiveDividendIncome.error.validCountry"))
-        .verifying(dividendCountryAlreadySelected("countryReceiveDividendIncome.error.countryAlreadySelected", userAnswers))
+        .verifying(dividendCountryAlreadySelected("countryReceiveDividendIncome.error.countryAlreadySelected", index, userAnswers))
         .verifying(regexp("^[A-Za-z ]*?$", "countryReceiveDividendIncome.error.validCharacters"))
     )
 }

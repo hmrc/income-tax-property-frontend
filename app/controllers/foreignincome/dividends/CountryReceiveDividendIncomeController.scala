@@ -53,7 +53,7 @@ class CountryReceiveDividendIncomeController @Inject()(
   def onPageLoad(taxYear: Int, index: Int, mode: Mode): Action[AnyContent] = (identify andThen getData) {
     implicit request =>
       if (request.userAnswers.isEmpty) {sessionService.createNewEmptySession(request.userId)}
-      val form: Form[String] = formProvider(request.userAnswers.getOrElse(UserAnswers(request.userId)))
+      val form: Form[String] = formProvider(index, request.userAnswers.getOrElse(UserAnswers(request.userId)))
       val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.userId)).get(CountryReceiveDividendIncomePage(index)) match {
         case None => form
         case Some(value) => form.fill(value.code)
@@ -64,7 +64,7 @@ class CountryReceiveDividendIncomeController @Inject()(
 
   def onSubmit(taxYear: Int, index: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val form: Form[String] = formProvider(request.userAnswers)
+      val form: Form[String] = formProvider(index, request.userAnswers)
       form.bindFromRequest().fold(
         formWithErrors =>
           Future.successful(BadRequest(view(formWithErrors, taxYear, index, request.user.isAgentMessageKey, mode, countrySelectItemsWithUSA(languageUtils.getCurrentLang.locale.toString)))),

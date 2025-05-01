@@ -26,7 +26,7 @@ import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
-import service.{CountryNamesDataSource, SessionService}
+import service.CountryNamesDataSource
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import uk.gov.hmrc.play.language.LanguageUtils
 import viewmodels.checkAnswers.foreignincome.dividends.YourForeignDividendsByCountrySummary
@@ -45,16 +45,14 @@ class YourForeignDividendsByCountryController @Inject()(
   formProvider: YourForeignDividendsByCountryFormProvider,
   val controllerComponents: MessagesControllerComponents,
   view: YourForeignDividendsByCountryView,
-  sessionService: SessionService,
   languageUtils: LanguageUtils
 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
 
-  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData) {
+  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
-      if (request.userAnswers.isEmpty) {sessionService.createNewEmptySession(request.userId)}
       val currentLang = languageUtils.getCurrentLang.locale.toString
-      val rows = YourForeignDividendsByCountrySummary.tableRows(taxYear, request.userAnswers.getOrElse(UserAnswers(request.userId)), currentLang)
+      val rows = YourForeignDividendsByCountrySummary.tableRows(taxYear, request.userAnswers, currentLang)
       val form: Form[Boolean] = formProvider(request.user.isAgentMessageKey)
       Ok(view(form, rows, taxYear, request.user.isAgentMessageKey, mode))
   }

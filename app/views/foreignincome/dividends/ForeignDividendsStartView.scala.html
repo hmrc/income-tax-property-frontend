@@ -32,22 +32,10 @@
     <p class="govuk-body">@messages(s"foreignDividendsStart.p3.${individualOrAgent}")</p>
 
     <div>
-        @if(index == 0){
-            @continueButton(
-                routes.CountryReceiveDividendIncomeController.onPageLoad(taxYear, index, NormalMode).url
-            )
-        } else {
-            @continueButton(
-                routes.YourForeignDividendsByCountryController.onPageLoad(taxYear, NormalMode).url
-            )
-        }
+        @govukButton(
+            ButtonViewModel(messages("site.continue"))
+            .asLink(routes.CountryReceiveDividendIncomeController.onPageLoad(taxYear, index, NormalMode).url)
+            .withId("continue")
+        )
     </div>
-}
-
-@continueButton(redirectUrl: String) = @{
-    govukButton(
-        ButtonViewModel(messages("site.continue"))
-        .asLink(redirectUrl)
-        .withId("continue")
-    )
 }

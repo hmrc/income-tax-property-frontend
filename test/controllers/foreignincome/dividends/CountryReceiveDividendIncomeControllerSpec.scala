@@ -48,7 +48,7 @@ class CountryReceiveDividendIncomeControllerSpec extends SpecBase with MockitoSu
   val userType = "agent"
   val userAnswers: UserAnswers = UserAnswers(userAnswersId).set(CountryReceiveDividendIncomePage(index), country).success.value
   val formProvider = new CountryReceiveDividendIncomeFormProvider()
-  val form: Form[String] = formProvider(userAnswers)
+  val form: Form[String] = formProvider(index, userAnswers)
 
   lazy val countryReceiveDividendIncomeRoute: String = CountryReceiveDividendIncomeController.onPageLoad(taxYear, index, NormalMode).url
 

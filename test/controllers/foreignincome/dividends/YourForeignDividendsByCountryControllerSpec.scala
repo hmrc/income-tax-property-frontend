@@ -108,6 +108,19 @@ class YourForeignDividendsByCountryControllerSpec extends SpecBase with MockitoS
         contentAsString(result) mustEqual view(boundForm, rows, taxYear, individualOrAgent, NormalMode)(request, messages(application)).toString
       }
     }
+    "must redirect to Journey Recovery for a GET if no existing data is found" in {
+
+      val application = applicationBuilder(userAnswers = None, isAgent = true).build()
+
+      running(application) {
+        val request = FakeRequest(GET, yourForeignDividendsByCountryRoute)
+
+        val result = route(application, request).value
+
+        status(result) mustEqual SEE_OTHER
+        redirectLocation(result).value mustEqual controllers.routes.JourneyRecoveryController.onPageLoad().url
+      }
+    }
 
 
     "must redirect to Journey Recovery for a POST if no existing data is found" in {
