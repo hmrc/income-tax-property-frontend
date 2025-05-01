@@ -18,15 +18,18 @@ package controllers.foreignincome.dividends
 
 import controllers.actions._
 import models.UserAnswers
-import pages.foreignincome.DividendIncomeSourceCountries
+import pages.foreign.{ClaimForeignTaxCreditReliefPage, Country}
+import pages.foreignincome.dividends.{ForeignTaxDeductedFromDividendIncomePage, HowMuchForeignTaxDeductedFromDividendIncomePage}
+import pages.foreignincome.{DividendIncomeSourceCountries, IncomeBeforeForeignTaxDeductedPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
+import service.CountryNamesDataSource
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.foreignincome.dividends.ForeignDividendsStartView
 
 import javax.inject.Inject
 
-class ForeignDividendsStartController @Inject()(
+class ForeignDividendsStartController @Inject() (
   override val messagesApi: MessagesApi,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
@@ -35,12 +38,26 @@ class ForeignDividendsStartController @Inject()(
   view: ForeignDividendsStartView
 ) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData) {
-    implicit request =>
-      val nextIndex =
-        request.userAnswers.flatMap(userAnswers => userAnswers.get(DividendIncomeSourceCountries))
-          .map(_.toSeq.length)
-          .getOrElse(0)
-      Ok(view(taxYear, nextIndex, request.user.isAgentMessageKey))
+  def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData) { implicit request =>
+    val nextIndex = getNextIndex(request.userAnswers)
+    Ok(view(taxYear, nextIndex, request.user.isAgentMessageKey))
   }
+
+  private def getNextIndex(userAnswers: Option[UserAnswers]): Int =
+    userAnswers.map { userAnswers =>
+      val countryArr: Array[Country] = userAnswers.get(DividendIncomeSourceCountries).getOrElse(Array.empty)
+      countryArr.foldLeft(countryArr.length) { (acc, country) =>
+        (
+          userAnswers.get(IncomeBeforeForeignTaxDeductedPage(country.code)),
+          userAnswers.get(ForeignTaxDeductedFromDividendIncomePage(country.code)),
+          userAnswers.get(HowMuchForeignTaxDeductedFromDividendIncomePage(country.code)),
+          userAnswers.get(ClaimForeignTaxCreditReliefPage(country.code))
+        ) match {
+          case (Some(_), Some(true), Some(_), Some(_)) => acc
+          case (Some(_), Some(false), _, _)            => acc
+          case _                                       => countryArr.indexOf(country) min acc
+        }
+      }
+    }
+      .getOrElse(0)
 }
