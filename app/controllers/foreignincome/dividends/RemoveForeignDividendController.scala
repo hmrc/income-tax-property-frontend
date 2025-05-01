@@ -85,7 +85,7 @@ class RemoveForeignDividendController @Inject() (
       removeCountry  <- Future.fromTry(updatedAnswers.remove(CountryReceiveDividendIncomePage(index)))
       _              <- sessionRepository.set(removeCountry)
     } yield Redirect(
-      navigator.nextPage(RemoveForeignDividendPage, taxYear, NormalMode, userAnswers, updatedAnswers)
+      navigator.nextPage(RemoveForeignDividendPage, taxYear, NormalMode, userAnswers, removeCountry)
     )
 
 }

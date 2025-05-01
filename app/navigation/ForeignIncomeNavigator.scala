@@ -45,6 +45,8 @@ class ForeignIncomeNavigator @Inject() (foreignIncomeCYADiversionService: Foreig
       taxYear => _ => userAnswers => yourForeignDividendsByCountryNavigation(taxYear, userAnswers)
     case DividendsSectionFinishedPage =>
       taxYear => _ => _ => SummaryController.show(taxYear)
+    case RemoveForeignDividendPage =>
+      taxYear => _ => userAnswers => removeForeignDividendNavigation(taxYear, userAnswers)
     case _ => _ => _ => _ => controllers.routes.IndexController.onPageLoad
 
   }
@@ -109,6 +111,15 @@ class ForeignIncomeNavigator @Inject() (foreignIncomeCYADiversionService: Foreig
         CountryReceiveDividendIncomeController.onPageLoad(taxYear, index, NormalMode)
       case Some(false) =>
         DividendsSectionFinishedController.onPageLoad(taxYear)
+    }
+  }
+
+  private def removeForeignDividendNavigation(taxYear: Int, userAnswers: UserAnswers): Call = {
+    val index = userAnswers.get(DividendIncomeSourceCountries).map(_.length).getOrElse(0)
+    userAnswers.get(RemoveForeignDividendPage) match {
+      case Some(true) if index >= 1 => YourForeignDividendsByCountryController.onPageLoad(taxYear, NormalMode)
+      case Some(true) => CountryReceiveDividendIncomeController.onPageLoad(taxYear, index, NormalMode)
+      case _ => YourForeignDividendsByCountryController.onPageLoad(taxYear, NormalMode)
     }
   }
 }
