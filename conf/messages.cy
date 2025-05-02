@@ -3172,7 +3172,8 @@ countryReceiveDividendIncome.error.required = *Missing Welsh*
 countryReceiveDividendIncome.error.validCountry = *Missing Welsh*
 countryReceiveDividendIncome.error.countryAlreadySelected = *Missing Welsh*
 countryReceiveDividendIncome.error.validCharacters = *Missing Welsh*
-countryReceiveDividendIncome.checkYourAnswersLabel = *Missing Welsh*
+countryReceiveDividendIncome.checkYourAnswersLabel.individual = *Missing Welsh*
+countryReceiveDividendIncome.checkYourAnswersLabel.agent = *Missing Welsh*
 countryReceiveDividendIncome.change.hidden = *Missing Welsh*
 
 dividendsClaimForeignTaxCreditRelief.title.individual = *Missing Welsh*

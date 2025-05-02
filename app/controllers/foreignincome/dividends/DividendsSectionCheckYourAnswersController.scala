@@ -55,11 +55,11 @@ class DividendsSectionCheckYourAnswersController @Inject() (
         case (index, country) =>
           Seq(
             CountryReceiveDividendIncomeSummary
-              .row(taxYear, index, request.userAnswers, languageUtils.getCurrentLang.locale.toString),
+              .row(taxYear, index, request.userAnswers, languageUtils.getCurrentLang.locale.toString, request.user.isAgentMessageKey),
             IncomeBeforeForeignTaxDeductedSummary.row(taxYear, country.code, request.userAnswers),
             ForeignTaxDeductedFromDividendIncomeSummary
-              .row(taxYear, country.code, request.user.isAgentMessageKey, country, request.userAnswers),
-            HowMuchForeignTaxDeductedFromDividendIncomeSummary.row(taxYear, country.code, request.userAnswers),
+              .row(taxYear, country, request.user.isAgentMessageKey, request.userAnswers),
+            HowMuchForeignTaxDeductedFromDividendIncomeSummary.row(taxYear, country, request.userAnswers, request.user.isAgentMessageKey),
             ClaimForeignTaxCreditReliefSummary
               .row(taxYear, country.code, request.user.isAgentMessageKey, request.userAnswers)
           ).flatten
