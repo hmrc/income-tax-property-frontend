@@ -39,7 +39,7 @@ object HowMuchForeignTaxDeductedFromDividendIncomeSummary  {
           actions = Seq(
             ActionItemViewModel(
               "site.change", HowMuchForeignTaxDeductedFromDividendIncomeController.onPageLoad(taxYear, country.code, CheckMode).url)
-              .withVisuallyHiddenText(messages("foreignTaxDeductedFromDividendIncome.change.hidden"))
+              .withVisuallyHiddenText(messages("howMuchForeignTaxDeductedFromDividendIncome.change.hidden"))
           )
         )
     }

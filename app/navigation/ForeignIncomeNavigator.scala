@@ -17,14 +17,15 @@
 package navigation
 
 import com.google.inject.Singleton
-import models._
-import pages.Page
-import pages.foreignincome._
-import play.api.mvc.Call
-import service.ForeignIncomeCYADiversionService
 import controllers.foreignincome.dividends.routes._
 import controllers.routes.SummaryController
+import models._
+import pages.Page
+import pages.foreign.Country
+import pages.foreignincome._
 import pages.foreignincome.dividends._
+import play.api.mvc.Call
+import service.ForeignIncomeCYADiversionService
 
 import javax.inject.Inject
 
@@ -104,10 +105,28 @@ class ForeignIncomeNavigator @Inject() (foreignIncomeCYADiversionService: Foreig
     }
   }
 
+  private def getNextIndex(countryArr: Array[Country], userAnswers: Option[UserAnswers]): Int =
+    userAnswers.map { userAnswers =>
+        countryArr.foldLeft(countryArr.length) { (acc, country) =>
+          (
+            userAnswers.get(IncomeBeforeForeignTaxDeductedPage(country.code)),
+            userAnswers.get(ForeignTaxDeductedFromDividendIncomePage(country.code)),
+            userAnswers.get(HowMuchForeignTaxDeductedFromDividendIncomePage(country.code)),
+            userAnswers.get(ClaimForeignTaxCreditReliefPage(country.code))
+          ) match {
+            case (Some(_), Some(true), Some(_), Some(_)) => acc
+            case (Some(_), Some(false), _, _)            => acc
+            case _                                       => countryArr.indexOf(country) min acc
+          }
+        }
+      }
+      .getOrElse(0)
+
   private def yourForeignDividendsByCountryNavigation(taxYear: Int, userAnswers: UserAnswers): Call = {
     userAnswers.get(YourForeignDividendsByCountryPage) match {
       case Some(true) =>
-        val index = userAnswers.get(DividendIncomeSourceCountries).map(_.length).getOrElse(0)
+        val countries = userAnswers.get(DividendIncomeSourceCountries).getOrElse(Array.empty)
+        val index = getNextIndex(countries, Some(userAnswers))
         CountryReceiveDividendIncomeController.onPageLoad(taxYear, index, NormalMode)
       case Some(false) =>
         DividendsSectionFinishedController.onPageLoad(taxYear)
