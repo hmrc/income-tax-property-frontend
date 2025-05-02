@@ -20,7 +20,7 @@ import base.SpecBase
 import controllers.foreignincome.dividends.routes._
 import models.{CheckMode, NormalMode, UserAnswers}
 import pages.foreign.Country
-import pages.foreignincome.{CountryReceiveDividendIncomePage, IncomeBeforeForeignTaxDeductedPage}
+import pages.foreignincome.{CountryReceiveDividendIncomePage, DividendIncomeSourceCountries, IncomeBeforeForeignTaxDeductedPage}
 import pages.foreignincome.dividends._
 import service.ForeignIncomeCYADiversionService
 
@@ -128,6 +128,51 @@ class ForeignIncomeNavigatorSpec extends SpecBase {
           ua
         ) mustBe DividendsSectionFinishedController.onPageLoad(taxYear)
       }
+      "must go from the 'Remove Foreign Dividend Income' page to 'Foreign Dividends Income Country' " +
+        "when the user selects yes to remove their only Dividend Income" in {
+        val ua = UserAnswers("test")
+          .set(RemoveForeignDividendPage, true)
+          .get
+
+        navigator.nextPage(
+          RemoveForeignDividendPage,
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          ua
+        ) mustBe CountryReceiveDividendIncomeController.onPageLoad(taxYear, 0, NormalMode)
+      }
+      "must go from the 'Remove Foreign Dividend Income' page to 'Your Foreign Dividends by Country' " +
+      "when the user selects yes to remove one of their Dividend Incomes" in {
+        val country: Country = Country("Spain", "ESP")
+        val ua = UserAnswers("test")
+          .set(RemoveForeignDividendPage, true)
+          .flatMap(_.set(DividendIncomeSourceCountries, Array(country)))
+          .get
+
+        navigator.nextPage(
+          RemoveForeignDividendPage,
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          ua
+        ) mustBe YourForeignDividendsByCountryController.onPageLoad(taxYear, NormalMode)
+      }
+      "must go from the 'Remove Foreign Dividend Income' page to 'Your Foreign Dividends by Country' " +
+        "when the user selects no" in {
+        val ua = UserAnswers("test")
+          .set(RemoveForeignDividendPage, false)
+          .get
+
+        navigator.nextPage(
+          RemoveForeignDividendPage,
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          ua
+        ) mustBe YourForeignDividendsByCountryController.onPageLoad(taxYear, NormalMode)
+      }
+
     }
     "in Check mode" - {
       "must go from the 'Foreign Dividends Income Country' page to the 'Dividend Income Before Foreign Tax Deducted' page" in {
