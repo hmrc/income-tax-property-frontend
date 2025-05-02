@@ -18,11 +18,13 @@ package controllers.foreignincome.dividends
 
 import base.SpecBase
 import forms.foreignincome.dividends.RemoveForeignDividendFormProvider
-import models.YourForeignDividendsByCountryRow
+import models.{UserAnswers, YourForeignDividendsByCountryRow}
 import navigation.{FakeForeignIncomeNavigator, ForeignIncomeNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
+import pages.foreign.Country
+import pages.foreignincome.CountryReceiveDividendIncomePage
 import play.api.data.Form
 import play.api.inject.bind
 import play.api.mvc.Call
@@ -67,10 +69,15 @@ class RemoveForeignDividendControllerSpec extends SpecBase with MockitoSugar {
 
       val mockSessionRepository = mock[SessionRepository]
 
+      val ua = UserAnswers("test")
+        .set(CountryReceiveDividendIncomePage(index), Country("Spain", "ESP"))
+        .toOption
+
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
+
       val application =
-        applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false)
+        applicationBuilder(userAnswers = ua, isAgent = false)
           .overrides(
             bind[ForeignIncomeNavigator].toInstance(new FakeForeignIncomeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)

@@ -49,7 +49,7 @@ class SelectIncomeCountryFormProviderSpec extends StringFieldBehaviours with Spe
     behave like fieldThatBindsValidData(
       form,
       fieldName,
-      Gen.oneOf(CountryNamesDataSource.loadCountriesEn.map(_.code))
+      Gen.oneOf(CountryNamesDataSource.loadCountriesEn.map(_.code).filterNot(_ === country.code))
     )
   }
 }
