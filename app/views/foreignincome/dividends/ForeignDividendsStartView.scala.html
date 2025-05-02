@@ -21,7 +21,7 @@
     govukButton: GovukButton
 )
 
-@(taxYear: Int, index: Int, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
+@(taxYear: Int, continueLink: String, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("foreignDividendsStart.title"))) {
 
@@ -34,7 +34,7 @@
     <div>
         @govukButton(
             ButtonViewModel(messages("site.continue"))
-            .asLink(routes.CountryReceiveDividendIncomeController.onPageLoad(taxYear, index, NormalMode).url)
+            .asLink(continueLink)
             .withId("continue")
         )
     </div>

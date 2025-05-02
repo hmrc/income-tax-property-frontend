@@ -16,14 +16,14 @@
 
 package controllers.foreignincome.dividends
 
+import controllers.foreignincome.dividends.routes.{YourForeignDividendsByCountryController, CountryReceiveDividendIncomeController}
 import controllers.actions._
-import models.UserAnswers
-import pages.foreign.{ClaimForeignTaxCreditReliefPage, Country}
-import pages.foreignincome.dividends.{ForeignTaxDeductedFromDividendIncomePage, HowMuchForeignTaxDeductedFromDividendIncomePage}
+import models.{NormalMode, UserAnswers}
+import pages.foreign.Country
+import pages.foreignincome.dividends.{ClaimForeignTaxCreditReliefPage, ForeignTaxDeductedFromDividendIncomePage, HowMuchForeignTaxDeductedFromDividendIncomePage}
 import pages.foreignincome.{DividendIncomeSourceCountries, IncomeBeforeForeignTaxDeductedPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import service.CountryNamesDataSource
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.foreignincome.dividends.ForeignDividendsStartView
 
@@ -33,19 +33,23 @@ class ForeignDividendsStartController @Inject() (
   override val messagesApi: MessagesApi,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
-  requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
   view: ForeignDividendsStartView
 ) extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData) { implicit request =>
-    val nextIndex = getNextIndex(request.userAnswers)
-    Ok(view(taxYear, nextIndex, request.user.isAgentMessageKey))
+    val countryArr: Array[Country] = request.userAnswers.flatMap(_.get(DividendIncomeSourceCountries)).getOrElse(Array.empty)
+    val nextIndex = getNextIndex(countryArr, request.userAnswers)
+    val nextPageLink: String = if (nextIndex > 0 && nextIndex == countryArr.length){
+      YourForeignDividendsByCountryController.onPageLoad(taxYear, NormalMode).url
+    } else {
+      CountryReceiveDividendIncomeController.onPageLoad(taxYear, nextIndex, NormalMode).url
+    }
+    Ok(view(taxYear, nextPageLink, request.user.isAgentMessageKey))
   }
 
-  private def getNextIndex(userAnswers: Option[UserAnswers]): Int =
+  private def getNextIndex(countryArr: Array[Country], userAnswers: Option[UserAnswers]): Int =
     userAnswers.map { userAnswers =>
-      val countryArr: Array[Country] = userAnswers.get(DividendIncomeSourceCountries).getOrElse(Array.empty)
       countryArr.foldLeft(countryArr.length) { (acc, country) =>
         (
           userAnswers.get(IncomeBeforeForeignTaxDeductedPage(country.code)),

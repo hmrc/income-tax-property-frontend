@@ -16,7 +16,9 @@
 
 package controllers.foreignincome.dividends
 
+import controllers.foreignincome.dividends.routes.CountryReceiveDividendIncomeController
 import base.SpecBase
+import models.NormalMode
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import views.html.foreignincome.dividends.ForeignDividendsStartView
@@ -25,6 +27,7 @@ class ForeignDividendsStartControllerSpec extends SpecBase {
 
   val index = 0
   val taxYear = 2024
+  val continueUrl: String = CountryReceiveDividendIncomeController.onPageLoad(taxYear, index, NormalMode).url
 
   "ForeignDividendsStart Controller" - {
 
@@ -40,7 +43,7 @@ class ForeignDividendsStartControllerSpec extends SpecBase {
         val view = application.injector.instanceOf[ForeignDividendsStartView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(taxYear, index, isAgentMessageString)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(taxYear, continueUrl, isAgentMessageString)(request, messages(application)).toString
       }
     }
   }
