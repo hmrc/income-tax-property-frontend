@@ -3170,12 +3170,13 @@ incomeBeforeForeignTaxDeducted.p5.individual = Use the conversion rate for the m
 incomeBeforeForeignTaxDeducted.p5.agent = Use the conversion rate for the month in which your client received their dividend income.
 incomeBeforeForeignTaxDeducted.input.label.individual = How much dividend income did you receive from {0} before foreign tax was deducted?
 incomeBeforeForeignTaxDeducted.input.label.agent = How much dividend income did your client receive from {0} before foreign tax was deducted?
-incomeBeforeForeignTaxDeducted.input.p = Enter the amount in pounds for 6 April 2023 to 5 April 2024.
+incomeBeforeForeignTaxDeducted.input.p = Enter the amount in pounds for 6 April {0} to 5 April {1}.
 incomeBeforeForeignTaxDeducted.input.hint = For example, £600 or £600.20
 incomeBeforeForeignTaxDeducted.error.required = Enter an amount between 0 and 100,000,000
 incomeBeforeForeignTaxDeducted.error.twoDecimalPlaces = The amount entered can only include pounds and pence
 incomeBeforeForeignTaxDeducted.error.nonNumeric = The amount must be a number, for example £900 or £100.20
-incomeBeforeForeignTaxDeducted.checkYourAnswersLabel = Dividend income received before foreign tax was deducted
+incomeBeforeForeignTaxDeducted.checkYourAnswersLabel.individual = How much dividend income did you receive from {0} before foreign tax was deducted?
+incomeBeforeForeignTaxDeducted.checkYourAnswersLabel.agent = How much dividend income did your client receive from {0} before foreign tax was deducted?
 incomeBeforeForeignTaxDeducted.change.hidden = How much dividend income did you receive from {0} before foreign tax was deducted?
 
 foreignTaxDeductedFromDividendIncome.title.individual = Have you had foreign tax deducted from your dividend income from {0}?
@@ -3253,8 +3254,8 @@ yourForeignDividendsByCountry.table.header.country = Country
 yourForeignDividendsByCountry.table.header.income = Income
 
 
-removeForeignDividend.title = Do you want to remove {0} foreign dividend income?
-removeForeignDividend.heading = Do you want to remove {0} foreign dividend income?
+removeForeignDividend.title = Do you want to remove foreign dividend income from {0}?
+removeForeignDividend.heading = Do you want to remove foreign dividend income from {0}?
 removeForeignDividend.error.required = Select yes if you want to remove foreign dividend income from {0}
 removeForeignDividend.table.header.country = Country
 removeForeignDividend.table.header.income = Income

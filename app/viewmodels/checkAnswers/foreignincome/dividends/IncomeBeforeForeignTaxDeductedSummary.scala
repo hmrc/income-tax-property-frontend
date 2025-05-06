@@ -18,24 +18,25 @@ package viewmodels.checkAnswers.foreignincome.dividends
 
 import controllers.foreignincome.dividends.routes
 import models.{CheckMode, UserAnswers}
+import pages.foreign.Country
 import pages.foreignincome.IncomeBeforeForeignTaxDeductedPage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
-import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
+import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass, valueCssClass}
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
 object IncomeBeforeForeignTaxDeductedSummary  {
 
-  def row(taxYear: Int, countryCode: String, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(IncomeBeforeForeignTaxDeductedPage(countryCode)).map {
+  def row(taxYear: Int, country: Country, answers: UserAnswers, individualOrAgent: String)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(IncomeBeforeForeignTaxDeductedPage(country.code)).map {
       answer =>
 
         SummaryListRowViewModel(
-          key     = KeyViewModel("incomeBeforeForeignTaxDeducted.checkYourAnswersLabel").withCssClass(keyCssClass),
-          value   = ValueViewModel(answer.toString).withCssClass(valueCssClass),
+          key     = KeyViewModel(messages(s"incomeBeforeForeignTaxDeducted.checkYourAnswersLabel.$individualOrAgent", country.name)).withCssClass(keyCssClass),
+          value   = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
           actions = Seq(
-            ActionItemViewModel("site.change", routes.IncomeBeforeForeignTaxDeductedController.onPageLoad(taxYear, countryCode, CheckMode).url)
+            ActionItemViewModel("site.change", routes.IncomeBeforeForeignTaxDeductedController.onPageLoad(taxYear, country.code, CheckMode).url)
               .withVisuallyHiddenText(messages("incomeBeforeForeignTaxDeducted.change.hidden"))
           )
         )

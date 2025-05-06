@@ -56,7 +56,7 @@ class DividendsSectionCheckYourAnswersController @Inject() (
           Seq(
             CountryReceiveDividendIncomeSummary
               .row(taxYear, index, request.userAnswers, languageUtils.getCurrentLang.locale.toString, request.user.isAgentMessageKey),
-            IncomeBeforeForeignTaxDeductedSummary.row(taxYear, country.code, request.userAnswers),
+            IncomeBeforeForeignTaxDeductedSummary.row(taxYear, country, request.userAnswers, request.user.isAgentMessageKey ),
             ForeignTaxDeductedFromDividendIncomeSummary
               .row(taxYear, country, request.user.isAgentMessageKey, request.userAnswers),
             HowMuchForeignTaxDeductedFromDividendIncomeSummary.row(taxYear, country, request.userAnswers, request.user.isAgentMessageKey),
