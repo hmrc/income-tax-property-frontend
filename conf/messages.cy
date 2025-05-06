@@ -3147,7 +3147,8 @@ incomeBeforeForeignTaxDeducted.input.hint = *Missing Welsh*
 incomeBeforeForeignTaxDeducted.error.required = *Missing Welsh*
 incomeBeforeForeignTaxDeducted.error.twoDecimalPlaces = *Missing Welsh*
 incomeBeforeForeignTaxDeducted.error.nonNumeric = *Missing Welsh*
-incomeBeforeForeignTaxDeducted.checkYourAnswersLabel = *Missing Welsh*
+incomeBeforeForeignTaxDeducted.checkYourAnswersLabel.individual = *Missing Welsh*
+incomeBeforeForeignTaxDeducted.checkYourAnswersLabel.agent = *Missing Welsh*
 incomeBeforeForeignTaxDeducted.change.hidden = *Missing Welsh*
 
 foreignTaxDeductedFromDividendIncome.title.individual = *Missing Welsh*
@@ -3172,7 +3173,8 @@ countryReceiveDividendIncome.error.required = *Missing Welsh*
 countryReceiveDividendIncome.error.validCountry = *Missing Welsh*
 countryReceiveDividendIncome.error.countryAlreadySelected = *Missing Welsh*
 countryReceiveDividendIncome.error.validCharacters = *Missing Welsh*
-countryReceiveDividendIncome.checkYourAnswersLabel = *Missing Welsh*
+countryReceiveDividendIncome.checkYourAnswersLabel.individual = *Missing Welsh*
+countryReceiveDividendIncome.checkYourAnswersLabel.agent = *Missing Welsh*
 countryReceiveDividendIncome.change.hidden = *Missing Welsh*
 
 dividendsClaimForeignTaxCreditRelief.title.individual = *Missing Welsh*

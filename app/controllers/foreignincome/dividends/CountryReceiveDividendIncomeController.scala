@@ -20,14 +20,14 @@ import controllers.actions._
 import forms.foreignincome.dividends.CountryReceiveDividendIncomeFormProvider
 
 import javax.inject.Inject
-import models.Mode
+import models.{Mode, UserAnswers}
 import navigation.ForeignIncomeNavigator
 import pages.foreignincome.CountryReceiveDividendIncomePage
 import play.api.data.Form
-import play.api.i18n.{MessagesApi, I18nSupport}
+import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
-import service.CountryNamesDataSource
+import service.{CountryNamesDataSource, SessionService}
 import service.CountryNamesDataSource.countrySelectItemsWithUSA
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import uk.gov.hmrc.play.language.LanguageUtils
@@ -46,13 +46,15 @@ class CountryReceiveDividendIncomeController @Inject()(
                                         formProvider: CountryReceiveDividendIncomeFormProvider,
                                         val controllerComponents: MessagesControllerComponents,
                                         view: CountryReceiveDividendIncomeView,
+                                        sessionService: SessionService,
                                         languageUtils: LanguageUtils
                                     )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int, index: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(taxYear: Int, index: Int, mode: Mode): Action[AnyContent] = (identify andThen getData) {
     implicit request =>
-      val form: Form[String] = formProvider(request.userAnswers)
-      val preparedForm = request.userAnswers.get(CountryReceiveDividendIncomePage(index)) match {
+      if (request.userAnswers.isEmpty) {sessionService.createNewEmptySession(request.userId)}
+      val form: Form[String] = formProvider(index, request.userAnswers.getOrElse(UserAnswers(request.userId)))
+      val preparedForm = request.userAnswers.getOrElse(UserAnswers(request.userId)).get(CountryReceiveDividendIncomePage(index)) match {
         case None => form
         case Some(value) => form.fill(value.code)
       }
@@ -62,7 +64,7 @@ class CountryReceiveDividendIncomeController @Inject()(
 
   def onSubmit(taxYear: Int, index: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
-      val form: Form[String] = formProvider(request.userAnswers)
+      val form: Form[String] = formProvider(index, request.userAnswers)
       form.bindFromRequest().fold(
         formWithErrors =>
           Future.successful(BadRequest(view(formWithErrors, taxYear, index, request.user.isAgentMessageKey, mode, countrySelectItemsWithUSA(languageUtils.getCurrentLang.locale.toString)))),
@@ -76,7 +78,15 @@ class CountryReceiveDividendIncomeController @Inject()(
                 .getOrElse(Failure(new NoSuchElementException(s"Country code '$countryCode' not recognised")))
             )
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(CountryReceiveDividendIncomePage(index), taxYear, mode, request.userAnswers, updatedAnswers))
+          } yield Redirect(
+            navigator.nextPage(
+              CountryReceiveDividendIncomePage(index),
+              taxYear,
+              mode,
+              request.userAnswers,
+              updatedAnswers
+            )
+          )
       )
   }
 }

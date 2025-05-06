@@ -3170,12 +3170,13 @@ incomeBeforeForeignTaxDeducted.p5.individual = Use the conversion rate for the m
 incomeBeforeForeignTaxDeducted.p5.agent = Use the conversion rate for the month in which your client received their dividend income.
 incomeBeforeForeignTaxDeducted.input.label.individual = How much dividend income did you receive from {0} before foreign tax was deducted?
 incomeBeforeForeignTaxDeducted.input.label.agent = How much dividend income did your client receive from {0} before foreign tax was deducted?
-incomeBeforeForeignTaxDeducted.input.p = Enter the amount in pounds for 6 April 2023 to 5 April 2024.
+incomeBeforeForeignTaxDeducted.input.p = Enter the amount in pounds for 6 April {0} to 5 April {1}.
 incomeBeforeForeignTaxDeducted.input.hint = For example, £600 or £600.20
 incomeBeforeForeignTaxDeducted.error.required = Enter an amount between 0 and 100,000,000
 incomeBeforeForeignTaxDeducted.error.twoDecimalPlaces = The amount entered can only include pounds and pence
 incomeBeforeForeignTaxDeducted.error.nonNumeric = The amount must be a number, for example £900 or £100.20
-incomeBeforeForeignTaxDeducted.checkYourAnswersLabel = Dividend income received before foreign tax was deducted
+incomeBeforeForeignTaxDeducted.checkYourAnswersLabel.individual = How much dividend income did you receive from {0} before foreign tax was deducted?
+incomeBeforeForeignTaxDeducted.checkYourAnswersLabel.agent = How much dividend income did your client receive from {0} before foreign tax was deducted?
 incomeBeforeForeignTaxDeducted.change.hidden = How much dividend income did you receive from {0} before foreign tax was deducted?
 
 foreignTaxDeductedFromDividendIncome.title.individual = Have you had foreign tax deducted from your dividend income from {0}?
@@ -3190,9 +3191,9 @@ foreignTaxDeductedFromDividendIncome.change.hidden.individual = Have you had for
 foreignTaxDeductedFromDividendIncome.change.hidden.agent = Has your client had foreign tax deducted from their dividend income from {0}?
 
 countryReceiveDividendIncome.title.individual = Which country did you receive your dividend income from?
-countryReceiveDividendIncome.title.agent = Which country did you receive your client dividend income from?
+countryReceiveDividendIncome.title.agent = Which country did your client receive their dividend income from?
 countryReceiveDividendIncome.heading.individual = Which country did you receive your dividend income from?
-countryReceiveDividendIncome.heading.agent = Which country did you receive your client dividend income from?
+countryReceiveDividendIncome.heading.agent = Which country did your client receive their dividend income from?
 countryReceiveDividendIncome.info = Tell us about all the dividend income that you received from this country. You can add dividend income from other countries later.
 countryReceiveDividendIncome.legend = Country
 countryReceiveDividendIncome.hint = Start typing in the box to find the country name
@@ -3200,7 +3201,8 @@ countryReceiveDividendIncome.error.required = Select a country by starting to ty
 countryReceiveDividendIncome.error.validCountry = Select a country from the dropdown list
 countryReceiveDividendIncome.error.countryAlreadySelected = Select a country you have not already chosen
 countryReceiveDividendIncome.error.validCharacters = Select a country by entering alphabetical characters only
-countryReceiveDividendIncome.checkYourAnswersLabel = Which country did you receive your dividend income from?
+countryReceiveDividendIncome.checkYourAnswersLabel.individual = Which country did you receive your dividend income from?
+countryReceiveDividendIncome.checkYourAnswersLabel.agent = Which country did your client receive their dividend income from?
 countryReceiveDividendIncome.change.hidden = Dividend income country
 
 dividendsClaimForeignTaxCreditRelief.title.individual = Do you want to claim Foreign Tax Credit Relief?
@@ -3252,8 +3254,8 @@ yourForeignDividendsByCountry.table.header.country = Country
 yourForeignDividendsByCountry.table.header.income = Income
 
 
-removeForeignDividend.title = Do you want to remove {0} foreign dividend income?
-removeForeignDividend.heading = Do you want to remove {0} foreign dividend income?
+removeForeignDividend.title = Do you want to remove foreign dividend income from {0}?
+removeForeignDividend.heading = Do you want to remove foreign dividend income from {0}?
 removeForeignDividend.error.required = Select yes if you want to remove foreign dividend income from {0}
 removeForeignDividend.table.header.country = Country
 removeForeignDividend.table.header.income = Income

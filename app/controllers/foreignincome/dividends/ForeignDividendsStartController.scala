@@ -16,7 +16,12 @@
 
 package controllers.foreignincome.dividends
 
+import controllers.foreignincome.dividends.routes.{YourForeignDividendsByCountryController, CountryReceiveDividendIncomeController}
 import controllers.actions._
+import models.{NormalMode, UserAnswers}
+import pages.foreign.Country
+import pages.foreignincome.dividends.{ClaimForeignTaxCreditReliefPage, ForeignTaxDeductedFromDividendIncomePage, HowMuchForeignTaxDeductedFromDividendIncomePage}
+import pages.foreignincome.{DividendIncomeSourceCountries, IncomeBeforeForeignTaxDeductedPage}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
@@ -24,17 +29,39 @@ import views.html.foreignincome.dividends.ForeignDividendsStartView
 
 import javax.inject.Inject
 
-class ForeignDividendsStartController @Inject()(
+class ForeignDividendsStartController @Inject() (
   override val messagesApi: MessagesApi,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
-  requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
   view: ForeignDividendsStartView
 ) extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData) {
-    implicit request =>
-      Ok(view(request.user.isAgentMessageKey))
+  def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData) { implicit request =>
+    val countryArr: Array[Country] = request.userAnswers.flatMap(_.get(DividendIncomeSourceCountries)).getOrElse(Array.empty)
+    val nextIndex = getNextIndex(countryArr, request.userAnswers)
+    val nextPageLink: String = if (nextIndex > 0 && nextIndex == countryArr.length){
+      YourForeignDividendsByCountryController.onPageLoad(taxYear, NormalMode).url
+    } else {
+      CountryReceiveDividendIncomeController.onPageLoad(taxYear, nextIndex, NormalMode).url
+    }
+    Ok(view(taxYear, nextPageLink, request.user.isAgentMessageKey))
   }
+
+  private def getNextIndex(countryArr: Array[Country], userAnswers: Option[UserAnswers]): Int =
+    userAnswers.map { userAnswers =>
+      countryArr.foldLeft(countryArr.length) { (acc, country) =>
+        (
+          userAnswers.get(IncomeBeforeForeignTaxDeductedPage(country.code)),
+          userAnswers.get(ForeignTaxDeductedFromDividendIncomePage(country.code)),
+          userAnswers.get(HowMuchForeignTaxDeductedFromDividendIncomePage(country.code)),
+          userAnswers.get(ClaimForeignTaxCreditReliefPage(country.code))
+        ) match {
+          case (Some(_), Some(true), Some(_), Some(_)) => acc
+          case (Some(_), Some(false), _, _)            => acc
+          case _                                       => countryArr.indexOf(country) min acc
+        }
+      }
+    }
+      .getOrElse(0)
 }

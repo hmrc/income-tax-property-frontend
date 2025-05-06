@@ -14,12 +14,14 @@
  * limitations under the License.
  *@
 
+@import controllers.foreignincome.dividends.routes
+
 @this(
     layout: templates.Layout,
     govukButton: GovukButton
 )
 
-@(individualOrAgent: String)(implicit request: Request[_], messages: Messages)
+@(taxYear: Int, continueLink: String, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
 
 @layout(pageTitle = titleNoForm(messages("foreignDividendsStart.title"))) {
 
@@ -32,7 +34,7 @@
     <div>
         @govukButton(
             ButtonViewModel(messages("site.continue"))
-            .asLink(controllers.routes.IndexController.onPageLoad.url)
+            .asLink(continueLink)
             .withId("continue")
         )
     </div>

@@ -20,7 +20,7 @@ import base.SpecBase
 import controllers.routes
 import forms.foreignincome.dividends.ForeignTaxDeductedFromDividendIncomeFormProvider
 import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, Navigator}
+import navigation.{FakeForeignIncomeNavigator, ForeignIncomeNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
@@ -67,7 +67,7 @@ class ForeignTaxDeductedFromDividendIncomeControllerSpec extends SpecBase with M
 
     "must populate the view correctly on a GET when the question has previously been answered" in {
 
-      val userAnswers = UserAnswers(userAnswersId).set(ForeignTaxDeductedFromDividendIncomePage, true).success.value
+      val userAnswers = UserAnswers(userAnswersId).set(ForeignTaxDeductedFromDividendIncomePage(country.code), true).success.value
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false).build()
 
@@ -92,7 +92,7 @@ class ForeignTaxDeductedFromDividendIncomeControllerSpec extends SpecBase with M
       val application =
         applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = false)
           .overrides(
-            bind[Navigator].toInstance(new FakeNavigator(onwardRoute)),
+            bind[ForeignIncomeNavigator].toInstance(new FakeForeignIncomeNavigator(onwardRoute)),
             bind[SessionRepository].toInstance(mockSessionRepository)
           )
           .build()

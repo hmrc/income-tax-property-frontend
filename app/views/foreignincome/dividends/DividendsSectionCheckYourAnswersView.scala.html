@@ -21,14 +21,14 @@
         govukSummaryList: GovukSummaryList,
 )
 
-@(list: SummaryList, taxYear: Int)(implicit request: Request[_], messages: Messages)
+@(list: SummaryList, taxYear: Int, countryCode: String)(implicit request: Request[_], messages: Messages)
 
     @layout(pageTitle = titleNoForm(messages("checkYourAnswers.title"))) {
 
         <span class="govuk-caption-l">@messages("property.caption", (taxYear - 1).toString, taxYear.toString)</span>
         <h1 class="govuk-heading-l">@messages("checkYourAnswers.heading")</h1>
 
-        @formHelper(action = controllers.foreignincome.dividends.routes.DividendsSectionCheckYourAnswersController.onSubmit(taxYear), Symbol("autoComplete") -> "off") {
+        @formHelper(action = controllers.foreignincome.dividends.routes.DividendsSectionCheckYourAnswersController.onSubmit(taxYear, countryCode), Symbol("autoComplete") -> "off") {
 
             @govukSummaryList(list)
 

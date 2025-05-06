@@ -17,6 +17,7 @@
 package viewmodels.checkAnswers.foreignincome.dividends
 
 import models.{ForeignDividendByCountryTableRow, UserAnswers}
+import pages.foreign.Country
 import pages.foreignincome.{DividendIncomeSourceCountries, IncomeBeforeForeignTaxDeductedPage}
 import service.CountryNamesDataSource
 
@@ -25,20 +26,22 @@ object YourForeignDividendsByCountrySummary {
     answers
       .get(DividendIncomeSourceCountries)
       .map { countries =>
-        countries.toSeq.map { country =>
+        countries.toSeq.flatMap { country =>
           (
             CountryNamesDataSource.getCountry(country.code, currentLang),
             answers.get(IncomeBeforeForeignTaxDeductedPage(country.code))
           ) match {
             case (Some(country), Some(income)) =>
-              ForeignDividendByCountryTableRow(
-                country = country,
-                income = income,
-                changeLink = "TODO", // TODO - implement once CYA page has been created
-                removeLink = controllers.foreignincome.dividends.routes.RemoveForeignDividendController
-                  .onPageLoad(taxYear, countries.indexOf(country))
-                  .url
-              )
+              Seq(
+                ForeignDividendByCountryTableRow(
+                  country = country,
+                  income = income,
+                  changeLink = "TODO", // TODO - implement once CYA page has been created
+                  removeLink = controllers.foreignincome.dividends.routes.RemoveForeignDividendController
+                    .onPageLoad(taxYear, countries.indexOf(country))
+                    .url
+                ))
+            case _ => Seq.empty
           }
         }
       }

@@ -15,9 +15,9 @@
  */
 
 package viewmodels.checkAnswers.foreignincome.dividends
-
-import controllers.routes
+ import controllers.foreignincome.dividends.routes.HowMuchForeignTaxDeductedFromDividendIncomeController
 import models.{CheckMode, UserAnswers}
+import pages.foreign.Country
 import pages.foreignincome.dividends.HowMuchForeignTaxDeductedFromDividendIncomePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
@@ -27,16 +27,19 @@ import viewmodels.implicits._
 
 object HowMuchForeignTaxDeductedFromDividendIncomeSummary  {
 
-  def row(taxYear: Int, countryCode: String, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(HowMuchForeignTaxDeductedFromDividendIncomePage(countryCode)).map {
+  def row(taxYear: Int, country: Country, answers: UserAnswers, individualOrAgent: String)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(HowMuchForeignTaxDeductedFromDividendIncomePage(country.code)).map {
       answer =>
-
         SummaryListRowViewModel(
-          key     = KeyViewModel("foreignTaxDeductedFromDividendIncome.checkYourAnswersLabel").withCssClass(keyCssClass),
+          key     = KeyViewModel(messages(
+            s"howMuchForeignTaxDeductedFromDividendIncome.checkYourAnswersLabel.$individualOrAgent",
+            country.name
+          )).withCssClass(keyCssClass),
           value   = ValueViewModel(bigDecimalCurrency(answer)).withCssClass(valueCssClass),
           actions = Seq(
-            ActionItemViewModel("site.change", controllers.foreignincome.dividends.routes.HowMuchForeignTaxDeductedFromDividendIncomeController.onPageLoad(taxYear, countryCode, CheckMode).url)
-              .withVisuallyHiddenText(messages("foreignTaxDeductedFromDividendIncome.change.hidden"))
+            ActionItemViewModel(
+              "site.change", HowMuchForeignTaxDeductedFromDividendIncomeController.onPageLoad(taxYear, country.code, CheckMode).url)
+              .withVisuallyHiddenText(messages("howMuchForeignTaxDeductedFromDividendIncome.change.hidden"))
           )
         )
     }

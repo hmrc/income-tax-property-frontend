@@ -30,12 +30,12 @@ import viewmodels.checkAnswers.FormatUtils.{keyCssClass, valueCssClass}
 
 object CountryReceiveDividendIncomeSummary  {
 
-  def row(taxYear: Int, index: Int, answers: UserAnswers, currentLang: String)(implicit messages: Messages): Option[SummaryListRow] =
+  def row(taxYear: Int, index: Int, answers: UserAnswers, currentLang: String, individualOrAgent: String)(implicit messages: Messages): Option[SummaryListRow] =
     answers.get(CountryReceiveDividendIncomePage(index)).map {
       answer =>
 
         SummaryListRowViewModel(
-          key     = KeyViewModel("countryReceiveDividendIncome.checkYourAnswersLabel").withCssClass(keyCssClass),
+          key     = KeyViewModel(s"countryReceiveDividendIncome.checkYourAnswersLabel.$individualOrAgent").withCssClass(keyCssClass),
           value   = ValueViewModel(HtmlFormat.escape(CountryNamesDataSource.getCountry(answer.code, currentLang).getOrElse(Country("", "")).name).toString).withCssClass(valueCssClass),
           actions = Seq(
             ActionItemViewModel("site.change", CountryReceiveDividendIncomeController.onPageLoad(taxYear, index, CheckMode).url)

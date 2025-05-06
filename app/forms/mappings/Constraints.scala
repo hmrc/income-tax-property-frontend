@@ -17,7 +17,7 @@
 package forms.mappings
 
 import models.{Addressable, ForeignAddressable, UserAnswers}
-import pages.foreign.IncomeSourceCountries
+import pages.foreign.{Country, IncomeSourceCountries}
 import pages.foreignincome.DividendIncomeSourceCountries
 import play.api.data.validation.{Constraint, Invalid, Valid}
 import service.CountryNamesDataSource.loadCountriesEn
@@ -168,13 +168,20 @@ trait Constraints {
         Invalid(errorMsg)
     }
 
-  def dividendCountryAlreadySelected(errorMsg: String, userAnswers: UserAnswers): Constraint[String] =
+  def dividendCountryAlreadySelected(errorMsg: String, index: Int, userAnswers: UserAnswers): Constraint[String] = {
+    val countries: Option[Array[Country]] = userAnswers.get(DividendIncomeSourceCountries)
+    val alreadySelected: String => Boolean = countries.toSeq.flatten.map(_.code).contains(_)
+    val atCurrentIndex: Boolean => String => Boolean = {
+      case true => countryCode => countries.forall(_.map(_.code).indexOf(countryCode) == index)
+      case false => _ => true
+    }
     Constraint {
       case countryCode
-        if !userAnswers.get(DividendIncomeSourceCountries).toSeq.flatten.map(_.code).contains(countryCode) =>
+        if atCurrentIndex(alreadySelected(countryCode))(countryCode) =>
         Valid
       case _ =>
         Invalid(errorMsg)
     }
+  }
 
 }

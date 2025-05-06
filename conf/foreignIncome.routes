@@ -33,8 +33,8 @@ POST       /:taxYear/foreign-income/dividends/your-foreign-dividends-by-country 
 GET        /:taxYear/foreign-income/dividends/change-your-foreign-dividends-by-country                                  controllers.foreignincome.dividends.YourForeignDividendsByCountryController.onPageLoad(taxYear: Int, mode: Mode = CheckMode)
 POST       /:taxYear/foreign-income/dividends/change-your-foreign-dividends-by-country                                  controllers.foreignincome.dividends.YourForeignDividendsByCountryController.onSubmit(taxYear: Int, mode: Mode = CheckMode)
 
-GET        /:taxYear/foreign-income/dividends/check-your-answers                                                        controllers.foreignincome.dividends.DividendsSectionCheckYourAnswersController.onPageLoad(taxYear: Int)
-POST       /:taxYear/foreign-income/dividends/check-your-answers                                                        controllers.foreignincome.dividends.DividendsSectionCheckYourAnswersController.onSubmit(taxYear: Int)
+GET        /:taxYear/foreign-income/dividends/:countryCode/check-your-answers                                                        controllers.foreignincome.dividends.DividendsSectionCheckYourAnswersController.onPageLoad(taxYear: Int, countryCode: String)
+POST       /:taxYear/foreign-income/dividends/:countryCode/check-your-answers                                                        controllers.foreignincome.dividends.DividendsSectionCheckYourAnswersController.onSubmit(taxYear: Int, countryCode: String)
 
 GET        /:taxYear/foreign-income/dividends/:index/remove-foreign-dividend                                            controllers.foreignincome.dividends.RemoveForeignDividendController.onPageLoad(taxYear: Int, index: Int)
 POST       /:taxYear/foreign-income/dividends/:index/remove-foreign-dividend                                            controllers.foreignincome.dividends.RemoveForeignDividendController.onSubmit(taxYear: Int, index: Int)

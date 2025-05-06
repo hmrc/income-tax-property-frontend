@@ -46,7 +46,7 @@
     <p class="govuk-body">@messages(s"incomeBeforeForeignTaxDeducted.p5.$individualOrAgent")</p>
 
     <h2 class="govuk-heading-m">@messages(s"incomeBeforeForeignTaxDeducted.input.label.$individualOrAgent", country.name)</h2>
-    <p class="govuk-body">@messages("incomeBeforeForeignTaxDeducted.input.p")</p>
+    <p class="govuk-body">@messages("incomeBeforeForeignTaxDeducted.input.p", (taxYear-1).toString, taxYear.toString)</p>
 
     @formHelper(action = routes.IncomeBeforeForeignTaxDeductedController.onSubmit(taxYear, country.code, mode), Symbol("autoComplete") -> "off") {
 

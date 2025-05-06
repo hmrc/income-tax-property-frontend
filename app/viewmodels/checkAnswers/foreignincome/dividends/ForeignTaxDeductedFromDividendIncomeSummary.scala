@@ -16,7 +16,7 @@
 
 package viewmodels.checkAnswers.foreignincome.dividends
 
-import controllers.routes
+import controllers.foreignincome.dividends.routes.ForeignTaxDeductedFromDividendIncomeController
 import models.{CheckMode, UserAnswers}
 import pages.foreign.Country
 import pages.foreignincome.dividends.ForeignTaxDeductedFromDividendIncomePage
@@ -28,8 +28,8 @@ import viewmodels.implicits._
 
 object ForeignTaxDeductedFromDividendIncomeSummary  {
 
-  def row(taxYear: Int, countryCode: String, individualOrAgent: String, country: Country, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(ForeignTaxDeductedFromDividendIncomePage).map {
+  def row(taxYear: Int, country: Country, individualOrAgent: String, answers: UserAnswers)(implicit messages: Messages): Option[SummaryListRow] =
+    answers.get(ForeignTaxDeductedFromDividendIncomePage(country.code)).map {
       answer =>
 
         val value = if (answer) "site.yes" else "site.no"
@@ -38,7 +38,7 @@ object ForeignTaxDeductedFromDividendIncomeSummary  {
           key     = KeyViewModel(messages(s"foreignTaxDeductedFromDividendIncome.checkYourAnswersLabel.${individualOrAgent}", country.name)).withCssClass(keyCssClass),
           value   = ValueViewModel(value).withCssClass(valueCssClass),
           actions = Seq(
-            ActionItemViewModel("site.change", controllers.foreignincome.dividends.routes.ForeignTaxDeductedFromDividendIncomeController.onPageLoad(taxYear, countryCode, CheckMode).url)
+            ActionItemViewModel("site.change", ForeignTaxDeductedFromDividendIncomeController.onPageLoad(taxYear, country.code, CheckMode).url)
               .withVisuallyHiddenText(messages(s"foreignTaxDeductedFromDividendIncome.change.hidden.${individualOrAgent}", country.name))
           )
         )

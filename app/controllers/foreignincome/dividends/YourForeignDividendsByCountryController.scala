@@ -18,15 +18,13 @@ package controllers.foreignincome.dividends
 
 import controllers.actions._
 import forms.foreignincome.dividends.YourForeignDividendsByCountryFormProvider
-import models.{Mode, UserAnswers, YourForeignDividendsByCountryRow}
+import models.Mode
 import navigation.ForeignIncomeNavigator
-import pages.foreignincome.DividendIncomeSourceCountries
 import pages.foreignincome.dividends.YourForeignDividendsByCountryPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
-import service.CountryNamesDataSource
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import uk.gov.hmrc.play.language.LanguageUtils
 import viewmodels.checkAnswers.foreignincome.dividends.YourForeignDividendsByCountrySummary

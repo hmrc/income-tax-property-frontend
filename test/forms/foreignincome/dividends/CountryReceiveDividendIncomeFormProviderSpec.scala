@@ -31,13 +31,15 @@ class CountryReceiveDividendIncomeFormProviderSpec extends StringFieldBehaviours
   val lengthKey = "countryReceiveDividendIncome.error.validCountry"
 
   val country: Country = Country(name = "India", code = "IND")
-  val index = 0
+  val indexOne = 0
+  val indexTwo = 1
   val userType = "agent"
   val userAnswers: UserAnswers =
-    UserAnswers(userAnswersId).set(CountryReceiveDividendIncomePage(0), country).success.value
+    UserAnswers(userAnswersId).set(CountryReceiveDividendIncomePage(indexOne), country).success.value
   val invalidCharCountry: String = s"123456@£%^"
 
-  val form = new CountryReceiveDividendIncomeFormProvider()(userAnswers)
+  val form = new CountryReceiveDividendIncomeFormProvider()(indexOne, userAnswers)
+  val formTwo = new CountryReceiveDividendIncomeFormProvider()(indexTwo, userAnswers)
 
   ".dividendIncomeCountry" - {
 
@@ -52,7 +54,7 @@ class CountryReceiveDividendIncomeFormProviderSpec extends StringFieldBehaviours
     behave like fieldThatBindsValidData(
       form,
       fieldName,
-      Gen.oneOf(CountryNamesDataSource.loadCountriesEn.map(_.code))
+      Gen.oneOf(CountryNamesDataSource.loadCountriesEn.map(_.code).filterNot(_ == country.code))
     )
 
     "fail for invalid characters" in {
@@ -69,7 +71,7 @@ class CountryReceiveDividendIncomeFormProviderSpec extends StringFieldBehaviours
     }
 
     "fail for already selected country" in {
-      form
+      formTwo
         .bind(Map(fieldName -> country.code))
         .fold(
           formWithErrors =>

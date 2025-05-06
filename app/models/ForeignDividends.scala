@@ -32,3 +32,9 @@ object ForeignDividends extends Gettable[ForeignDividends] with Settable[Foreign
   override def path: JsPath = JsPath \ foreignDividendsPath(ForeignIncome)
 
 }
+
+final case class ForeignDividendAnswers(countryCode: String) extends Gettable[ForeignDividendAnswers] with Settable[ForeignDividendAnswers]{
+  implicit val format: Format[ForeignDividendAnswers] = Json.format[ForeignDividendAnswers]
+
+  override def path: JsPath = JsPath \ foreignDividendsPath(ForeignIncome) \ countryCode.toUpperCase
+}

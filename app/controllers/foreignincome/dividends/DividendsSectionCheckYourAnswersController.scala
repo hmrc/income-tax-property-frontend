@@ -18,16 +18,14 @@ package controllers.foreignincome.dividends
 
 import controllers.actions._
 import controllers.exceptions.SaveJourneyAnswersFailed
-import service.PropertySubmissionService
-import models.{ForeignDividends, ForeignDividendsByCountry, JourneyContext, JourneyPath, ReadForeignDividendsByCountry}
 import models.requests.DataRequest
+import models.{ForeignDividends, ForeignDividendsByCountry, JourneyContext, JourneyPath, NormalMode, ReadForeignDividendsByCountry, UserAnswers}
 import pages.foreign.Country
-import pages.foreignincome.CountryReceiveDividendIncomePage
+import pages.foreignincome.DividendIncomeSourceCountries
 import play.api.i18n.Lang.logger
-
-import javax.inject.Inject
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
+import service.{CountryNamesDataSource, PropertySubmissionService}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import uk.gov.hmrc.play.language.LanguageUtils
@@ -35,6 +33,7 @@ import viewmodels.checkAnswers.foreignincome.dividends._
 import viewmodels.govuk.all.SummaryListViewModel
 import views.html.foreignincome.dividends.DividendsSectionCheckYourAnswersView
 
+import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
 class DividendsSectionCheckYourAnswersController @Inject() (
@@ -49,51 +48,66 @@ class DividendsSectionCheckYourAnswersController @Inject() (
 )(implicit ec: ExecutionContext)
     extends FrontendBaseController with I18nSupport {
 
-  def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
-    implicit request =>
-      val country = request.userAnswers.get(CountryReceiveDividendIncomePage(0)).getOrElse(Country("", ""))
-      val summaryListRows = SummaryListViewModel(
-        rows = Seq(
-          CountryReceiveDividendIncomeSummary
-            .row(taxYear, 0, request.userAnswers, languageUtils.getCurrentLang.locale.toString),
-          IncomeBeforeForeignTaxDeductedSummary.row(taxYear, country.code, request.userAnswers),
-          ForeignTaxDeductedFromDividendIncomeSummary
-            .row(taxYear, country.code, request.user.isAgentMessageKey, country, request.userAnswers),
-          HowMuchForeignTaxDeductedFromDividendIncomeSummary.row(taxYear, country.code, request.userAnswers),
-          ClaimForeignTaxCreditReliefSummary
-            .row(taxYear, country.code, request.user.isAgentMessageKey, request.userAnswers)
-        ).flatten
-      )
-      Ok(view(summaryListRows, taxYear))
-  }
+  def onPageLoad(taxYear: Int, countryCode: String): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
+      val lang = languageUtils.getCurrentLang.locale.toString
+      val summaryRows = getIndexedDividendCountry(countryCode, lang, request.userAnswers).map {
+        case (index, country) =>
+          Seq(
+            CountryReceiveDividendIncomeSummary
+              .row(taxYear, index, request.userAnswers, languageUtils.getCurrentLang.locale.toString, request.user.isAgentMessageKey),
+            IncomeBeforeForeignTaxDeductedSummary.row(taxYear, country, request.userAnswers, request.user.isAgentMessageKey ),
+            ForeignTaxDeductedFromDividendIncomeSummary
+              .row(taxYear, country, request.user.isAgentMessageKey, request.userAnswers),
+            HowMuchForeignTaxDeductedFromDividendIncomeSummary.row(taxYear, country, request.userAnswers, request.user.isAgentMessageKey),
+            ClaimForeignTaxCreditReliefSummary
+              .row(taxYear, country.code, request.user.isAgentMessageKey, request.userAnswers)
+          ).flatten
+      }.getOrElse(Seq.empty)
 
-  def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
-    implicit request =>
-      val country = request.userAnswers.get(CountryReceiveDividendIncomePage(0)).getOrElse(Country("", ""))
+      val summaryList = SummaryListViewModel(
+        rows = summaryRows
+      )
+      Future.successful(Ok(view(summaryList, taxYear, countryCode)))
+    }
+
+  def onSubmit(taxYear: Int, countryCode: String): Action[AnyContent] =
+    (identify andThen getData andThen requireData).async { implicit request =>
       request.userAnswers
         .get(ForeignDividends)
       // TO DO - Save functionality plus backend work and remove redirect
-//      .fold {
-//      val errorMsg =
-//      s"Foreign dividends section is missing for userId: ${request.userId}, taxYear: $taxYear"
-//      logger.error(errorMsg)
-//      Future.successful(NotFound(errorMsg))
-//      } { foreignDividends =>
-//        saveDividends(taxYear, request, Some(foreignDividends), None)
-//      }
+      //      .fold {
+      //      val errorMsg =
+      //      s"Foreign dividends section is missing for userId: ${request.userId}, taxYear: $taxYear"
+      //      logger.error(errorMsg)
+      //      Future.successful(NotFound(errorMsg))
+      //      } { foreignDividends =>
+      //        saveDividends(taxYear, request, Some(foreignDividends), None)
+      //      }
       request.userAnswers
-        .get(ReadForeignDividendsByCountry(country.code))
-//        .fold {
-//          val errorMsg =
-//            s"Foreign dividends by country section is missing for userId: ${request.userId}, taxYear: $taxYear"
-//            logger.error(errorMsg)
-//            Future.successful(NotFound(errorMsg))
-//          } { foreignDividendsByCountry =>
-//            saveDividends(taxYear, request, None, Some(foreignDividendsByCountry))
-//          }
+        .get(ReadForeignDividendsByCountry(countryCode))
+      //        .fold {
+      //          val errorMsg =
+      //            s"Foreign dividends by country section is missing for userId: ${request.userId}, taxYear: $taxYear"
+      //            logger.error(errorMsg)
+      //            Future.successful(NotFound(errorMsg))
+      //          } { foreignDividendsByCountry =>
+      //            saveDividends(taxYear, request, None, Some(foreignDividendsByCountry))
+      //          }
       Future(
-        Redirect(controllers.foreignincome.dividends.routes.DividendsSectionFinishedController.onPageLoad(taxYear))
+        Redirect(controllers.foreignincome.dividends.routes.YourForeignDividendsByCountryController.onPageLoad(taxYear, NormalMode))
       )
+
+    }
+
+  private def getIndexedDividendCountry(countryCode: String, lang: String, userAnswers: UserAnswers): Option[(Int, Country)] = {
+    val countries = userAnswers.get(DividendIncomeSourceCountries).getOrElse(Array.empty)
+    countries.find(_.code == countryCode).flatMap { incomeCountry =>
+      val index = countries.indexOf(incomeCountry)
+      CountryNamesDataSource.getCountry(countryCode, lang).map { country =>
+        (index, country)
+      }
+    }
   }
 
   private def saveDividends(
@@ -110,7 +124,7 @@ class DividendsSectionCheckYourAnswersController @Inject() (
             Future
               .successful(
                 Redirect(
-                  controllers.foreignincome.dividends.routes.DividendsSectionFinishedController.onPageLoad(taxYear)
+                  controllers.foreignincome.dividends.routes.YourForeignDividendsByCountryController.onPageLoad(taxYear, NormalMode)
                 )
               )
           case Left(error) =>

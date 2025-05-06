@@ -18,7 +18,7 @@ package controllers.foreignincome.dividends
 
 import controllers.actions.{DataRequiredAction, DataRetrievalAction, IdentifierAction}
 import forms.foreignincome.dividends.RemoveForeignDividendFormProvider
-import models.{NormalMode, UserAnswers}
+import models.{ForeignDividendAnswers, NormalMode, UserAnswers}
 import navigation.ForeignIncomeNavigator
 import pages.foreignincome.CountryReceiveDividendIncomePage
 import pages.foreignincome.dividends.RemoveForeignDividendPage
@@ -28,7 +28,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import uk.gov.hmrc.play.language.LanguageUtils
-import viewmodels.checkAnswers.foreignincome.dividends.RemoveForeignDividendSummary
+import viewmodels.checkAnswers.foreignincome.dividends.{RemoveForeignDividendSummary, YourForeignDividendsByCountrySummary}
 import views.html.foreignincome.dividends.RemoveForeignDividendView
 
 import javax.inject.Inject
@@ -73,19 +73,22 @@ class RemoveForeignDividendController @Inject() (
                 updatedAnswers <- Future.fromTry(request.userAnswers.set(RemoveForeignDividendPage, false))
                 _              <- sessionRepository.set(updatedAnswers)
               } yield Redirect(
-                routes.YourForeignDividendsByCountryController.onPageLoad(taxYear, NormalMode)
+                navigator.nextPage(RemoveForeignDividendPage, taxYear, NormalMode, request.userAnswers, updatedAnswers)
               )
           }
         )
     }
 
-  private def removeForeignDividend(userAnswers: UserAnswers, taxYear: Int, index: Int): Future[Result] =
-    for {
-      updatedAnswers <- Future.fromTry(userAnswers.set(RemoveForeignDividendPage, true))
-      removeCountry  <- Future.fromTry(updatedAnswers.remove(CountryReceiveDividendIncomePage(index)))
-      _              <- sessionRepository.set(removeCountry)
-    } yield Redirect(
-      navigator.nextPage(RemoveForeignDividendPage, taxYear, NormalMode, userAnswers, updatedAnswers)
-    )
-
+  private def removeForeignDividend(userAnswers: UserAnswers, taxYear: Int, index: Int): Future[Result] = {
+    userAnswers.get(CountryReceiveDividendIncomePage(index)).map { country =>
+      for {
+        removeAnswer <- Future.fromTry(userAnswers.set(RemoveForeignDividendPage, true))
+        removeCountry  <- Future.fromTry(removeAnswer.remove(CountryReceiveDividendIncomePage(index)))
+        updatedAnswers  <- Future.fromTry(removeCountry.remove(ForeignDividendAnswers(country.code)))
+        _              <- sessionRepository.set(updatedAnswers)
+      } yield Redirect(
+        navigator.nextPage(RemoveForeignDividendPage, taxYear, NormalMode, userAnswers, updatedAnswers)
+      )
+    }.getOrElse(Future.successful(Redirect(routes.YourForeignDividendsByCountryController.onPageLoad(taxYear, NormalMode))))
+  }
 }
