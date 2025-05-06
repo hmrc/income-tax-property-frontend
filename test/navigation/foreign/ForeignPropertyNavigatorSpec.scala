@@ -101,7 +101,8 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
         ) mustBe SelectIncomeCountryController.onPageLoad(taxYear, 0, NormalMode)
       }
 
-      "must go from TotalIncomePage to SelectIncomeCountryPage if income is more than £1,000" in {
+      "must go from TotalIncomePage to SelectIncomeCountryPage if income is more than £1,000 " +
+        "and the user has NO foreign property income countries." in {
         val userAnswers = UserAnswers("test").set(TotalIncomePage, Over).get
 
         navigator.nextPage(
@@ -111,6 +112,20 @@ class ForeignPropertyNavigatorSpec extends SpecBase {
           UserAnswers("test"),
           userAnswers
         ) mustBe SelectIncomeCountryController.onPageLoad(taxYear, 0, NormalMode)
+      }
+
+      "must go from TotalIncomePage to CountriesRentedPropertyPage if income is more than £1,000 " +
+        "and the user has foreign property income countries." in {
+        val incomeCountry: Country = Country("Spain", "ESP")
+        val userAnswers = UserAnswers("test")
+          .set(IncomeSourceCountries, Array(incomeCountry)).get
+        navigator.nextPage(
+          TotalIncomePage,
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          userAnswers
+        ) mustBe CountriesRentedPropertyController.onPageLoad(taxYear, NormalMode)
       }
 
       "must go from SelectIncomeCountryPage to CountriesRentedPropertyPage" in {

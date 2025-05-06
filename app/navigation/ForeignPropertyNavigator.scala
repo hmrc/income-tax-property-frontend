@@ -320,11 +320,13 @@ class ForeignPropertyNavigator {
         ForeignAdjustmentsCheckYourAnswersController.onPageLoad(taxYear, countryCode)
     }
 
-  private def foreignTotalIncomeNavigationNormalMode(taxYear: Int, userAnswers: UserAnswers): Call =
-    userAnswers.get(TotalIncomePage) match {
-      case Some(Under) => PropertyIncomeReportController.onPageLoad(taxYear, NormalMode)
-      case _           => SelectIncomeCountryController.onPageLoad(taxYear, 0, NormalMode)
+  private def foreignTotalIncomeNavigationNormalMode(taxYear: Int, userAnswers: UserAnswers): Call = {
+    ( userAnswers.get(TotalIncomePage), userAnswers.get(IncomeSourceCountries).map(_.length).getOrElse(0)) match {
+      case (Some(Under), _) => PropertyIncomeReportController.onPageLoad(taxYear, NormalMode)
+      case (_, index) if index > 0 => CountriesRentedPropertyController.onPageLoad(taxYear, NormalMode)
+      case _ => SelectIncomeCountryController.onPageLoad(taxYear, 0, NormalMode)
     }
+  }
 
   private def reportIncomeNavigation(taxYear: Int, userAnswers: UserAnswers): Call =
     userAnswers.get(PropertyIncomeReportPage) match {
