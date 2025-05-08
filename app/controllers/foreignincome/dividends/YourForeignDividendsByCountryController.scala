@@ -20,15 +20,14 @@ import audit.{AuditModel, AuditService}
 import controllers.PropertyDetailsHandler
 import controllers.actions._
 import controllers.exceptions.SaveJourneyAnswersFailed
-import controllers.foreignincome.dividends.routes.{CountryReceiveDividendIncomeController, DividendsSectionFinishedController}
 import forms.foreignincome.dividends.YourForeignDividendsByCountryFormProvider
 import models.AccountingMethod.{Cash, Traditional}
-import models.{AuditPropertyType, ForeignIncomeDividends, JourneyContext, JourneyName, JourneyPath, Mode, NormalMode, ReadForeignDividendsByCountry, SectionName, UserAnswers}
 import models.requests.DataRequest
+import models.{AuditPropertyType, ForeignIncomeDividends, JourneyContext, JourneyName, JourneyPath, Mode, NormalMode, ReadForeignDividendsByCountry, SectionName}
 import navigation.ForeignIncomeNavigator
 import pages.foreign.Country
-import pages.foreignincome.{DividendIncomeSourceCountries, IncomeBeforeForeignTaxDeductedPage}
-import pages.foreignincome.dividends.{ClaimForeignTaxCreditReliefPage, ForeignTaxDeductedFromDividendIncomePage, HowMuchForeignTaxDeductedFromDividendIncomePage, YourForeignDividendsByCountryPage}
+import pages.foreignincome.DividendIncomeSourceCountries
+import pages.foreignincome.dividends.YourForeignDividendsByCountryPage
 import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
@@ -51,6 +50,7 @@ class YourForeignDividendsByCountryController @Inject()(
   requireData: DataRequiredAction,
   formProvider: YourForeignDividendsByCountryFormProvider,
   val controllerComponents: MessagesControllerComponents,
+  navigator: ForeignIncomeNavigator,
   view: YourForeignDividendsByCountryView,
   languageUtils: LanguageUtils,
   propertySubmissionService: PropertySubmissionService,
@@ -87,35 +87,22 @@ class YourForeignDividendsByCountryController @Inject()(
       updatedAnswers <- Future.fromTry(request.userAnswers.set(YourForeignDividendsByCountryPage, addAnotherCountry))
       _ <- sessionRepository.set(updatedAnswers)
       result <- if(addAnotherCountry) {
-        val countries = request.userAnswers.get(DividendIncomeSourceCountries).getOrElse(Array.empty)
-        val index = getNextIndex(countries, Some(request.userAnswers))
-        Future(Redirect(routes.CountryReceiveDividendIncomeController.onPageLoad(taxYear, index, NormalMode)))
-      } else {
-        saveJourneyAnswers(taxYear, request)
-      }
-    } yield result
-
-  private def getNextIndex(countryArr: Array[Country], userAnswers: Option[UserAnswers]): Int =
-    userAnswers.map { userAnswers =>
-        countryArr.foldLeft(countryArr.length) { (acc, country) =>
-          (
-            userAnswers.get(IncomeBeforeForeignTaxDeductedPage(country.code)),
-            userAnswers.get(ForeignTaxDeductedFromDividendIncomePage(country.code)),
-            userAnswers.get(HowMuchForeignTaxDeductedFromDividendIncomePage(country.code)),
-            userAnswers.get(ClaimForeignTaxCreditReliefPage(country.code))
-          ) match {
-            case (Some(_), Some(true), Some(_), Some(_)) => acc
-            case (Some(_), Some(false), _, _)            => acc
-            case _                                       => countryArr.indexOf(country) min acc
-          }
+          Future.successful(Right(()))
+        } else {
+          saveJourneyAnswers(taxYear, request)
         }
-      }
-      .getOrElse(0)
+    } yield result match {
+      case Left(errorMsg) =>
+        logger.error(s"Failed to save foreign income dividends: $errorMsg")
+        Redirect(controllers.routes.JourneyRecoveryController.onPageLoad())
+      case Right(_) =>
+        Redirect(navigator.nextPage(YourForeignDividendsByCountryPage, taxYear, NormalMode, request.userAnswers, updatedAnswers))
+    }
 
   private def saveJourneyAnswers(
     taxYear: Int,
     request: DataRequest[AnyContent]
-  )(implicit hc: HeaderCarrier): Future[Result] = {
+  )(implicit hc: HeaderCarrier): Future[Either[String, Unit]] = {
     request.userAnswers
       .get(DividendIncomeSourceCountries).map { countries =>
         countries.toSeq.flatMap(country => request.userAnswers
@@ -127,7 +114,7 @@ class YourForeignDividendsByCountryController @Inject()(
       .fold {
         val errorMsg = s"Foreign dividends section is missing for userId: ${request.userId}, taxYear: $taxYear"
         logger.error(errorMsg)
-        Future.successful(NotFound(errorMsg))
+        Future.successful(Left(errorMsg) : Either[String, Unit])
       } { foreignDividends =>
         saveDividends(taxYear, request, ForeignIncomeDividends(foreignDividends))
       }
@@ -137,17 +124,12 @@ class YourForeignDividendsByCountryController @Inject()(
     taxYear: Int,
     request: DataRequest[AnyContent],
     foreignIncomeDividends: ForeignIncomeDividends
-  )(implicit hc: HeaderCarrier): Future[Result] = {
+  )(implicit hc: HeaderCarrier): Future[Either[String, Unit]] = {
     withForeignPropertyDetails(businessService, request.user.nino, request.user.mtditid) { propertyDetails =>
       val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, JourneyPath.ForeignIncomeDividends)
       val accrualsOrCash = propertyDetails.accrualsOrCash.getOrElse(true)
       propertySubmissionService.saveForeignDividendsJourneyAnswers(context, foreignIncomeDividends).flatMap {
-        case Right(_) =>
-          Future.successful(
-            Redirect(
-              routes.DividendsSectionFinishedController.onPageLoad(taxYear)
-            )
-          )
+        case Right(_) => Future.successful(Right(()))
         case Left(error) =>
           logger.error(s"Failed to save Dividends section: ${error.toString}")
           Future.failed(SaveJourneyAnswersFailed("Failed to save Dividends section"))

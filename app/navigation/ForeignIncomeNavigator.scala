@@ -42,6 +42,8 @@ class ForeignIncomeNavigator @Inject() (foreignIncomeCYADiversionService: Foreig
       taxYear => _ => _ => ClaimForeignTaxCreditReliefController.onPageLoad(taxYear, countryCode, NormalMode)
     case ClaimForeignTaxCreditReliefPage(countryCode) =>
       taxYear => _ => _ => DividendsSectionCheckYourAnswersController.onPageLoad(taxYear, countryCode)
+    case YourForeignDividendsByCountryPage =>
+      taxYear => _ => userAnswers => yourForeignDividendsByCountryNavigation(taxYear, userAnswers)
     case DividendsSectionFinishedPage =>
       taxYear => _ => _ => SummaryController.show(taxYear)
     case RemoveForeignDividendPage =>
@@ -100,6 +102,34 @@ class ForeignIncomeNavigator @Inject() (foreignIncomeCYADiversionService: Foreig
           case (_, Some(true)) => HowMuchForeignTaxDeductedFromDividendIncomeController.onPageLoad(taxYear, countryCode, NormalMode)
           case _ => controllers.routes.IndexController.onPageLoad
         }
+    }
+  }
+
+  private def getNextIndex(countryArr: Array[Country], userAnswers: Option[UserAnswers]): Int =
+    userAnswers.map { userAnswers =>
+        countryArr.foldLeft(countryArr.length) { (acc, country) =>
+          (
+            userAnswers.get(IncomeBeforeForeignTaxDeductedPage(country.code)),
+            userAnswers.get(ForeignTaxDeductedFromDividendIncomePage(country.code)),
+            userAnswers.get(HowMuchForeignTaxDeductedFromDividendIncomePage(country.code)),
+            userAnswers.get(ClaimForeignTaxCreditReliefPage(country.code))
+          ) match {
+            case (Some(_), Some(true), Some(_), Some(_)) => acc
+            case (Some(_), Some(false), _, _)            => acc
+            case _                                       => countryArr.indexOf(country) min acc
+          }
+        }
+      }
+      .getOrElse(0)
+
+  private def yourForeignDividendsByCountryNavigation(taxYear: Int, userAnswers: UserAnswers): Call = {
+    userAnswers.get(YourForeignDividendsByCountryPage) match {
+      case Some(true) =>
+        val countries = userAnswers.get(DividendIncomeSourceCountries).getOrElse(Array.empty)
+        val index = getNextIndex(countries, Some(userAnswers))
+        CountryReceiveDividendIncomeController.onPageLoad(taxYear, index, NormalMode)
+      case Some(false) =>
+        DividendsSectionFinishedController.onPageLoad(taxYear)
     }
   }
 
