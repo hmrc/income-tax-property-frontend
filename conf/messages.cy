@@ -450,6 +450,7 @@ adjustmentsStart.details.content.l3 = *Missing Welsh*
 adjustmentsStart.details.content.l4 = *Missing Welsh*
 adjustmentsStart.details.content.l5 = *Missing Welsh*
 adjustmentsStart.details.content.l6 = *Missing Welsh*
+adjustmentsStart.details.content.l7 = *Missing Welsh*
 
 expensesStart.title	=	Treuliau
 expensesStart.heading	=	Treuliau

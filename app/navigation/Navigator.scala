@@ -338,13 +338,9 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
       taxYear =>
         _ =>
           userAnswers =>
-            if (userAnswers.get(ClaimPropertyIncomeAllowancePage(RentalsRentARoom)).getOrElse(false)) {
-              RentalsAndRentARoomAdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
-            } else {
               diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "adjustments", RentalsRentARoom) {
                 UnusedResidentialFinanceCostController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
               }
-            }
     case UnusedResidentialFinanceCostPage(Rentals) =>
       taxYear => _ => _ => UnusedLossesBroughtForwardController.onPageLoad(taxYear, NormalMode, Rentals)
     case UnusedResidentialFinanceCostPage(RentalsRentARoom) =>
