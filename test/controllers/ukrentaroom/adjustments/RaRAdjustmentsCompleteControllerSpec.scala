@@ -107,7 +107,7 @@ class RaRAdjustmentsCompleteControllerSpec extends SpecBase with MockitoSugar {
         )
       )
         .when(mockJourneyAnswersService)
-        .setStatus(
+        .setUKPropertyStatus(
           ArgumentMatchers.eq(
             JourneyContext(
               taxYear = taxYear,

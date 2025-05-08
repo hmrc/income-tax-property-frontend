@@ -114,7 +114,7 @@ class ForeignExpensesSectionCompleteControllerSpec extends SpecBase with Mockito
         when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
         doReturn(Future.successful(Right("completed")))
           .when(mockJourneyAnswersService)
-          .setForeignStatus(
+          .setForeignPropertyStatus(
             ArgumentMatchers.eq(
               JourneyContext(
                 taxYear = taxYear,

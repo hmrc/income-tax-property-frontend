@@ -101,7 +101,7 @@ class AllowancesSectionFinishedControllerSpec extends SpecBase with MockitoSugar
 
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
       when(
-        mockJourneyAnswersService.setStatus(
+        mockJourneyAnswersService.setUKPropertyStatus(
           ArgumentMatchers.eq(
             JourneyContext(taxYear, mtditid = "mtditid", nino = "nino", journeyPath = RentalAllowances)
           ),

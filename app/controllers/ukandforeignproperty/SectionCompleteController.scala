@@ -72,7 +72,7 @@ class SectionCompleteController @Inject() (
               updatedAnswers <-
                 Future.fromTry(request.userAnswers.set(SectionCompletePage, value))
               _ <- sessionRepository.set(updatedAnswers)
-              status <- journeyAnswersService.setStatus(
+              status <- journeyAnswersService.setUKPropertyStatus(
                           JourneyContext(
                             taxYear = taxYear,
                             mtditid = request.user.mtditid,

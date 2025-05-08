@@ -108,7 +108,7 @@ class ForeignAdjustmentsCompleteControllerSpec extends SpecBase with MockitoSuga
         )
       )
         .when(mockJourneyAnswersService)
-        .setForeignStatus(
+        .setForeignPropertyStatus(
           ArgumentMatchers.eq(
             JourneyContext(
               taxYear = taxYear,

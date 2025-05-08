@@ -113,7 +113,7 @@ class SectionCompleteControllerSpec extends SpecBase with MockitoSugar {
         when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
         doReturn(Future.successful(Right("completed")))
           .when(mockJourneyAnswersService)
-          .setStatus(
+          .setUKPropertyStatus(
             ArgumentMatchers.eq(
               JourneyContext(
                 taxYear = taxYear,

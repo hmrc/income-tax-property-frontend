@@ -107,7 +107,7 @@ class RentalsAdjustmentsCompleteControllerSpec extends SpecBase with MockitoSuga
         )
       )
         .when(mockJourneyAnswersService)
-        .setStatus(
+        .setUKPropertyStatus(
           ArgumentMatchers.eq(
             JourneyContext(
               taxYear = taxYear,

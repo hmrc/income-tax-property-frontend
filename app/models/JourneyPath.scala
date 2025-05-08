@@ -106,6 +106,6 @@ object JourneyPath {
   case object UkAndForeignPropertyAbout extends WithName("uk-foreign-property-about") with JourneyPath
 
   // ####################### Foreign Dividends #######################
-  case object ForeignDividends extends WithName("foreign-dividends") with JourneyPath
+  case object ForeignIncomeDividends extends WithName("foreign-income-dividends") with JourneyPath
 
 }

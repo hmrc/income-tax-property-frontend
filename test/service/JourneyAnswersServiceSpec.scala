@@ -65,7 +65,7 @@ class JourneyAnswersServiceSpec extends AnyWordSpec with FutureAwaits with Defau
       )
 
       await(
-        underTest.setStatus(
+        underTest.setUKPropertyStatus(
           JourneyContext(
             taxYear = taxYear,
             mtditid = user.mtditid,
@@ -97,7 +97,7 @@ class JourneyAnswersServiceSpec extends AnyWordSpec with FutureAwaits with Defau
       )
 
       await(
-        underTest.setStatus(
+        underTest.setUKPropertyStatus(
           JourneyContext(
             taxYear = taxYear,
             mtditid = user.mtditid,
