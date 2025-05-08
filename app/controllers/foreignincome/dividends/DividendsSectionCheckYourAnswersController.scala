@@ -116,7 +116,7 @@ class DividendsSectionCheckYourAnswersController @Inject() (
     dividends: Option[ForeignDividends],
     dividendsByCountry: Option[ForeignDividendsByCountry]
   )(implicit hc: HeaderCarrier): Future[Result] = {
-    val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, JourneyPath.ForeignDividends)
+    val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, JourneyPath.ForeignIncomeDividends)
     propertySubmissionService.saveForeignDividendsJourneyAnswers(context, dividends).flatMap {
       case Right(_) =>
         propertySubmissionService.saveForeignDividendsJourneyAnswers(context, dividendsByCountry).flatMap {

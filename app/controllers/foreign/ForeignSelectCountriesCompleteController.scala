@@ -71,7 +71,7 @@ class ForeignSelectCountriesCompleteController @Inject() (
               updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignSelectCountriesCompletePage, value))
               _              <- sessionRepository.set(updatedAnswers)
               status <- journeyAnswersService
-                          .setForeignStatus(
+                          .setForeignPropertyStatus(
                             JourneyContext(
                               taxYear = taxYear,
                               mtditid = request.user.mtditid,

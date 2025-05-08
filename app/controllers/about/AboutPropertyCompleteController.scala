@@ -69,7 +69,7 @@ class AboutPropertyCompleteController @Inject() (
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(AboutPropertyCompletePage, value))
               _              <- sessionRepository.set(updatedAnswers)
-              status <- journeyAnswersService.setStatus(
+              status <- journeyAnswersService.setUKPropertyStatus(
                           ctx = JourneyContext(
                             taxYear = taxYear,
                             mtditid = request.user.mtditid,

@@ -70,7 +70,7 @@ class RaRAllowancesCompleteController @Inject() (
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(RaRAllowancesCompletePage, value))
               _              <- sessionRepository.set(updatedAnswers)
-              status <- journeyAnswersService.setStatus(
+              status <- journeyAnswersService.setUKPropertyStatus(
                           ctx = JourneyContext(
                             taxYear = taxYear,
                             mtditid = request.user.mtditid,

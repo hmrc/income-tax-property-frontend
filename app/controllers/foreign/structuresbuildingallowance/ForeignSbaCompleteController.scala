@@ -72,7 +72,7 @@ class ForeignSbaCompleteController @Inject() (
               updatedAnswers <- Future.fromTry(request.userAnswers.set(ForeignSbaCompletePage(countryCode), value))
               _              <- sessionRepository.set(updatedAnswers)
               status <- journeyAnswersService
-                          .setForeignStatus(
+                          .setForeignPropertyStatus(
                             JourneyContext(
                               taxYear = taxYear,
                               mtditid = request.user.mtditid,

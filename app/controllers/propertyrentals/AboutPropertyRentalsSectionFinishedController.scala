@@ -71,7 +71,7 @@ class AboutPropertyRentalsSectionFinishedController @Inject() (
               updatedAnswers <-
                 Future.fromTry(request.userAnswers.set(AboutPropertyRentalsSectionFinishedPage, value))
               _ <- sessionRepository.set(updatedAnswers)
-              status <- journeyAnswersService.setStatus(
+              status <- journeyAnswersService.setUKPropertyStatus(
                           JourneyContext(
                             taxYear,
                             request.user.mtditid,

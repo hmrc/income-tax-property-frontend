@@ -19,7 +19,7 @@ package controllers.foreignincome.dividends
 import audit.AuditService
 import base.SpecBase
 import controllers.foreignincome.dividends.routes.{DividendsSectionCheckYourAnswersController, DividendsSectionFinishedController}
-import models.JourneyPath.ForeignDividends
+import models.JourneyPath.ForeignIncomeDividends
 import models.{UserAnswers, TotalIncome, JourneyContext}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
@@ -84,7 +84,7 @@ class DividendsSectionCheckYourAnswersControllerSpec extends SpecBase with Mocki
     "must return OK and the POST for onSubmit() should redirect to the Have you finished this section page" in {
       val userAnswers = UserAnswers("test").set(DividendsSectionFinishedPage, false).get
       val context =
-        JourneyContext(taxYear = taxYear, mtditid = "mtditid", nino = "nino", journeyPath = ForeignDividends)
+        JourneyContext(taxYear = taxYear, mtditid = "mtditid", nino = "nino", journeyPath = ForeignIncomeDividends)
 
       val userAnswersForeignDividends =
         userAnswers

@@ -16,16 +16,25 @@
 
 package models
 
-import models.ForeignIncome
 import pages.PageConstants.foreignDividendsPath
 import play.api.libs.json.{Format, Json, JsPath}
 import queries.{Gettable, Settable}
 
 case class ForeignDividendsByCountry(
-                                   incomeBeforeForeignTaxDeducted: BigDecimal,
-                                   claimForeignTaxCreditRelief: Boolean,
-                                   howMuchForeignTaxDeductedFromDividendIncome: BigDecimal
-                                 )
+  incomeBeforeForeignTaxDeducted: BigDecimal,
+  foreignTaxDeductedFromDividendIncome: Boolean,
+  howMuchForeignTaxDeductedFromDividendIncome: Option[BigDecimal],
+  claimForeignTaxCreditRelief: Option[Boolean]
+){
+  def toForeignIncomeDividend(countryCode: String): ForeignIncomeDividend =
+    ForeignIncomeDividend(
+      countryCode = countryCode,
+      incomeBeforeForeignTaxDeducted = incomeBeforeForeignTaxDeducted,
+      foreignTaxDeductedFromDividendIncome = foreignTaxDeductedFromDividendIncome,
+      howMuchForeignTaxDeductedFromDividendIncome = howMuchForeignTaxDeductedFromDividendIncome,
+      claimForeignTaxCreditRelief = claimForeignTaxCreditRelief
+    )
+}
 
 case object ForeignDividendsByCountry
   extends Gettable[ForeignDividendsByCountry] with Settable[ForeignDividendsByCountry] {
@@ -43,5 +52,24 @@ case class ReadForeignDividendsByCountry(countryCode: String) extends Gettable[F
   override def path: JsPath = JsPath \ foreignDividendsPath(ForeignIncome) \ toString
 
   override def toString: String = countryCode.toUpperCase
+}
 
+case class ForeignIncomeDividends(
+  foreignIncomeDividends: Seq[ForeignIncomeDividend]
+)
+
+object ForeignIncomeDividends {
+  implicit val format: Format[ForeignIncomeDividends] = Json.format[ForeignIncomeDividends]
+}
+
+case class ForeignIncomeDividend(
+  countryCode: String,
+  incomeBeforeForeignTaxDeducted: BigDecimal,
+  foreignTaxDeductedFromDividendIncome: Boolean,
+  howMuchForeignTaxDeductedFromDividendIncome: Option[BigDecimal],
+  claimForeignTaxCreditRelief: Option[Boolean]
+)
+
+object ForeignIncomeDividend {
+  implicit val format: Format[ForeignIncomeDividend] = Json.format[ForeignIncomeDividend]
 }
