@@ -62,7 +62,7 @@ error.number = Please enter a valid number
 error.required = Please enter a value
 error.summary.title = There is a problem
 error.year.invalid = Year must include 4 numbers
-error.select.validCountry = Select country from the list
+error.select.validCountry = Select a country from the dropdown list
 
 country.legend = Country
 income.from.otherCountry.info = You can add income from other countries later.
@@ -1983,7 +1983,7 @@ selectIncomeCountry.legend = Country
 selectIncomeCountry.hint = Start typing in the box to find the country name
 selectIncomeCountry.error.required.individual = Enter which country you received this income from
 selectIncomeCountry.error.required.agent = Enter which country your client received this income from
-selectIncomeCountry.error.validCountry = Select country from the list
+selectIncomeCountry.error.validCountry = Select a country from the dropdown list
 selectIncomeCountry.error.countryAlreadySelected = Select a country you have not already selected
 selectIncomeCountry.checkYourAnswersLabel = Which country did you receive this income from?
 selectIncomeCountry.change.hidden = Income country
