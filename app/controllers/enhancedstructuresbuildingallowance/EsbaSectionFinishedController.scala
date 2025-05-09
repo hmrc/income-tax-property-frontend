@@ -92,7 +92,7 @@ class EsbaSectionFinishedController @Inject() (
     val context = JourneyContext(taxYear, request.user.mtditid, request.user.nino, sectionPath)
 
     journeyAnswersService
-      .setStatus(
+      .setUKPropertyStatus(
         context,
         statusForPage(value),
         request.user

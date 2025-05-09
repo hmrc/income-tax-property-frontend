@@ -16,14 +16,19 @@
 
 package controllers.foreignincome.dividends
 
+import controllers.ControllerUtils.statusForPage
 import controllers.actions._
+import controllers.exceptions.InternalErrorFailure
 import forms.foreignincome.dividends.DividendsSectionFinishedFormProvider
-import models.NormalMode
+import models.JourneyPath.ForeignIncomeDividends
+import models.{JourneyContext, NormalMode}
 import navigation.ForeignIncomeNavigator
 import pages.foreignincome.dividends.DividendsSectionFinishedPage
+import play.api.data.Form
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
+import service.JourneyAnswersService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.foreignincome.dividends.DividendsSectionFinishedView
 
@@ -39,10 +44,11 @@ class DividendsSectionFinishedController @Inject()(
                                          requireData: DataRequiredAction,
                                          formProvider: DividendsSectionFinishedFormProvider,
                                          val controllerComponents: MessagesControllerComponents,
-                                         view: DividendsSectionFinishedView
+                                         view: DividendsSectionFinishedView,
+                                         journeyAnswersService: JourneyAnswersService
                                  )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport {
 
-  val form = formProvider()
+  val form: Form[Boolean] = formProvider()
 
   def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
@@ -66,7 +72,37 @@ class DividendsSectionFinishedController @Inject()(
           for {
             updatedAnswers <- Future.fromTry(request.userAnswers.set(DividendsSectionFinishedPage, value))
             _              <- sessionRepository.set(updatedAnswers)
-          } yield Redirect(navigator.nextPage(DividendsSectionFinishedPage, taxYear, NormalMode, request.userAnswers, updatedAnswers))
+            status <- journeyAnswersService
+              .setForeignIncomeStatus(
+                JourneyContext(
+                  taxYear = taxYear,
+                  mtditid = request.user.mtditid,
+                  nino = request.user.nino,
+                  journeyPath = ForeignIncomeDividends
+              ),
+                status = statusForPage(value),
+                user = request.user
+              )
+              .flatMap {
+                case Right(_) =>
+                  Future.successful(
+                    Redirect(
+                      navigator
+                        .nextPage(
+                          DividendsSectionFinishedPage,
+                          taxYear,
+                          NormalMode,
+                          request.userAnswers,
+                          updatedAnswers
+                        )
+                    )
+                  )
+                case Left(_) =>
+                  Future.failed(
+                    InternalErrorFailure(s"Failed to save the status for Foreign Income Dividend section in tax year: $taxYear")
+                  )
+              }
+          } yield status
       )
   }
 }

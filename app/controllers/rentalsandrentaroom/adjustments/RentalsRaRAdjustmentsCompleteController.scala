@@ -68,7 +68,7 @@ class RentalsRaRAdjustmentsCompleteController @Inject() (
               updatedAnswers <- Future.fromTry(request.userAnswers.set(RentalsRaRAdjustmentsCompletePage, value))
               _              <- sessionRepository.set(updatedAnswers)
               _ <- journeyAnswersService
-                     .setStatus(
+                     .setUKPropertyStatus(
                        JourneyContext(
                          taxYear = taxYear,
                          mtditid = request.user.mtditid,

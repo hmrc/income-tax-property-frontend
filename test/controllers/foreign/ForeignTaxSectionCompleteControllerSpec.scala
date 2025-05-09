@@ -115,7 +115,7 @@ class ForeignTaxSectionCompleteControllerSpec extends SpecBase with MockitoSugar
         )
       )
         .when(mockJourneyAnswersService)
-        .setForeignStatus(
+        .setForeignPropertyStatus(
           ArgumentMatchers.eq(
             JourneyContext(
               taxYear = taxYear,
