@@ -58,22 +58,22 @@ class YourForeignDividendsByCountryController @Inject()(
   businessService: BusinessService
 )(implicit ec: ExecutionContext) extends FrontendBaseController with I18nSupport with PropertyDetailsHandler {
 
-  def onPageLoad(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData) {
+  def onPageLoad(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData) {
     implicit request =>
       val currentLang = languageUtils.getCurrentLang.locale.toString
       val rows = YourForeignDividendsByCountrySummary.tableRows(taxYear, request.userAnswers, currentLang)
       val form: Form[Boolean] = formProvider(request.user.isAgentMessageKey)
-      Ok(view(form, rows, taxYear, request.user.isAgentMessageKey, mode))
+      Ok(view(form, rows, taxYear, request.user.isAgentMessageKey))
   }
 
-  def onSubmit(taxYear: Int, mode: Mode): Action[AnyContent] = (identify andThen getData andThen requireData).async {
+  def onSubmit(taxYear: Int): Action[AnyContent] = (identify andThen getData andThen requireData).async {
     implicit request =>
       val currentLang = languageUtils.getCurrentLang.locale.toString
       val rows = YourForeignDividendsByCountrySummary.tableRows(taxYear, request.userAnswers, currentLang)
       val form: Form[Boolean] = formProvider(request.user.isAgentMessageKey)
       form.bindFromRequest().fold(
         formWithErrors =>
-          Future.successful(BadRequest(view(formWithErrors, rows, taxYear, request.user.isAgentMessageKey, mode))),
+          Future.successful(BadRequest(view(formWithErrors, rows, taxYear, request.user.isAgentMessageKey))),
         addAnotherCountry => handleValidForm(addAnotherCountry, taxYear, request)
       )
   }

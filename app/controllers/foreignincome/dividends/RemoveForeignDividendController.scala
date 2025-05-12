@@ -89,6 +89,6 @@ class RemoveForeignDividendController @Inject() (
       } yield Redirect(
         navigator.nextPage(RemoveForeignDividendPage, taxYear, NormalMode, userAnswers, updatedAnswers)
       )
-    }.getOrElse(Future.successful(Redirect(routes.YourForeignDividendsByCountryController.onPageLoad(taxYear, NormalMode))))
+    }.getOrElse(Future.successful(Redirect(routes.YourForeignDividendsByCountryController.onPageLoad(taxYear))))
   }
 }

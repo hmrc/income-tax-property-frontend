@@ -43,7 +43,7 @@ class YourForeignDividendsByCountryControllerSpec extends SpecBase with MockitoS
   val form: Form[Boolean] = formProvider(individualOrAgent)
   val rows: Seq[ForeignDividendByCountryTableRow] = Seq()
 
-  lazy val yourForeignDividendsByCountryRoute: String = routes.YourForeignDividendsByCountryController.onPageLoad(taxYear, NormalMode).url
+  lazy val yourForeignDividendsByCountryRoute: String = routes.YourForeignDividendsByCountryController.onPageLoad(taxYear).url
 
   "YourForeignDividendsByCountry Controller" - {
 
@@ -59,7 +59,7 @@ class YourForeignDividendsByCountryControllerSpec extends SpecBase with MockitoS
         val view = application.injector.instanceOf[YourForeignDividendsByCountryView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(form, rows, taxYear, individualOrAgent, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(form, rows, taxYear, individualOrAgent)(request, messages(application)).toString
       }
     }
 
@@ -105,7 +105,7 @@ class YourForeignDividendsByCountryControllerSpec extends SpecBase with MockitoS
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST
-        contentAsString(result) mustEqual view(boundForm, rows, taxYear, individualOrAgent, NormalMode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(boundForm, rows, taxYear, individualOrAgent)(request, messages(application)).toString
       }
     }
     "must redirect to Journey Recovery for a GET if no existing data is found" in {

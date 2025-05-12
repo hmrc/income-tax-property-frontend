@@ -41,7 +41,7 @@ class ForeignDividendsStartController @Inject() (
     val countryArr: Array[Country] = request.userAnswers.flatMap(_.get(DividendIncomeSourceCountries)).getOrElse(Array.empty)
     val nextIndex = getNextIndex(countryArr, request.userAnswers)
     val nextPageLink: String = if (nextIndex > 0 && nextIndex == countryArr.length){
-      YourForeignDividendsByCountryController.onPageLoad(taxYear, NormalMode).url
+      YourForeignDividendsByCountryController.onPageLoad(taxYear).url
     } else {
       CountryReceiveDividendIncomeController.onPageLoad(taxYear, nextIndex, NormalMode).url
     }

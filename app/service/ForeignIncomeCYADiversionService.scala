@@ -34,7 +34,7 @@ class ForeignIncomeCYADiversionService @Inject() {
   )(transform: Call => T): PartialFunction[(Mode, String), T] = {
     case (NormalMode, ForeignIncomeCYADiversionService.DIVIDENDS) =>
       divert(DividendsSectionFinishedPage, userAnswers, block)(
-        cyaDiversion = controllers.foreignincome.dividends.routes.YourForeignDividendsByCountryController.onPageLoad(taxYear, NormalMode)
+        cyaDiversion = controllers.foreignincome.dividends.routes.YourForeignDividendsByCountryController.onPageLoad(taxYear)
       )(transform)
   }
 

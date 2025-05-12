@@ -156,7 +156,7 @@ class ForeignIncomeNavigatorSpec extends SpecBase {
           NormalMode,
           UserAnswers("test"),
           ua
-        ) mustBe YourForeignDividendsByCountryController.onPageLoad(taxYear, NormalMode)
+        ) mustBe YourForeignDividendsByCountryController.onPageLoad(taxYear)
       }
       "must go from the 'Remove Foreign Dividend Income' page to 'Your Foreign Dividends by Country' " +
         "when the user selects no" in {
@@ -170,7 +170,7 @@ class ForeignIncomeNavigatorSpec extends SpecBase {
           NormalMode,
           UserAnswers("test"),
           ua
-        ) mustBe YourForeignDividendsByCountryController.onPageLoad(taxYear, NormalMode)
+        ) mustBe YourForeignDividendsByCountryController.onPageLoad(taxYear)
       }
 
     }
