@@ -33,8 +33,8 @@ class JourneyAnswersService @Inject() (
   val ec: ExecutionContext
 ) extends Logging {
 
-  def setStatus(ctx: JourneyContext, status: String, user: User)(implicit
-    hc: HeaderCarrier
+  def setUKPropertyStatus(ctx: JourneyContext, status: String, user: User)(implicit
+                                                                           hc: HeaderCarrier
   ): Future[Either[ServiceError, String]] =
     businessService.getUkPropertyDetails(ctx.nino, ctx.mtditid).flatMap {
       case Left(error: ApiError) => Future.successful(Left(HttpParserError(error.status)))
@@ -54,8 +54,8 @@ class JourneyAnswersService @Inject() (
 
     }
 
-  def setForeignStatus(ctx: JourneyContext, status: String, user: User, countryCode: String)(implicit
-    hc: HeaderCarrier
+  def setForeignPropertyStatus(ctx: JourneyContext, status: String, user: User, countryCode: String)(implicit
+                                                                                                     hc: HeaderCarrier
   ): Future[Either[ServiceError, String]] =
     businessService.getForeignPropertyDetails(ctx.nino, ctx.mtditid).flatMap {
       case Left(error: ApiError) => Future.successful(Left(HttpParserError(error.status)))
@@ -64,6 +64,26 @@ class JourneyAnswersService @Inject() (
           .map { foreignProperty =>
             journeyAnswersConnector
               .setForeignStatus(ctx.taxYear, foreignProperty.incomeSourceId, ctx.journeyPath, status, user, countryCode)
+              .map {
+                case Left(error) =>
+                  logger.error(s"Unable to access the endpoint that allows the update of the journey status: $error")
+                  Left(ConnectorError(error.status, "Error while calling set status on backend"))
+                case Right(r) => Right(r)
+              }
+          }
+          .getOrElse(Future.successful(Left(ForeignPropertyDetailsError(ctx.nino, ctx.mtditid))))
+
+    }
+
+  def setForeignIncomeStatus(ctx: JourneyContext, status: String, user: User)(implicit hc: HeaderCarrier
+  ): Future[Either[ServiceError, String]] =
+    businessService.getForeignPropertyDetails(ctx.nino, ctx.mtditid).flatMap {
+      case Left(error: ApiError) => Future.successful(Left(HttpParserError(error.status)))
+      case Right(propertyDetails) =>
+        propertyDetails
+          .map { foreignProperty =>
+            journeyAnswersConnector
+              .setStatus(ctx.taxYear, foreignProperty.incomeSourceId, ctx.journeyPath, status, user)
               .map {
                 case Left(error) =>
                   logger.error(s"Unable to access the endpoint that allows the update of the journey status: $error")

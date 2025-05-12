@@ -101,7 +101,7 @@ class ForeignSelectCountriesCompleteControllerSpec extends SpecBase with Mockito
 
       val mockJourneyAnswersService = mock[JourneyAnswersService]
       when(
-        mockJourneyAnswersService.setForeignStatus(
+        mockJourneyAnswersService.setForeignPropertyStatus(
           ArgumentMatchers.eq(
             JourneyContext(taxYear, mtditid = "mtditid", nino = "nino", journeyPath = ForeignSelectCountry)
           ),

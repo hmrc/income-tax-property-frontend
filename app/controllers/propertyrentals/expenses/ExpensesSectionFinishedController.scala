@@ -70,7 +70,7 @@ class ExpensesSectionFinishedController @Inject() (
             for {
               updatedAnswers <- Future.fromTry(request.userAnswers.set(ExpensesSectionFinishedPage, value))
               _              <- sessionRepository.set(updatedAnswers)
-              status <- journeyAnswersService.setStatus(
+              status <- journeyAnswersService.setUKPropertyStatus(
                           JourneyContext(
                             taxYear = taxYear,
                             mtditid = request.user.mtditid,

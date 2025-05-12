@@ -28,7 +28,7 @@
     govukTable: GovukTable
 )
 
-@(form: Form[_], rows: Seq[ForeignDividendByCountryTableRow], taxYear: Int, individualOrAgent: String, mode: Mode)(implicit request: Request[_], messages: Messages)
+@(form: Form[_], rows: Seq[ForeignDividendByCountryTableRow], taxYear: Int, individualOrAgent: String)(implicit request: Request[_], messages: Messages)
 
 @changeLink(changeUrl: String) = {
     <a href="@changeUrl">@messages("site.change")</a>
@@ -73,7 +73,7 @@
         }
     ))
 
-    @formHelper(action = routes.YourForeignDividendsByCountryController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
+    @formHelper(action = routes.YourForeignDividendsByCountryController.onSubmit(taxYear), Symbol("autoComplete") -> "off") {
 
         @govukRadios(
             RadiosViewModel.yesNo(

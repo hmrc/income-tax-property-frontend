@@ -16,39 +16,27 @@
 
 package controllers.foreignincome.dividends
 
-import audit.AuditService
 import base.SpecBase
-import controllers.foreignincome.dividends.routes.{DividendsSectionCheckYourAnswersController, DividendsSectionFinishedController}
-import models.JourneyPath.ForeignDividends
-import models.{UserAnswers, TotalIncome, JourneyContext}
-import org.mockito.ArgumentMatchers
+import navigation.{FakeForeignIncomeNavigator, ForeignIncomeNavigator}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.{times, verify, when}
+import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.foreign.Country
-import pages.foreignincome.dividends.DividendsSectionFinishedPage
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import service.{BusinessService, PropertySubmissionService}
+import repositories.SessionRepository
 import viewmodels.govuk.SummaryListFluency
 import views.html.foreignincome.dividends.DividendsSectionCheckYourAnswersView
 
-import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class DividendsSectionCheckYourAnswersControllerSpec extends SpecBase with MockitoSugar with SummaryListFluency {
   val taxYear = 2024
   val countryCode = "ESP"
-
+  def onwardRoute: Call = Call("GET", "/foo")
 
   "DividendsSectionCheckYourAnswers Controller" - {
-
-    def submitOnwardRoute: Call = Call(
-      "POST",
-      "/update-and-submit-income-tax-return/property/2024/foreign-income/dividends/your-foreign-dividends-by-country"
-    )
 
     "must return OK and the correct view for a GET" in {
 
@@ -56,14 +44,14 @@ class DividendsSectionCheckYourAnswersControllerSpec extends SpecBase with Mocki
       val list = SummaryListViewModel(Seq.empty)
 
       running(application) {
-        val request = FakeRequest(GET, DividendsSectionCheckYourAnswersController.onPageLoad(taxYear, countryCode).url)
+        val request = FakeRequest(GET, routes.DividendsSectionCheckYourAnswersController.onPageLoad(taxYear, countryCode).url)
 
         val result = route(application, request).value
 
         val view = application.injector.instanceOf[DividendsSectionCheckYourAnswersView]
 
         status(result) mustEqual OK
-        contentAsString(result) mustEqual view(list, taxYear, countryCode)(request, messages(application)).toString
+        contentAsString(result) mustEqual view(list, taxYear)(request, messages(application)).toString
       }
     }
 
@@ -72,7 +60,7 @@ class DividendsSectionCheckYourAnswersControllerSpec extends SpecBase with Mocki
       val application = applicationBuilder(userAnswers = None, isAgent = false).build()
 
       running(application) {
-        val request = FakeRequest(GET, DividendsSectionCheckYourAnswersController.onPageLoad(taxYear, countryCode).url)
+        val request = FakeRequest(GET, routes.DividendsSectionCheckYourAnswersController.onPageLoad(taxYear, countryCode).url)
 
         val result = route(application, request).value
 
@@ -81,46 +69,26 @@ class DividendsSectionCheckYourAnswersControllerSpec extends SpecBase with Mocki
       }
     }
 
-    "must return OK and the POST for onSubmit() should redirect to the Have you finished this section page" in {
-      val userAnswers = UserAnswers("test").set(DividendsSectionFinishedPage, false).get
-      val context =
-        JourneyContext(taxYear = taxYear, mtditid = "mtditid", nino = "nino", journeyPath = ForeignDividends)
+    "must redirect to the next page when valid data is submitted" in {
+      val mockSessionRepository = mock[SessionRepository]
 
-      val userAnswersForeignDividends =
-        userAnswers
-          .set(
-            models.ForeignDividends,
-            models.ForeignDividends(Array(Country("Australia", "AUS")), foreignTaxDeductedFromDividendIncome = true)
-          )
-          .get
+      when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
 
-//      when(
-//        propertySubmissionService
-//          .saveForeignPropertyJourneyAnswers(ArgumentMatchers.eq(context), any)(
-//            any(),
-//            any()
-//          )
-//      ) thenReturn Future(Right())
-
-      when(businessService.getForeignPropertyDetails(any(), any())(any())) thenReturn Future(
-        Right(Some(foreignPropertyDetails))
-      )
-
-      val application = applicationBuilder(userAnswers = Some(userAnswersForeignDividends), isAgent = true)
-//        .overrides(bind[PropertySubmissionService].toInstance(propertySubmissionService))
-        .overrides(bind[BusinessService].toInstance(businessService))
-        .overrides(bind[AuditService].toInstance(audit))
+      val application = applicationBuilder(userAnswers = Some(emptyUserAnswers), isAgent = true)
+        .overrides(
+          bind[ForeignIncomeNavigator].toInstance(new FakeForeignIncomeNavigator(onwardRoute)),
+          bind[SessionRepository].toInstance(mockSessionRepository)
+        )
         .build()
 
       running(application) {
         val request =
-          FakeRequest(POST, DividendsSectionCheckYourAnswersController.onSubmit(taxYear, countryCode).url)
+          FakeRequest(POST, routes.DividendsSectionCheckYourAnswersController.onSubmit(taxYear).url)
 
         val result = route(application, request).value
 
         status(result) mustEqual SEE_OTHER
-//        verify(audit, times(1)).sendAuditEvent(any())(any(), any())
-        redirectLocation(result).value mustEqual submitOnwardRoute.url
+        redirectLocation(result).value mustEqual onwardRoute.url
       }
     }
   }
