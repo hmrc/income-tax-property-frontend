@@ -36,7 +36,7 @@ object YourForeignDividendsByCountrySummary {
                 ForeignDividendByCountryTableRow(
                   country = country,
                   income = income,
-                  changeLink = "TODO", // TODO - implement once CYA page has been created
+                  changeLink = controllers.foreignincome.dividends.routes.DividendsSectionCheckYourAnswersController.onPageLoad(taxYear, country.code).url,
                   removeLink = controllers.foreignincome.dividends.routes.RemoveForeignDividendController
                     .onPageLoad(taxYear, countries.indexOf(country))
                     .url
