@@ -45,6 +45,7 @@ trait FrontendAppConfig {
   def cacheTtlSecondsOrDays: String
   def viewAndChangeEnterUtrUrl: String
   def viewAndChangeViewUrlAgent: String
+  def vcSessionServiceBaseUrl: String
 }
 
 @Singleton
@@ -65,6 +66,8 @@ class FrontendAppConfigImpl @Inject() (configuration: Configuration) extends Fro
 
   val exitSurveyBaseUrl: String = configuration.get[Service]("microservice.services.feedback-frontend").baseUrl
   val exitSurveyUrl: String = s"$exitSurveyBaseUrl/feedback/income-tax-property-frontend"
+
+  lazy val vcSessionServiceBaseUrl: String = configuration.get[Service]("microservice.services.income-tax-session-data").baseUrl
 
   private lazy val incomeTaxSubmissionFrontendUrlKey = "microservice.services.income-tax-submission-frontend.url"
   def incomeTaxSubmissionBaseUrl: String = configuration.get[String](incomeTaxSubmissionFrontendUrlKey) +
