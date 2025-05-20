@@ -21,7 +21,6 @@ import com.github.tomakehurst.wiremock.stubbing.StubMapping
 import config.FrontendAppConfig
 import handlers.ErrorHandler
 import models.User
-import org.scalatest.OptionValues
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
 import org.scalatestplus.play.guice.GuiceOneServerPerSuite
@@ -40,7 +39,7 @@ import java.util.UUID
 import scala.concurrent.duration.Duration
 import scala.concurrent.{Await, Awaitable, ExecutionContext}
 
-trait IntegrationTest extends AnyWordSpecLike with Matchers with GuiceOneServerPerSuite with WireMockSupport with OptionValues {
+trait IntegrationTest extends AnyWordSpecLike with Matchers with GuiceOneServerPerSuite with WireMockSupport {
 
   val authorizationHeader: (String, String) = HeaderNames.AUTHORIZATION -> "mock-bearer-token"
   private val dateNow: LocalDate = LocalDate.now()

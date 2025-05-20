@@ -20,7 +20,7 @@ import config.FrontendAppConfig
 import connectors.response.SessionDataHttpResponse.{SessionDataResponse, SessionDataResponseReads}
 import play.api.Logging
 import uk.gov.hmrc.http.client.HttpClientV2
-import uk.gov.hmrc.http.{HeaderCarrier, JsValidationException, StringContextOps, UpstreamErrorResponse}
+import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps}
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -32,16 +32,5 @@ class SessionDataConnector @Inject()(config: FrontendAppConfig,
     httpClient
       .get(url"${config.vcSessionServiceBaseUrl}/income-tax-session-data")
       .execute[SessionDataResponse]
-      .recoverWith {
-        case e: UpstreamErrorResponse =>
-          logger.warn(s"[SessionDataConnector] - Received error status ${e.statusCode} with requestId: ${hc.requestId}")
-          Future.failed(e)
-        case e: JsValidationException =>
-          logger.warn(s"[SessionDataConnector] - Unable to parse the content of a response with requestId: ${hc.requestId}")
-          Future.failed(e)
-        case e =>
-          logger.warn(s"[SessionDataConnector] - Received an error with requestId: ${hc.requestId}")
-          Future.failed(e)
-      }
 
 }

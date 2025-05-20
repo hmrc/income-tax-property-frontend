@@ -25,8 +25,8 @@ trait Parser {
   protected val parserName: String
   protected val service : String = "income-tax-property-frontend"
 
-  def logMessage(response:HttpResponse): Option[String] ={
-    Some(s"[$parserName][read] Received ${response.status} from $service API. Body:${response.body}")
+  def logMessage(response:HttpResponse): String ={
+    s"[$parserName][read] Received ${response.status} from $service API. Body:${response.body}"
   }
 
   def badSuccessJsonResponse[Response]: Either[ApiError, Response] = {
