@@ -28,6 +28,8 @@ import pages.foreign.allowances._
 import pages.foreign.expenses._
 import pages.foreign.income._
 import pages.foreign.structurebuildingallowance._
+import pages.foreignincome.dividends.{ForeignTaxDeductedFromDividendIncomePage, HowMuchForeignTaxDeductedFromDividendIncomePage}
+import pages.foreignincome.{CountryReceiveDividendIncomePage, IncomeBeforeForeignTaxDeductedPage}
 import pages.premiumlease.{CalculatedFigureYourselfPage, ReceivedGrantLeaseAmountPage}
 import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
 import pages.propertyrentals.expenses._
@@ -50,299 +52,328 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
   val index = 0
   val data: String =
     s"""{
-       |  "ukPropertyData" : {
-       |  "propertyAbout": {
-       |    "totalIncome" : "between",
-       |    "ukProperty" : [
-       |      "property.rentals"
-       |    ]
-       |  },
-       |  "esbasWithSupportingQuestions": {
-       |    "claimEnhancedStructureBuildingAllowance" : true,
-       |    "enhancedStructureBuildingAllowances" : [
-       |      {
-       |        "enhancedStructureBuildingAllowanceQualifyingDate" : "2022-01-04",
-       |        "enhancedStructureBuildingAllowanceQualifyingAmount" : 5,
-       |        "enhancedStructureBuildingAllowanceClaim" : 6,
-       |        "enhancedStructureBuildingAllowanceAddress" : {
-       |          "buildingName" : "12",
-       |          "buildingNumber" : "12",
-       |          "postCode" : "EH1 AB1"
-       |        }
+       |  "propertyData": {
+       |    "ukPropertyData": {
+       |      "propertyAbout": {
+       |        "totalIncome" : "between",
+       |        "ukProperty" : [
+       |          "property.rentals"
+       |        ]
        |      },
-       |      {
-       |        "enhancedStructureBuildingAllowanceQualifyingDate" : "2022-03-03",
-       |        "enhancedStructureBuildingAllowanceQualifyingAmount" : 4,
-       |        "enhancedStructureBuildingAllowanceClaim" : 5,
-       |        "enhancedStructureBuildingAllowanceAddress" : {
-       |          "buildingName" : "2",
-       |          "buildingNumber" : "2",
-       |          "postCode" : "EH1 AB1"
-       |        }
-       |      }
-       |    ],
-       |    "enhancedStructureBuildingAllowanceClaims" : false
-       |  },
-       |  "propertyRentalsAbout" : {
-       |    "isClaimPropertyIncomeAllowance" : false
-       |  },
-       |  "propertyRentalsIncome" : {
-       |    "isNonUKLandlord" : false,
-       |    "propertyRentalIncome" : 45,
-       |    "isPremiumForLease" : true,
-       |    "calculatedFigureYourself" : {
-       |      "calculatedFigureYourself" : true,
-       |      "amount" : 45
-       |    },
-       |    "receivedGrantLeaseAmount": 6,
-       |    "reversePremiumsReceived" : {
-       |      "reversePremiumsReceived" : true,
-       |      "reversePremiums" : 45
-       |    },
-       |    "otherIncomeFromProperty" : 45
-       |  },
-       |  "propertyRentalsExpenses" : {
-       |    "consolidatedExpenses" : {
-       |      "isConsolidatedExpenses" : false
-       |    },
-       |    "rentsRatesAndInsurance" : 55,
-       |    "repairsAndMaintenanceCosts" : 7,
-       |    "loanInterestOrOtherFinancialCost" : 56,
-       |    "otherProfessionalFees" : 4,
-       |    "costsOfServicesProvided" : 34,
-       |    "propertyBusinessTravelCosts" : 4,
-       |    "otherAllowablePropertyExpenses" : 3
-       |  },
-       |  "allowances" : {
-       |    "annualInvestmentAllowance" : 44,
-       |    "electricChargePointAllowance" : {
-       |      "isElectricChargePointAllowance" : true,
-       |      "electricChargePointAllowanceAmount" : 45
-       |    },
-       |    "zeroEmissionCarAllowance" : 4,
-       |    "zeroEmissionGoodsVehicleAllowance" : 4,
-       |    "businessPremisesRenovationAllowance" : 4,
-       |    "replacementOfDomesticGoodsAllowance" : 4,
-       |    "otherCapitalAllowance" : 4
-       |  },
-       |  "sbasWithSupportingQuestions": {
-       |    "claimStructureBuildingAllowance" : true,
-       |    "structureBuildingFormGroup" : [ {
-       |      "structureBuildingQualifyingDate" : "2022-04-03",
-       |      "structureBuildingQualifyingAmount" : 3,
-       |      "structureBuildingAllowanceClaim" : 4,
-       |      "structuredBuildingAllowanceAddress" : {
-       |        "buildingName" : "3",
-       |        "buildingNumber" : "3",
-       |        "postCode" : "EH1 AB2"
-       |      }
-       |    },
-       |      {
-       |        "structureBuildingQualifyingDate" : "2022-02-02",
-       |        "structureBuildingQualifyingAmount" : 4,
-       |        "structureBuildingAllowanceClaim" : 5,
-       |        "structuredBuildingAllowanceAddress" : {
-       |          "buildingName" : "4",
-       |          "buildingNumber" : "4",
-       |          "postCode" : "EH1 AB2"
-       |        }
-       |      }
-       |    ]
-       |
-       |  },
-       |  "adjustments" : {
-       |    "privateUseAdjustment" : 2,
-       |    "balancingCharge" : {
-       |      "isBalancingCharge" : true,
-       |      "balancingChargeAmount" : 3
-       |    },
-       |    "propertyIncomeAllowance" : 4,
-       |    "renovationAllowanceBalancingCharge" : {
-       |      "isRenovationAllowanceBalancingCharge" : true,
-       |      "renovationAllowanceBalancingChargeAmount" : 23
-       |    },
-       |    "residentialFinanceCost" : 2,
-       |    "unusedResidentialFinanceCost" : 3,
-       |    "unusedLossesBroughtForward" : {
-       |      "isUnusedLossesBroughtForward" : true,
-       |      "unusedLossesBroughtForwardAmount" : 24
-       |    },
-       |    "whenYouReportedTheLoss": "y2021to2022"
-       |
-       |  },
-       |  "raRAbout" : {
-       |    "isJointlyLet" : false,
-       |    "totalIncomeAmount" : 30,
-       |    "claimExpensesOrRelief" : {
-       |      "isClaimExpensesOrRelief" : false,
-       |      "rentARoomAmount" : 50
-       |    }
-       |  },
-       |  "raRAdjustments": {
-       |     "balancingCharge": {
-       |         "balancingChargeAmount": 10,
-       |         "isBalancingCharge": true
-       |     },
-       |     "unusedLossesBroughtForward": {
-       |         "unusedLossesBroughtForwardAmount": 5,
-       |         "isUnusedLossesBroughtForward": true
-       |     },
-       |     "whenYouReportedTheLoss": "y2021to2022",
-       |     "unusedResidentialPropertyFinanceCostsBroughtFwd": 45
-       | },
-       | "rarExpenses": {
-       |     "costOfServicesProvided": 30,
-       |     "legalManagementOtherFee": 20,
-       |     "otherPropertyExpenses": 35,
-       |     "rentsRatesAndInsurance": 5,
-       |     "repairsAndMaintenanceCosts": 10
-       | },
-       |  "rentARoomAllowances" : {
-       |    "capitalAllowancesForACar" : {
-       |      "isCapitalAllowancesForACar" : true,
-       |      "capitalAllowancesForACarAmount" : 20
-       |    },
-       |    "annualInvestmentAllowance" : 5,
-       |    "electricChargePointAllowance" : 30,
-       |    "zeroEmissionCarAllowance" : 35,
-       |    "zeroEmissionGoodsVehicleAllowance" : 10,
-       |    "replacementOfDomesticGoodsAllowance" : 25,
-       |    "otherCapitalAllowance" : 20
-       |  },
-       |  "journeyStatuses": [],
-       |  "foreignPropertySelectCountry" : {
-       |    "totalIncome": "under",
-       |    "reportPropertyIncome": false}
-       |  },
-       |  "foreignPropertyData": {
-       |    "foreignPropertyIncome": {
-       |      "$countryCode1": {
-       |        "rentIncome": 12345.75,
-       |        "premiumsGrantLeaseReceived": true,
-       |        "otherPropertyIncome": 345.65,
-       |        "calculatedPremiumLeaseTaxable": {
-       |          "calculatedPremiumLeaseTaxable": true
+       |      "esbasWithSupportingQuestions": {
+       |        "claimEnhancedStructureBuildingAllowance" : true,
+       |        "enhancedStructureBuildingAllowances" : [
+       |          {
+       |            "enhancedStructureBuildingAllowanceQualifyingDate" : "2022-01-04",
+       |            "enhancedStructureBuildingAllowanceQualifyingAmount" : 5,
+       |            "enhancedStructureBuildingAllowanceClaim" : 6,
+       |            "enhancedStructureBuildingAllowanceAddress" : {
+       |              "buildingName" : "12",
+       |              "buildingNumber" : "12",
+       |              "postCode" : "EH1 AB1"
+       |            }
+       |          },
+       |          {
+       |            "enhancedStructureBuildingAllowanceQualifyingDate" : "2022-03-03",
+       |            "enhancedStructureBuildingAllowanceQualifyingAmount" : 4,
+       |            "enhancedStructureBuildingAllowanceClaim" : 5,
+       |            "enhancedStructureBuildingAllowanceAddress" : {
+       |              "buildingName" : "2",
+       |              "buildingNumber" : "2",
+       |              "postCode" : "EH1 AB1"
+       |            }
+       |          }
+       |        ],
+       |        "enhancedStructureBuildingAllowanceClaims" : false
+       |      },
+       |      "propertyRentalsAbout" : {
+       |        "isClaimPropertyIncomeAllowance" : false
+       |      },
+       |      "propertyRentalsIncome" : {
+       |        "isNonUKLandlord" : false,
+       |        "propertyRentalIncome" : 45,
+       |        "isPremiumForLease" : true,
+       |        "calculatedFigureYourself" : {
+       |          "calculatedFigureYourself" : true,
+       |          "amount" : 45
        |        },
-       |        "receivedGrantLeaseAmount": 555.55,
-       |        "twelveMonthPeriodsInLease": 3,
-       |        "premiumsOfLeaseGrantAgreed": {
-       |          "premiumsOfLeaseGrantAgreed": true,
-       |          "premiumsOfLeaseGrant": 234.5
-       |        }
-       |      }
-       |    },
-       |    "foreignPropertyExpenses": {
-       |      "$countryCode1": {
-       |        "premisesRunningCosts": 15.15,
-       |        "repairsAndMaintenance": 25.15,
-       |        "financialCosts": 35.15,
-       |        "professionalFees": 45.15,
-       |        "costOfServices": 65.15,
-       |        "other": 95.15
-       |      }
-       |    },
-       |      "foreignPropertyTax": {
-       |      "$countryCode1": {
-       |      "foreignIncomeTax": {
-       |        "isForeignIncomeTax": true,
-       |        "foreignTaxPaidOrDeducted": 590.55
+       |        "receivedGrantLeaseAmount": 6,
+       |        "reversePremiumsReceived" : {
+       |          "reversePremiumsReceived" : true,
+       |          "reversePremiums" : 45
+       |        },
+       |        "otherIncomeFromProperty" : 45
        |      },
-       |      "foreignTaxCreditRelief": true
+       |      "propertyRentalsExpenses" : {
+       |        "consolidatedExpenses" : {
+       |          "isConsolidatedExpenses" : false
+       |        },
+       |        "rentsRatesAndInsurance" : 55,
+       |        "repairsAndMaintenanceCosts" : 7,
+       |        "loanInterestOrOtherFinancialCost" : 56,
+       |        "otherProfessionalFees" : 4,
+       |        "costsOfServicesProvided" : 34,
+       |        "propertyBusinessTravelCosts" : 4,
+       |        "otherAllowablePropertyExpenses" : 3
+       |      },
+       |      "allowances" : {
+       |        "annualInvestmentAllowance" : 44,
+       |        "electricChargePointAllowance" : {
+       |          "isElectricChargePointAllowance" : true,
+       |          "electricChargePointAllowanceAmount" : 45
+       |        },
+       |        "zeroEmissionCarAllowance" : 4,
+       |        "zeroEmissionGoodsVehicleAllowance" : 4,
+       |        "businessPremisesRenovationAllowance" : 4,
+       |        "replacementOfDomesticGoodsAllowance" : 4,
+       |        "otherCapitalAllowance" : 4
+       |      },
+       |      "sbasWithSupportingQuestions": {
+       |        "claimStructureBuildingAllowance" : true,
+       |        "structureBuildingFormGroup" : [ {
+       |          "structureBuildingQualifyingDate" : "2022-04-03",
+       |          "structureBuildingQualifyingAmount" : 3,
+       |          "structureBuildingAllowanceClaim" : 4,
+       |          "structuredBuildingAllowanceAddress" : {
+       |            "buildingName" : "3",
+       |            "buildingNumber" : "3",
+       |            "postCode" : "EH1 AB2"
+       |          }
+       |        },
+       |        {
+       |          "structureBuildingQualifyingDate" : "2022-02-02",
+       |          "structureBuildingQualifyingAmount" : 4,
+       |          "structureBuildingAllowanceClaim" : 5,
+       |          "structuredBuildingAllowanceAddress" : {
+       |            "buildingName" : "4",
+       |            "buildingNumber" : "4",
+       |            "postCode" : "EH1 AB2"
+       |          }
+       |        } ]
+       |      },
+       |      "adjustments" : {
+       |        "privateUseAdjustment" : 2,
+       |        "balancingCharge" : {
+       |          "isBalancingCharge" : true,
+       |          "balancingChargeAmount" : 3
+       |        },
+       |        "propertyIncomeAllowance" : 4,
+       |        "renovationAllowanceBalancingCharge" : {
+       |          "isRenovationAllowanceBalancingCharge" : true,
+       |          "renovationAllowanceBalancingChargeAmount" : 23
+       |        },
+       |        "residentialFinanceCost" : 2,
+       |        "unusedResidentialFinanceCost" : 3,
+       |        "unusedLossesBroughtForward" : {
+       |          "isUnusedLossesBroughtForward" : true,
+       |          "unusedLossesBroughtForwardAmount" : 24
+       |        },
+       |        "whenYouReportedTheLoss": "y2021to2022"
+       |
+       |      },
+       |      "raRAbout" : {
+       |        "isJointlyLet" : false,
+       |        "totalIncomeAmount" : 30,
+       |        "claimExpensesOrRelief" : {
+       |          "isClaimExpensesOrRelief" : false,
+       |          "rentARoomAmount" : 50
+       |        }
+       |      },
+       |      "raRAdjustments": {
+       |        "balancingCharge": {
+       |          "balancingChargeAmount": 10,
+       |          "isBalancingCharge": true
+       |         },
+       |         "unusedLossesBroughtForward": {
+       |           "unusedLossesBroughtForwardAmount": 5,
+       |           "isUnusedLossesBroughtForward": true
+       |         },
+       |         "whenYouReportedTheLoss": "y2021to2022",
+       |         "unusedResidentialPropertyFinanceCostsBroughtFwd": 45
+       |      },
+       |      "rarExpenses": {
+       |        "costOfServicesProvided": 30,
+       |        "legalManagementOtherFee": 20,
+       |        "otherPropertyExpenses": 35,
+       |        "rentsRatesAndInsurance": 5,
+       |        "repairsAndMaintenanceCosts": 10
+       |      },
+       |      "rentARoomAllowances" : {
+       |        "capitalAllowancesForACar" : {
+       |          "isCapitalAllowancesForACar" : true,
+       |          "capitalAllowancesForACarAmount" : 20
+       |        },
+       |        "annualInvestmentAllowance" : 5,
+       |        "electricChargePointAllowance" : 30,
+       |        "zeroEmissionCarAllowance" : 35,
+       |        "zeroEmissionGoodsVehicleAllowance" : 10,
+       |        "replacementOfDomesticGoodsAllowance" : 25,
+       |        "otherCapitalAllowance" : 20
+       |      },
+       |      "journeyStatuses": [],
+       |      "foreignPropertySelectCountry" : {
+       |        "totalIncome": "under",
+       |        "reportPropertyIncome": false
        |      }
        |    },
-       |    "foreignPropertyAllowances": {
-       |          "$countryCode1": {
+       |    "foreignPropertyData": {
+       |      "foreignPropertyIncome": {
+       |        "$countryCode1": {
+       |          "rentIncome": 12345.75,
+       |          "premiumsGrantLeaseReceived": true,
+       |          "otherPropertyIncome": 345.65,
+       |          "calculatedPremiumLeaseTaxable": {
+       |            "calculatedPremiumLeaseTaxable": true
+       |          },
+       |          "receivedGrantLeaseAmount": 555.55,
+       |          "twelveMonthPeriodsInLease": 3,
+       |          "premiumsOfLeaseGrantAgreed": {
+       |            "premiumsOfLeaseGrantAgreed": true,
+       |            "premiumsOfLeaseGrant": 234.5
+       |          }
+       |        }
+       |      },
+       |      "foreignPropertyExpenses": {
+       |        "$countryCode1": {
+       |          "premisesRunningCosts": 15.15,
+       |          "repairsAndMaintenance": 25.15,
+       |          "financialCosts": 35.15,
+       |          "professionalFees": 45.15,
+       |          "costOfServices": 65.15,
+       |          "other": 95.15
+       |        }
+       |      },
+       |      "foreignPropertyTax": {
+       |        "$countryCode1": {
+       |          "foreignIncomeTax": {
+       |            "isForeignIncomeTax": true,
+       |            "foreignTaxPaidOrDeducted": 590.55
+       |          },
+       |          "foreignTaxCreditRelief": true
+       |        }
+       |      },
+       |      "foreignPropertyAllowances": {
+       |        "$countryCode1": {
        |          "costOfReplacingDomesticItems": 35.60,
        |          "zeroEmissionsGoodsVehicleAllowance": 99.67,
        |          "zeroEmissionsCarAllowance": 45.45,
        |          "otherCapitalAllowance": 45.15
-       |         }
-       |         },
-       |    "foreignPropertySba": {
-       |    "$countryCode1": {
-       |      "claimStructureBuildingAllowance": true,
-       |      "allowances": [{
-       |        "amount": 500,
-       |        "firstYear": {
-       |          "qualifyingDate": "2023-05-04",
-       |          "qualifyingAmountExpenditure": 100
-       |        },
-       |        "building": {
-       |          "name": "Building",
-       |          "number": "1",
-       |          "postCode": "AB2 7AA"
        |        }
+       |      },
+       |      "foreignPropertySba": {
+       |        "$countryCode1": {
+       |          "claimStructureBuildingAllowance": true,
+       |          "allowances": [{
+       |            "amount": 500,
+       |            "firstYear": {
+       |              "qualifyingDate": "2023-05-04",
+       |              "qualifyingAmountExpenditure": 100
+       |            },
+       |            "building": {
+       |              "name": "Building",
+       |              "number": "1",
+       |              "postCode": "AB2 7AA"
+       |            }
+       |          }]
        |        }
-       |      ]
-       |    }
-       |},
-       |  "foreignPropertyAdjustments": {
-       |    "$countryCode1": {
-       |      "privateUseAdjustment": 50,
-       |      "balancingCharge": {
-       |        "isBalancingCharge": true,
-       |        "balancingChargeAmount": 56.60
        |      },
-       |      "residentialFinanceCost": 67.90,
-       |      "unusedResidentialFinanceCost": {
-       |        "isForeignUnusedResidentialFinanceCost": true,
-       |        "foreignUnusedResidentialFinanceCostAmount": 50
-       |      },
-       |      "propertyIncomeAllowanceClaim": 50,
-       |      "unusedLossesPreviousYears": {
-       |        "isUnusedLossesPreviousYears": true,
-       |        "unusedLossesPreviousYearsAmount": 500
-       |      },
-       |      "whenYouReportedTheLoss": "y2021to2022"
-       |    }
-       |  },
-       |    "foreignJourneyStatuses": {
-       |      "$countryCode1": [
-       |        {
-       |          "journeyName": "foreign-property-income",
-       |          "journeyStatus": "completed"
-       |        },
-       |        {
-       |          "journeyName": "foreign-property-tax",
-       |          "journeyStatus": "completed"
-       |        },
-       |         {
-       |           "journeyName": "foreign-property-allowances",
-       |           "journeyStatus": "completed"
-       |       },
-       |       {
-       |           "journeyName": "foreign-property-sba",
-       |           "journeyStatus": "completed"
-       |       },
-       |       {
-       |           "journeyName": "foreign-property-adjustments",
-       |           "journeyStatus": "completed"
-       |       }
-       |      ],
-       |      "$countryCode2": [
-       |        {
-       |          "journeyName": "foreign-property-expenses",
-       |          "journeyStatus": "inProgress"
+       |      "foreignPropertyAdjustments": {
+       |        "$countryCode1": {
+       |          "privateUseAdjustment": 50,
+       |          "balancingCharge": {
+       |            "isBalancingCharge": true,
+       |            "balancingChargeAmount": 56.60
+       |          },
+       |          "residentialFinanceCost": 67.90,
+       |          "unusedResidentialFinanceCost": {
+       |            "isForeignUnusedResidentialFinanceCost": true,
+       |            "foreignUnusedResidentialFinanceCostAmount": 50
+       |          },
+       |          "propertyIncomeAllowanceClaim": 50,
+       |          "unusedLossesPreviousYears": {
+       |            "isUnusedLossesPreviousYears": true,
+       |            "unusedLossesPreviousYearsAmount": 500
+       |          },
+       |          "whenYouReportedTheLoss": "y2021to2022"
        |        }
-       |      ]
-       |    }
-       |  },
-       |  "ukAndForeignPropertyData" : {
-       |    "ukAndForeignAbout" : {
-       |      "aboutUkAndForeign": {
-       |        "totalPropertyIncome" : "maximum",
-       |        "reportIncome" : "wantToReport"
+       |      },
+       |      "foreignJourneyStatuses": {
+       |        "$countryCode1": [
+       |          {
+       |            "journeyName": "foreign-property-income",
+       |            "journeyStatus": "completed"
+       |          },
+       |          {
+       |            "journeyName": "foreign-property-tax",
+       |            "journeyStatus": "completed"
+       |          },
+       |          {
+       |             "journeyName": "foreign-property-allowances",
+       |             "journeyStatus": "completed"
+       |          },
+       |          {
+       |              "journeyName": "foreign-property-sba",
+       |              "journeyStatus": "completed"
+       |          },
+       |          {
+       |              "journeyName": "foreign-property-adjustments",
+       |              "journeyStatus": "completed"
+       |          }
+       |        ],
+       |        "$countryCode2": [
+       |          {
+       |            "journeyName": "foreign-property-expenses",
+       |            "journeyStatus": "inProgress"
+       |          }
+       |        ]
+       |      }
+       |    },
+       |    "ukAndForeignPropertyData" : {
+       |      "ukAndForeignAbout" : {
+       |        "aboutUkAndForeign": {
+       |          "totalPropertyIncome" : "maximum",
+       |          "reportIncome" : "wantToReport"
+       |        }
        |      }
        |    }
+       |  },
+       |  "incomeData": {
+       |    "foreignIncomeDividends": {
+       |      "ESP": {
+       |        "amountBeforeTax": 13,
+       |        "taxTakenOff": 56.7,
+       |        "specialWithholdingTax": 22.11,
+       |        "foreignTaxCreditRelief": true,
+       |        "taxableAmount": 14.67,
+       |        "foreignTaxDeductedFromDividendIncome": true
+       |      },
+       |      "DEU": {
+       |        "amountBeforeTax": 2323.56,
+       |        "taxTakenOff": 5435.56,
+       |        "specialWithholdingTax": 4564.67,
+       |        "foreignTaxCreditRelief": true,
+       |        "taxableAmount": 4564.67,
+       |        "foreignTaxDeductedFromDividendIncome": true
+       |      }
+       |    },
+       |    "foreignIncomeJourneyStatuses": [
+       |      {
+       |        "journeyName": "foreign-income-dividends",
+       |        "journeyStatus": "completed"
+       |      }
+       |    ]
        |  }
        |}""".stripMargin
 
   "PropertyPeriodSessionRecoveryExtensionsSpec" - {
     "should update the session data correctly" in {
-      val fetchedData = Json.parse(data).as[FetchedPropertyData]
+      val fetchedData = Json.parse(data).as[FetchedData]
 
       val updated = emptyUserAnswers
-        .update(fetchedData)
+        .updateUKProperty(fetchedData.propertyData.ukPropertyData)
+        .updateForeignProperty(fetchedData.propertyData.ukPropertyData, fetchedData.propertyData.foreignPropertyData)
+        .updateUKAndForeignProperty(fetchedData.propertyData.ukAndForeignPropertyData)
+        .updateForeignIncome(fetchedData.incomeData)
 
       updated.get(TotalIncomePage).get mustBe TotalIncome.Between
       updated.get(UKPropertyPage).get mustBe Set(UKPropertySelect.PropertyRentals)
@@ -513,6 +544,13 @@ class PropertyPeriodSessionRecoveryExtensionsSpec extends SpecBase with MockitoS
       )
       updated.get(ForeignWhenYouReportedTheLossPage(countryCode1)) mustBe Some(ForeignWhenYouReportedTheLoss.y2021to2022)
       updated.get(ForeignAdjustmentsCompletePage(countryCode1)) mustBe Some(true)
+
+      updated.get(CountryReceiveDividendIncomePage(0)).map(_.code) mustBe Some("ESP")
+      updated.get(CountryReceiveDividendIncomePage(1)).map(_.code) mustBe Some("DEU")
+      updated.get(IncomeBeforeForeignTaxDeductedPage("ESP")) mustBe Some(13)
+      updated.get(ForeignTaxDeductedFromDividendIncomePage("ESP")) mustBe Some(true)
+      updated.get(HowMuchForeignTaxDeductedFromDividendIncomePage("ESP")) mustBe Some(56.7)
+      updated.get(pages.foreignincome.dividends.ClaimForeignTaxCreditReliefPage("ESP")) mustBe Some(true)
     }
   }
 }

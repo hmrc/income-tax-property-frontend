@@ -64,10 +64,14 @@ class SummaryControllerSpec extends SpecBase with MockitoSugar with Fixture {
 
   when(
     propertyPeriodSubmissionService.getUKPropertySubmission(any(), any())(any())
-  ) thenReturn Future.successful(Right(fetchedPropertyData))
+  ) thenReturn Future.successful(Right(fetchedData))
 
   when(
     propertyPeriodSubmissionService.getForeignPropertySubmission(any(), any())(any())
+  ) thenReturn Future.successful(Left(ForeignPropertyDetailsError("AA000000A", "1234567890")))
+
+  when(
+    propertyPeriodSubmissionService.getForeignIncomeSubmission(any(), any())(any())
   ) thenReturn Future.successful(Left(ForeignPropertyDetailsError("AA000000A", "1234567890")))
 
   def propertyAboutItems: Seq[TaskListItem] =

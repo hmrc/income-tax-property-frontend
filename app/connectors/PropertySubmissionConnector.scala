@@ -18,8 +18,8 @@ package connectors
 
 import config.FrontendAppConfig
 import connectors.error.ApiError
-import connectors.response.{CreateOrUpdateJourneyAnswersResponse, DeleteJourneyAnswersResponse, GetPropertyPeriodicSubmissionResponse}
-import models.{DeleteJourneyAnswers, FetchedPropertyData, JourneyContext, User}
+import connectors.response.{CreateOrUpdateJourneyAnswersResponse, DeleteJourneyAnswersResponse, GetForeignIncomeSubmissionResponse, GetPropertyPeriodicSubmissionResponse}
+import models.{DeleteJourneyAnswers, FetchedData, JourneyContext, User}
 import play.api.Logging
 import play.api.libs.json.{Json, Writes}
 import uk.gov.hmrc.http.client.HttpClientV2
@@ -35,7 +35,7 @@ class PropertySubmissionConnector @Inject() (httpClient: HttpClientV2, appConfig
 
   def getPropertySubmission(taxYear: Int, incomeSourceId: String, user: User)(implicit
     hc: HeaderCarrier
-  ): Future[Either[ApiError, FetchedPropertyData]] = {
+  ): Future[Either[ApiError, FetchedData]] = {
 
     val propertyUrl =
       s"${appConfig.propertyServiceBaseUrl}/property/$taxYear/income/${user.nino}/$incomeSourceId"
@@ -45,6 +45,31 @@ class PropertySubmissionConnector @Inject() (httpClient: HttpClientV2, appConfig
       .setHeader("mtditid" -> user.mtditid)
       .execute[GetPropertyPeriodicSubmissionResponse]
       .map { response: GetPropertyPeriodicSubmissionResponse =>
+        if (response.result.isLeft) {
+          val correlationId =
+            response.httpResponse.header(key = "CorrelationId").map(id => s" CorrelationId: $id").getOrElse("")
+          logger.error(
+            s"[getPropertySubmission] Error getting property data from the backend: " +
+              s"correlationId: $correlationId; url: $propertyUrl " +
+              s"status: ${response.httpResponse.status}; Response Body:${response.httpResponse.body}"
+          )
+        }
+        response.result
+      }
+  }
+
+  def getForeignIncomeSubmission(taxYear: Int, incomeSourceId: String, user: User)(implicit
+                                                                                   hc: HeaderCarrier
+  ): Future[Either[ApiError, FetchedData]] = {
+
+    val propertyUrl =
+      s"${appConfig.propertyServiceBaseUrl}/income/$taxYear/dividends/${user.nino}/$incomeSourceId"
+
+    httpClient
+      .get(url"$propertyUrl")
+      .setHeader("mtditid" -> user.mtditid)
+      .execute[GetForeignIncomeSubmissionResponse]
+      .map { response: GetForeignIncomeSubmissionResponse =>
         if (response.result.isLeft) {
           val correlationId =
             response.httpResponse.header(key = "CorrelationId").map(id => s" CorrelationId: $id").getOrElse("")

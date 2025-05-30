@@ -23,24 +23,24 @@ import play.api.Logging
 import play.api.http.Status._
 import uk.gov.hmrc.http.{HttpReads, HttpResponse}
 
-final case class GetPropertyPeriodicSubmissionResponse(
+final case class GetForeignIncomeSubmissionResponse(
   httpResponse: HttpResponse,
   result: Either[ApiError, FetchedData]
 )
 
-object GetPropertyPeriodicSubmissionResponse {
+object GetForeignIncomeSubmissionResponse {
 
-  implicit val getPropertyPeriodicSubmissionResponseReads: HttpReads[GetPropertyPeriodicSubmissionResponse] =
-    new HttpReads[GetPropertyPeriodicSubmissionResponse] with Parser with Logging {
+  implicit val getForeignIncomeSubmissionResponseReads: HttpReads[GetForeignIncomeSubmissionResponse] =
+    new HttpReads[GetForeignIncomeSubmissionResponse] with Parser with Logging {
 
       override protected[connectors] val parserName: String = this.getClass.getSimpleName
 
-      override def read(method: String, url: String, response: HttpResponse): GetPropertyPeriodicSubmissionResponse =
+      override def read(method: String, url: String, response: HttpResponse): GetForeignIncomeSubmissionResponse =
         response.status match {
-          case OK => GetPropertyPeriodicSubmissionResponse(response, extractResult(response))
+          case OK => GetForeignIncomeSubmissionResponse(response, extractResult(response))
           case NOT_FOUND | INTERNAL_SERVER_ERROR | SERVICE_UNAVAILABLE | BAD_REQUEST =>
-            GetPropertyPeriodicSubmissionResponse(response, handleError(response, response.status))
-          case _ => GetPropertyPeriodicSubmissionResponse(response, handleError(response, INTERNAL_SERVER_ERROR))
+            GetForeignIncomeSubmissionResponse(response, handleError(response, response.status))
+          case _ => GetForeignIncomeSubmissionResponse(response, handleError(response, INTERNAL_SERVER_ERROR))
         }
 
       private def extractResult(response: HttpResponse): Either[ApiError, FetchedData] =
@@ -49,7 +49,7 @@ object GetPropertyPeriodicSubmissionResponse {
           .fold[Either[ApiError, FetchedData]](
             e => {
               //Todo: Proper specific error to be logged.
-              logger.error(s"[GetPropertyPeriodicSubmissionResponse][extractResult]: Error parsing property submission JSON: $e")
+              logger.error(s"[GetForeignIncomeSubmissionResponse][extractResult]: Error parsing property submission JSON: $e")
               badSuccessJsonResponse
             },
             parsedModel => Right(parsedModel)

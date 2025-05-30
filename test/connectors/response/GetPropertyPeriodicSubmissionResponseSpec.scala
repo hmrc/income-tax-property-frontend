@@ -44,7 +44,7 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
       "status is OK and valid jsValue" in {
 
         val ukPropertyData =
-          FetchedBackendData(
+          FetchedUKPropertyData(
             Some(CapitalAllowancesForACar(isCapitalAllowancesForACar = true, Some(3.2))),
             Some(
               PropertyAbout(
@@ -207,19 +207,21 @@ class GetPropertyPeriodicSubmissionResponseSpec extends AnyWordSpec with Matcher
             )
           )
         )
-        val ukAndForeignPropertyData: FetchedUkAndForeignData = FetchedUkAndForeignData(
+        val ukAndForeignPropertyData: FetchedUkAndForeignPropertyData = FetchedUkAndForeignPropertyData(
           None
         )
         val propertyPeriodicSubmissionResponse =
-          FetchedPropertyData(ukPropertyData, foreignPropertyData, ukAndForeignPropertyData)
+          FetchedPropertyData(Some(ukPropertyData), Some(foreignPropertyData), Some(ukAndForeignPropertyData))
 
-        val jsValue: JsValue = Json.toJson(propertyPeriodicSubmissionResponse)
+        val fetchedData = FetchedData(propertyData = propertyPeriodicSubmissionResponse, incomeData = None)
+
+        val jsValue: JsValue = Json.toJson(fetchedData)
 
         val httpResponse: HttpResponse = HttpResponse.apply(OK, jsValue, anyHeaders)
 
         underTest.read(anyMethod, anyUrl, httpResponse) shouldBe GetPropertyPeriodicSubmissionResponse(
           httpResponse,
-          Right(propertyPeriodicSubmissionResponse)
+          Right(fetchedData)
         )
       }
 

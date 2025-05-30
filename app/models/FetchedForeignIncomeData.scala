@@ -16,11 +16,14 @@
 
 package models
 
-import models.ukAndForeign.UkAndForeignAbout
 import play.api.libs.json.{Json, OFormat}
 
-final case class FetchedUkAndForeignData(ukAndForeignAbout: Option[UkAndForeignAbout])
 
-object FetchedUkAndForeignData {
-  implicit val format: OFormat[FetchedUkAndForeignData] = Json.format[FetchedUkAndForeignData]
+final case class FetchedForeignIncomeData(
+  foreignIncomeDividends: Option[Map[String, ForeignDividendsAnswers]],
+  foreignIncomeJourneyStatuses: List[JourneyWithStatus]
+)
+
+object FetchedForeignIncomeData {
+  implicit val format: OFormat[FetchedForeignIncomeData] = Json.format[FetchedForeignIncomeData]
 }

@@ -47,7 +47,10 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
 
   "getUKPropertyPeriodicSubmission" - {
     "return success when connector returns success" in {
-      val resultFromConnector = FetchedPropertyData(ukPropertyData,foreignPropertyData, ukAndForeignPropertyData)
+      val resultFromConnector = FetchedData(
+        propertyData = FetchedPropertyData(Some(ukPropertyData), Some(foreignPropertyData), Some(ukAndForeignPropertyData)),
+        incomeData = None
+      )
       val incomeSourceId = "incomeSourceId"
       val details =
         PropertyDetails(Some(IncomeSourcePropertyType.UKProperty.toString), Some(LocalDate.now), accrualsOrCash = Some(false), incomeSourceId)
@@ -91,7 +94,11 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
 
   "getForeignPropertyPeriodicSubmission" - {
     "return success when connector returns success" in {
-      val resultFromConnector = FetchedPropertyData(ukPropertyData,foreignPropertyData, ukAndForeignPropertyData)
+      val resultFromConnector = FetchedData(
+        propertyData = FetchedPropertyData(Some(ukPropertyData), Some(foreignPropertyData), Some(ukAndForeignPropertyData)),
+        incomeData = None
+      )
+
       val foreignIncomeSourceId = "foreignIncomeSourceId"
       val details =
         PropertyDetails(Some(IncomeSourcePropertyType.ForeignProperty.toString), Some(LocalDate.now), accrualsOrCash = Some(false), foreignIncomeSourceId)

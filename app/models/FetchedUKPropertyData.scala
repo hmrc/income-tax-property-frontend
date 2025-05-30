@@ -145,7 +145,7 @@ object JourneyWithStatus {
   implicit val format: OFormat[JourneyWithStatus] = Json.format[JourneyWithStatus]
 }
 
-final case class FetchedBackendData(
+final case class FetchedUKPropertyData(
   capitalAllowancesForACar: Option[CapitalAllowancesForACar],
   propertyAbout: Option[models.PropertyAbout],
   propertyRentalsAbout: Option[RentalsAbout],
@@ -170,6 +170,6 @@ final case class FetchedBackendData(
   foreignPropertySelectCountry: Option[models.ForeignPropertySelectCountry]
 )
 
-object FetchedBackendData {
-  implicit val format: OFormat[FetchedBackendData] = Json.format[FetchedBackendData]
+object FetchedUKPropertyData {
+  implicit val format: OFormat[FetchedUKPropertyData] = Json.format[FetchedUKPropertyData]
 }
