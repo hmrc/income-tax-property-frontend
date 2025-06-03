@@ -88,7 +88,7 @@ object PropertyPeriodSessionRecoveryExtensions {
             rentARoomAllowances <- updateRentARoomAllowance(rarExpenses, fetchedData.rentARoomAllowances)
             raRAdjustments <- updateRentARoomAdjustments(rentARoomAllowances, fetchedData.raRAdjustments)
             adjustments <- updateAdjustmentsPages(raRAdjustments, fetchedData.adjustments)
-            journeyStatuses <- updateJourneyStatuses(adjustments, fetchedData.journeyStatuses)
+            journeyStatuses <- updateUKPropertyJourneyStatuses(adjustments, fetchedData.journeyStatuses)
           } yield journeyStatuses).getOrElse(userAnswersArg)
       }
     }
@@ -129,17 +129,17 @@ object PropertyPeriodSessionRecoveryExtensions {
         case Some(fetchedData) =>
           (for {
             foreignIncomeDividends <- updateForeignIncomeDividends(userAnswersArg, fetchedData.foreignIncomeDividends)
-            foreignIncomeJourneyStatuses <- updateJourneyStatuses(foreignIncomeDividends, fetchedData.foreignIncomeJourneyStatuses)
+            foreignIncomeJourneyStatuses <- updateForeignIncomeJourneyStatuses(foreignIncomeDividends, fetchedData.foreignIncomeJourneyStatuses)
           } yield foreignIncomeJourneyStatuses).getOrElse(userAnswersArg)
       }
     }
 
-    private def updateJourneyStatuses(
+    private def updateUKPropertyJourneyStatuses(
       userAnswers: UserAnswers,
       journeyStatuses: List[JourneyWithStatus]
     ): Try[UserAnswers] = {
       val r: UserAnswers = journeyStatuses.foldLeft(userAnswers)((acc, a) =>
-        acc.set(updateSingleJourneyStatus(a), isCompleted(a.journeyStatus)) match {
+        acc.set(updateSingleUKPropertyJourneyStatus(a), isCompleted(a.journeyStatus)) match {
           case Success(s) => s
           case Failure(_) => acc
         }
@@ -150,7 +150,7 @@ object PropertyPeriodSessionRecoveryExtensions {
     private def isCompleted(status: String) =
       status.trim.toLowerCase().equals("completed")
 
-    private def updateSingleJourneyStatus[T](journeyWithStatus: JourneyWithStatus): Settable[Boolean] =
+    private def updateSingleUKPropertyJourneyStatus[T](journeyWithStatus: JourneyWithStatus): Settable[Boolean] =
       journeyWithStatus.journeyName match {
         case "property-about"                               => AboutPropertyCompletePage
         case "property-rental-about"                        => AboutPropertyRentalsSectionFinishedPage
@@ -172,7 +172,6 @@ object PropertyPeriodSessionRecoveryExtensions {
         case "property-rentals-and-rent-a-room-sba"         => SbaSectionFinishedPage(RentalsRentARoom)
         case "property-rentals-and-rent-a-room-esba"        => EsbaSectionFinishedPage(RentalsRentARoom)
         case "foreign-property-select-country"              => ForeignSelectCountriesCompletePage
-        case "foreign-income-dividends"                     => DividendsSectionFinishedPage
       }
 
     private def updateForeignJourneyStatuses(
@@ -208,7 +207,24 @@ object PropertyPeriodSessionRecoveryExtensions {
         case "foreign-property-allowances"  => ForeignAllowancesCompletePage(countryCode)
         case "foreign-property-sba"         => ForeignSbaCompletePage(countryCode)
         case "foreign-property-adjustments" => ForeignAdjustmentsCompletePage(countryCode)
+      }
 
+    private def updateForeignIncomeJourneyStatuses(
+      userAnswers: UserAnswers,
+      journeyStatuses: List[JourneyWithStatus]
+    ): Try[UserAnswers] = {
+      val r: UserAnswers = journeyStatuses.foldLeft(userAnswers)((acc, a) =>
+        acc.set(updateSingleForeignIncomeJourneyStatus(a), isCompleted(a.journeyStatus)) match {
+          case Success(s) => s
+          case Failure(_) => acc
+        }
+      )
+      Success(r)
+    }
+
+    private def updateSingleForeignIncomeJourneyStatus[T](journeyWithStatus: JourneyWithStatus): Settable[Boolean] =
+      journeyWithStatus.journeyName match {
+        case "foreign-income-dividends"                               => DividendsSectionFinishedPage
       }
 
     private def updatePropertyAboutPages(
@@ -970,7 +986,7 @@ object PropertyPeriodSessionRecoveryExtensions {
               foreignTaxDeductedFromDividendIncome <- foreignDividendsAnswers.foreignTaxDeductedFromDividendIncome
                 .fold[Try[UserAnswers]](Success(incomeBeforeForeignTaxDeducted)) { foreignTaxDeductedFromDividendIncome =>
                   incomeBeforeForeignTaxDeducted.set(ForeignTaxDeductedFromDividendIncomePage(country.code), foreignTaxDeductedFromDividendIncome)
-              }
+                }
               howMuchForeignTaxDeductedFromDividendIncome <- foreignDividendsAnswers.taxTakenOff
                 .fold[Try[UserAnswers]](Success(foreignTaxDeductedFromDividendIncome)) { taxTakenOff =>
                   foreignTaxDeductedFromDividendIncome.set(HowMuchForeignTaxDeductedFromDividendIncomePage(country.code), taxTakenOff)

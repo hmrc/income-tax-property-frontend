@@ -33,13 +33,10 @@ lazy val root = Project(appName, file("."))
     PlayKeys.playDefaultPort := 19161,
     scalacOptions ++= Seq(
       "-feature",
-      "-rootdir",
-      baseDirectory.value.getCanonicalPath,
       "-Wconf:cat=deprecation:ws,cat=feature:ws,cat=optimizer:ws,src=target/.*:s"
     ),
     libraryDependencies ++= AppDependencies(),
     retrieveManaged := true,
-    resolvers ++= Seq(Resolver.jcenterRepo),
     pipelineStages := Seq(digest),
     Assets / pipelineStages := Seq(concat)
   )
