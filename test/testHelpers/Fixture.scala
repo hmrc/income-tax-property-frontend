@@ -19,7 +19,7 @@ package testHelpers
 import models._
 
 trait Fixture {
-  val ukPropertyData: FetchedBackendData = FetchedBackendData(
+  val ukPropertyData: FetchedUKPropertyData = FetchedUKPropertyData(
     None,
     None,
     None,
@@ -44,6 +44,7 @@ trait Fixture {
     None
   )
   val foreignPropertyData: FetchedForeignPropertyData = FetchedForeignPropertyData(None,None,None,None, None,None,None)
-  val ukAndForeignPropertyData: FetchedUkAndForeignData = FetchedUkAndForeignData(None)
-  val fetchedPropertyData: FetchedPropertyData = FetchedPropertyData(ukPropertyData,foreignPropertyData, ukAndForeignPropertyData)
+  val ukAndForeignPropertyData: FetchedUkAndForeignPropertyData = FetchedUkAndForeignPropertyData(None)
+  val fetchedPropertyData: FetchedPropertyData = FetchedPropertyData(Some(ukPropertyData), Some(foreignPropertyData), Some(ukAndForeignPropertyData))
+  val fetchedData: FetchedData = FetchedData(propertyData = fetchedPropertyData, incomeData = None)
 }

@@ -16,14 +16,11 @@
 
 package models
 
+import models.ukAndForeign.UkAndForeignAbout
 import play.api.libs.json.{Json, OFormat}
 
-final case class FetchedPropertyData(
-  ukPropertyData: FetchedBackendData,
-  foreignPropertyData: FetchedForeignPropertyData,
-  ukAndForeignPropertyData: FetchedUkAndForeignData
-)
+final case class FetchedUkAndForeignPropertyData(ukAndForeignAbout: Option[UkAndForeignAbout])
 
-object FetchedPropertyData {
-  implicit val format: OFormat[FetchedPropertyData] = Json.format[FetchedPropertyData]
+object FetchedUkAndForeignPropertyData {
+  implicit val format: OFormat[FetchedUkAndForeignPropertyData] = Json.format[FetchedUkAndForeignPropertyData]
 }

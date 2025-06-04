@@ -20,7 +20,7 @@ import com.google.inject.Inject
 import controllers.session.PropertyPeriodSessionRecoveryExtensions._
 import models.backend.ServiceError
 import models.requests.OptionalDataRequest
-import models.{FetchedPropertyData, UserAnswers}
+import models.{FetchedData, FetchedPropertyData, UserAnswers}
 import play.api.mvc.{AnyContent, Result}
 import repositories.SessionRepository
 import service.PropertySubmissionService
@@ -42,26 +42,27 @@ class PropertyPeriodSessionRecovery @Inject() (
   )(implicit request: OptionalDataRequest[AnyContent], ec: ExecutionContext, hc: HeaderCarrier): Future[Result] = {
     val basicUserAnswers = request.userAnswers.getOrElse(UserAnswers(request.userId))
     for {
-      ukFetchedData      <- propertyPeriodSubmissionService.getUKPropertySubmission(taxYear, request.user)
-      foreignFetchedData <- propertyPeriodSubmissionService.getForeignPropertySubmission(taxYear, request.user)
-      fetchedData = mergeFetchedData(ukFetchedData, foreignFetchedData)
+      ukFetchedData            <- propertyPeriodSubmissionService.getUKPropertySubmission(taxYear, request.user)
+      foreignFetchedData       <- propertyPeriodSubmissionService.getForeignPropertySubmission(taxYear, request.user)
+      foreignIncomeFetchedData <- propertyPeriodSubmissionService.getForeignIncomeSubmission(taxYear, request.user)
+      fetchedData = mergeFetchedData(ukFetchedData, foreignFetchedData, foreignIncomeFetchedData)
       currentUserAnswersMaybe <- sessionRepository
                                    .get(request.userId)
 
       updatedUserAnswers <- {
-        fetchedData match {
-          case Right(fetchedUserAnswersData) =>
             currentUserAnswersMaybe.fold {
-              val updated = basicUserAnswers.update(fetchedUserAnswersData)
+              val updated = basicUserAnswers
+                .updateUKProperty(fetchedData.propertyData.ukPropertyData)
+                .updateForeignProperty(fetchedData.propertyData.ukPropertyData, fetchedData.propertyData.foreignPropertyData)
+                .updateUKAndForeignProperty(fetchedData.propertyData.ukAndForeignPropertyData)
+                .updateForeignIncome(fetchedData.incomeData)
               sessionRepository
                 .set(
                   updated
                 )
                 .map(_ => updated)
             }(ua => Future.successful(ua))
-          case Left(_) =>
-            Future.successful(basicUserAnswers)
-        }
+
       }
       blockResult <-
         block(OptionalDataRequest(request.request, request.userId, request.user, Some(updatedUserAnswers)))
@@ -69,16 +70,18 @@ class PropertyPeriodSessionRecovery @Inject() (
   }
 
   def mergeFetchedData(
-    eitherUkFetchedData: Either[ServiceError, FetchedPropertyData],
-    eitherForeignFetchedData: Either[ServiceError, FetchedPropertyData]
-  ): Either[ServiceError, FetchedPropertyData] =
-    eitherUkFetchedData.fold(
-      _ => eitherForeignFetchedData,
-      ukFetchedData =>
-        eitherForeignFetchedData.fold(
-          _ => Right(ukFetchedData),
-          foreignFetchedData => Right(ukFetchedData.copy(foreignPropertyData = foreignFetchedData.foreignPropertyData))
-        )
+    eitherUkFetchedData: Either[ServiceError, FetchedData],
+    eitherForeignFetchedData: Either[ServiceError, FetchedData],
+    eitherForeignIncomeFetchedData: Either[ServiceError, FetchedData]
+  ): FetchedData = {
+    FetchedData(
+      propertyData = FetchedPropertyData(
+        ukPropertyData = eitherUkFetchedData.toOption.flatMap(_.propertyData.ukPropertyData),
+        foreignPropertyData = eitherForeignFetchedData.toOption.flatMap(_.propertyData.foreignPropertyData),
+        ukAndForeignPropertyData = None
+      ),
+      incomeData = eitherForeignIncomeFetchedData.toOption.flatMap(_.incomeData)
     )
+  }
 
 }

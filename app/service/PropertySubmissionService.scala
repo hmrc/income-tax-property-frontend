@@ -20,7 +20,7 @@ import audit.RentalsIncome
 import connectors.PropertySubmissionConnector
 import connectors.error.ApiError
 import models.backend.{ForeignPropertyDetailsError, HttpParserError, ServiceError, UKPropertyDetailsError}
-import models.{DeleteJourneyAnswers, FetchedPropertyData, JourneyContext, User}
+import models.{DeleteJourneyAnswers, FetchedData, FetchedPropertyData, JourneyContext, User}
 import play.api.Logging
 import play.api.libs.json.Writes
 import uk.gov.hmrc.http.HeaderCarrier
@@ -37,7 +37,7 @@ class PropertySubmissionService @Inject() (
 
   def getUKPropertySubmission(taxYear: Int, user: User)(implicit
     hc: HeaderCarrier
-  ): Future[Either[ServiceError, FetchedPropertyData]] =
+  ): Future[Either[ServiceError, FetchedData]] =
     businessService.getUkPropertyDetails(user.nino, user.mtditid).flatMap {
       case Left(error: ApiError) => Future.successful(Left(HttpParserError(error.status)))
       case Right(ukPropertyDetails) =>
@@ -55,7 +55,7 @@ class PropertySubmissionService @Inject() (
 
   def getForeignPropertySubmission(taxYear: Int, user: User)(implicit
                                                       hc: HeaderCarrier
-  ): Future[Either[ServiceError, FetchedPropertyData]] =
+  ): Future[Either[ServiceError, FetchedData]] =
     businessService.getForeignPropertyDetails(user.nino, user.mtditid).flatMap {
       case Left(error: ApiError) => Future.successful(Left(HttpParserError(error.status)))
       case Right(foreignPropertyDetails) =>
@@ -69,6 +69,23 @@ class PropertySubmissionService @Inject() (
             }
           }
           .getOrElse(Future.successful(Left(ForeignPropertyDetailsError(user.nino, user.mtditid))))
+    }
+
+  def getForeignIncomeSubmission(taxYear: Int, user: User)(implicit
+                                                           hc: HeaderCarrier
+  ): Future[Either[ServiceError, FetchedData]] =
+    businessService.getForeignPropertyDetails(user.nino, user.mtditid).flatMap {
+      case Left(error: ApiError) => Future.successful(Left(HttpParserError(error.status)))
+      case Right(foreignPropertyDetails) =>
+        foreignPropertyDetails
+          .map { foreignProperty =>
+            propertyConnector.getForeignIncomeSubmission(taxYear, foreignProperty.incomeSourceId, user).map {
+              case Left(error) =>
+                Left(HttpParserError(error.status))
+              case Right(r) =>
+                Right(r)
+            }
+          }.getOrElse(Future.successful(Left(ForeignPropertyDetailsError(user.nino, user.mtditid))))
     }
 
   def savePropertyRentalsIncome(ctx: JourneyContext, propertyRentalsIncome: RentalsIncome)(implicit

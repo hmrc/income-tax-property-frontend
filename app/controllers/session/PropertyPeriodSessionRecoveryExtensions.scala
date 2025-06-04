@@ -29,6 +29,8 @@ import pages.foreign.expenses._
 import pages.foreign.income.{ForeignIncomeSectionCompletePage, ForeignOtherIncomeFromPropertyPage, ForeignPropertyRentalIncomePage, PremiumsGrantLeaseYNPage}
 import pages.foreign.structurebuildingallowance._
 import pages.foreign._
+import pages.foreignincome.{CountryReceiveDividendIncomePage, IncomeBeforeForeignTaxDeductedPage}
+import pages.foreignincome.dividends.{DividendsSectionFinishedPage, ForeignTaxDeductedFromDividendIncomePage, HowMuchForeignTaxDeductedFromDividendIncomePage}
 import pages.{TotalIncomePage => UKTotalIncomePage}
 import pages.premiumlease._
 import pages.propertyrentals.expenses._
@@ -47,6 +49,7 @@ import pages.ukrentaroom.expenses._
 import pages.ukrentaroom.{AboutSectionCompletePage, ClaimExpensesOrReliefPage, JointlyLetPage, TotalIncomeAmountPage}
 import play.api.libs.json.Writes
 import queries.Settable
+import service.CountryNamesDataSource
 
 import java.time.LocalDate
 import scala.util.{Failure, Success, Try}
@@ -55,57 +58,88 @@ object PropertyPeriodSessionRecoveryExtensions {
 
   implicit class UserAnswersExtension(userAnswersArg: UserAnswers) {
 
-    def update(fetchedData: FetchedPropertyData): UserAnswers = {
-      for {
-        ua1 <- updatePart(
-                 userAnswersArg,
-                 CapitalAllowancesForACarPage(Rentals),
-                 fetchedData.ukPropertyData.capitalAllowancesForACar
-               )
-        ua2 <- updatePropertyAboutPages(ua1, fetchedData.ukPropertyData.propertyAbout)
-        ua3 <- updatePropertyRentalsAboutPages(ua2, fetchedData.ukPropertyData.propertyRentalsAbout)
-        ua4 <- updateRentalsAndRaRAbout(ua3, fetchedData.ukPropertyData.rentalsAndRaRAbout)
-        ua5 <- updateRentalsAndRaRAdjustmentsPages(ua4, fetchedData.ukPropertyData.rentalsAndRaRAdjustments)
-        ua6 <- updateAllowancesPages(ua5, fetchedData.ukPropertyData.allowances, Rentals)
-        ua7 <- updateAllowancesPages(ua6, fetchedData.ukPropertyData.rentalsAndRaRAllowances, RentalsRentARoom)
-        ua8 <- updateStructureBuildingPages(ua7, fetchedData.ukPropertyData.sbasWithSupportingQuestions, Rentals)
-        ua9 <- updateStructureBuildingPages(ua8, fetchedData.ukPropertyData.rentalsAndRaRSbasWithSupportingQuestions, RentalsRentARoom)
-        ua10 <-
-          updateEnhancedStructureBuildingPages(ua9, fetchedData.ukPropertyData.esbasWithSupportingQuestions, Rentals)
-        ua11 <- updateEnhancedStructureBuildingPages(
-                  ua10,
-                  fetchedData.ukPropertyData.rentalsAndRaREsbasWithSupportingQuestions,
-                  RentalsRentARoom
-                )
-        ua12 <- updatePropertyRentalsIncomePages(ua11, fetchedData.ukPropertyData.propertyRentalsIncome)
-        ua13 <- updateRentalsAndRaRIncomePages(ua12, fetchedData.ukPropertyData.rentalsAndRaRIncome)
-        ua14 <- updatePropertyRentalsExpensesPages(ua13, fetchedData.ukPropertyData.propertyRentalsExpenses, Rentals)
-        ua15 <-
-          updatePropertyRentalsExpensesPages(ua14, fetchedData.ukPropertyData.rentalsAndRaRExpenses, RentalsRentARoom)
-        ua16 <- updateRentARoomAbout(ua15, fetchedData.ukPropertyData.raRAbout)
-        ua17 <- updateRentARoomExpenses(ua16, fetchedData.ukPropertyData.rarExpenses)
-        ua18 <- updateRentARoomAllowance(ua17, fetchedData.ukPropertyData.rentARoomAllowances)
-        ua19 <- updateRentARoomAdjustments(ua18, fetchedData.ukPropertyData.raRAdjustments)
-        ua20 <- updateAdjustmentsPages(ua19, fetchedData.ukPropertyData.adjustments)
-        ua21 <- updateForeignPropertySelectCountry(ua20, fetchedData.ukPropertyData.foreignPropertySelectCountry)
-        ua22 <- updateJourneyStatuses(ua21, fetchedData.ukPropertyData.journeyStatuses)
-        ua23 <- updateForeignPropertyIncome(ua22, fetchedData.foreignPropertyData.foreignPropertyIncome)
-        ua24 <- updateForeignPropertyExpenses(ua23, fetchedData.foreignPropertyData.foreignPropertyExpenses)
-        ua25 <- updateForeignPropertyTax(ua24, fetchedData.foreignPropertyData.foreignPropertyTax)
-        ua26 <- updateForeignPropertyAllowances(ua25, fetchedData.foreignPropertyData.foreignPropertyAllowances)
-        ua27 <- updateforeignPropertySbaPage(ua26, fetchedData.foreignPropertyData.foreignPropertySba)
-        ua28 <- updateForeignPropertyAdjustments(ua27, fetchedData.foreignPropertyData.foreignPropertyAdjustments)
-        ua29 <- updateForeignJourneyStatuses(ua28, fetchedData.foreignPropertyData.foreignJourneyStatuses)
-        ua30 <- updateUkAndForeignPropertyAboutPages(ua29, fetchedData.ukAndForeignPropertyData.ukAndForeignAbout)
-      } yield ua30
-    }.getOrElse(userAnswersArg)
+    def updateUKProperty(maybeFetchedData: Option[FetchedUKPropertyData]): UserAnswers = {
+      maybeFetchedData match {
+        case None => userAnswersArg
+        case Some(fetchedData) =>
+          (for {
+            propertyAbout <- updatePropertyAboutPages(userAnswersArg, fetchedData.propertyAbout)
+            propertyRentalsAbout <- updatePropertyRentalsAboutPages(propertyAbout, fetchedData.propertyRentalsAbout)
+            rentalsAndRaRAbout <- updateRentalsAndRaRAbout(propertyRentalsAbout, fetchedData.rentalsAndRaRAbout)
+            rentalsAndRaRAdjustments <- updateRentalsAndRaRAdjustmentsPages(rentalsAndRaRAbout, fetchedData.rentalsAndRaRAdjustments)
+            allowances <- updateAllowancesPages(rentalsAndRaRAdjustments, fetchedData.allowances, Rentals)
+            rentalsAndRaRAllowances <- updateAllowancesPages(allowances, fetchedData.rentalsAndRaRAllowances, RentalsRentARoom)
+            sbasWithSupportingQuestions <- updateStructureBuildingPages(rentalsAndRaRAllowances, fetchedData.sbasWithSupportingQuestions, Rentals)
+            rentalsAndRaRSbasWithSupportingQuestions <- updateStructureBuildingPages(sbasWithSupportingQuestions, fetchedData.rentalsAndRaRSbasWithSupportingQuestions, RentalsRentARoom)
+            esbasWithSupportingQuestions <-
+              updateEnhancedStructureBuildingPages(rentalsAndRaRSbasWithSupportingQuestions, fetchedData.esbasWithSupportingQuestions, Rentals)
+            rentalsAndRaREsbasWithSupportingQuestions <- updateEnhancedStructureBuildingPages(
+              esbasWithSupportingQuestions,
+              fetchedData.rentalsAndRaREsbasWithSupportingQuestions,
+              RentalsRentARoom
+            )
+            propertyRentalsIncome <- updatePropertyRentalsIncomePages(rentalsAndRaREsbasWithSupportingQuestions, fetchedData.propertyRentalsIncome)
+            rentalsAndRaRIncome <- updateRentalsAndRaRIncomePages(propertyRentalsIncome, fetchedData.rentalsAndRaRIncome)
+            propertyRentalsExpenses <- updatePropertyRentalsExpensesPages(rentalsAndRaRIncome, fetchedData.propertyRentalsExpenses, Rentals)
+            rentalsAndRaRExpenses <-
+              updatePropertyRentalsExpensesPages(propertyRentalsExpenses, fetchedData.rentalsAndRaRExpenses, RentalsRentARoom)
+            raRAbout <- updateRentARoomAbout(rentalsAndRaRExpenses, fetchedData.raRAbout)
+            rarExpenses <- updateRentARoomExpenses(raRAbout, fetchedData.rarExpenses)
+            rentARoomAllowances <- updateRentARoomAllowance(rarExpenses, fetchedData.rentARoomAllowances)
+            raRAdjustments <- updateRentARoomAdjustments(rentARoomAllowances, fetchedData.raRAdjustments)
+            adjustments <- updateAdjustmentsPages(raRAdjustments, fetchedData.adjustments)
+            journeyStatuses <- updateUKPropertyJourneyStatuses(adjustments, fetchedData.journeyStatuses)
+          } yield journeyStatuses).getOrElse(userAnswersArg)
+      }
+    }
 
-    private def updateJourneyStatuses(
+    def updateForeignProperty(
+      maybeFetchedUKPropertyData: Option[FetchedUKPropertyData],
+      maybeFetchedForeignPropertyData: Option[FetchedForeignPropertyData])
+    : UserAnswers = {
+      (maybeFetchedUKPropertyData, maybeFetchedForeignPropertyData) match {
+        case (Some(fetchedUKPropertyData), Some(fetchedForeignPropertyData)) =>
+          (for {
+            foreignPropertySelectCountry <- updateForeignPropertySelectCountry(userAnswersArg, fetchedUKPropertyData.foreignPropertySelectCountry)
+            foreignPropertyIncome <- updateForeignPropertyIncome(foreignPropertySelectCountry, fetchedForeignPropertyData.foreignPropertyIncome)
+            foreignPropertyExpenses <- updateForeignPropertyExpenses(foreignPropertyIncome, fetchedForeignPropertyData.foreignPropertyExpenses)
+            foreignPropertyTax <- updateForeignPropertyTax(foreignPropertyExpenses, fetchedForeignPropertyData.foreignPropertyTax)
+            foreignPropertyAllowances <- updateForeignPropertyAllowances(foreignPropertyTax, fetchedForeignPropertyData.foreignPropertyAllowances)
+            foreignPropertySba <- updateforeignPropertySbaPage(foreignPropertyAllowances, fetchedForeignPropertyData.foreignPropertySba)
+            foreignPropertyAdjustments <- updateForeignPropertyAdjustments(foreignPropertySba, fetchedForeignPropertyData.foreignPropertyAdjustments)
+            foreignPropertyJourneyStatuses <- updateForeignJourneyStatuses(foreignPropertyAdjustments, fetchedForeignPropertyData.foreignJourneyStatuses)
+          } yield foreignPropertyJourneyStatuses).getOrElse(userAnswersArg)
+        case _ => userAnswersArg
+      }
+    }
+
+    def updateUKAndForeignProperty(maybeFetchedData: Option[FetchedUkAndForeignPropertyData]): UserAnswers = {
+      maybeFetchedData match {
+        case None => userAnswersArg
+        case Some(fetchedData) =>
+          (for {
+            ukAndForeignAbout <- updateUkAndForeignPropertyAboutPages(userAnswersArg, fetchedData.ukAndForeignAbout)
+          } yield ukAndForeignAbout).getOrElse(userAnswersArg)
+      }
+    }
+
+    def updateForeignIncome(maybeFetchedData: Option[FetchedForeignIncomeData]): UserAnswers = {
+      maybeFetchedData match {
+        case None => userAnswersArg
+        case Some(fetchedData) =>
+          (for {
+            foreignIncomeDividends <- updateForeignIncomeDividends(userAnswersArg, fetchedData.foreignIncomeDividends)
+            foreignIncomeJourneyStatuses <- updateForeignIncomeJourneyStatuses(foreignIncomeDividends, fetchedData.foreignIncomeJourneyStatuses)
+          } yield foreignIncomeJourneyStatuses).getOrElse(userAnswersArg)
+      }
+    }
+
+    private def updateUKPropertyJourneyStatuses(
       userAnswers: UserAnswers,
       journeyStatuses: List[JourneyWithStatus]
     ): Try[UserAnswers] = {
       val r: UserAnswers = journeyStatuses.foldLeft(userAnswers)((acc, a) =>
-        acc.set(updateSingleJourneyStatus(a), isCompleted(a.journeyStatus)) match {
+        acc.set(updateSingleUKPropertyJourneyStatus(a), isCompleted(a.journeyStatus)) match {
           case Success(s) => s
           case Failure(_) => acc
         }
@@ -116,7 +150,7 @@ object PropertyPeriodSessionRecoveryExtensions {
     private def isCompleted(status: String) =
       status.trim.toLowerCase().equals("completed")
 
-    private def updateSingleJourneyStatus[T](journeyWithStatus: JourneyWithStatus): Settable[Boolean] =
+    private def updateSingleUKPropertyJourneyStatus[T](journeyWithStatus: JourneyWithStatus): Settable[Boolean] =
       journeyWithStatus.journeyName match {
         case "property-about"                               => AboutPropertyCompletePage
         case "property-rental-about"                        => AboutPropertyRentalsSectionFinishedPage
@@ -173,7 +207,24 @@ object PropertyPeriodSessionRecoveryExtensions {
         case "foreign-property-allowances"  => ForeignAllowancesCompletePage(countryCode)
         case "foreign-property-sba"         => ForeignSbaCompletePage(countryCode)
         case "foreign-property-adjustments" => ForeignAdjustmentsCompletePage(countryCode)
+      }
 
+    private def updateForeignIncomeJourneyStatuses(
+      userAnswers: UserAnswers,
+      journeyStatuses: List[JourneyWithStatus]
+    ): Try[UserAnswers] = {
+      val r: UserAnswers = journeyStatuses.foldLeft(userAnswers)((acc, a) =>
+        acc.set(updateSingleForeignIncomeJourneyStatus(a), isCompleted(a.journeyStatus)) match {
+          case Success(s) => s
+          case Failure(_) => acc
+        }
+      )
+      Success(r)
+    }
+
+    private def updateSingleForeignIncomeJourneyStatus[T](journeyWithStatus: JourneyWithStatus): Settable[Boolean] =
+      journeyWithStatus.journeyName match {
+        case "foreign-income-dividends"                               => DividendsSectionFinishedPage
       }
 
     private def updatePropertyAboutPages(
@@ -911,5 +962,43 @@ object PropertyPeriodSessionRecoveryExtensions {
               ua3.set(WhenYouReportedTheLossPage(RentARoom), whenYouReportedTheLoss))
           } yield ua4
       }
+
+    private def updateForeignIncomeDividends(
+      userAnswers: UserAnswers,
+      maybeForeignIncomeDividends: Option[Map[String, ForeignDividendsAnswers]]
+    ): Try[UserAnswers] =
+      maybeForeignIncomeDividends match {
+        case None   => Success(userAnswers)
+        case Some(foreignIncomeDividends) =>
+        foreignIncomeDividends.zipWithIndex.flatMap {
+          case ((countryCode, foreignDividendsAnswers), idx) =>
+            CountryNamesDataSource.getCountry(countryCode, "en").map(country => ((country, foreignDividendsAnswers), idx))
+        }.foldLeft[Try[UserAnswers]](Success(userAnswers)) {
+            case (ua, ((country, foreignDividendsAnswers), idx)) =>
+            for {
+              countryReceiveDividendIncome <- ua
+                .fold[Try[UserAnswers]](_ => ua,  ua2 => ua2.set(CountryReceiveDividendIncomePage(idx), country))
+              incomeBeforeForeignTaxDeducted <-
+                foreignDividendsAnswers.amountBeforeTax
+                  .fold[Try[UserAnswers]](Success(countryReceiveDividendIncome)) { amountBeforeTax =>
+                    countryReceiveDividendIncome.set(IncomeBeforeForeignTaxDeductedPage(country.code), amountBeforeTax)
+                  }
+              foreignTaxDeductedFromDividendIncome <- foreignDividendsAnswers.foreignTaxDeductedFromDividendIncome
+                .fold[Try[UserAnswers]](Success(incomeBeforeForeignTaxDeducted)) { foreignTaxDeductedFromDividendIncome =>
+                  incomeBeforeForeignTaxDeducted.set(ForeignTaxDeductedFromDividendIncomePage(country.code), foreignTaxDeductedFromDividendIncome)
+                }
+              howMuchForeignTaxDeductedFromDividendIncome <- foreignDividendsAnswers.taxTakenOff
+                .fold[Try[UserAnswers]](Success(foreignTaxDeductedFromDividendIncome)) { taxTakenOff =>
+                  foreignTaxDeductedFromDividendIncome.set(HowMuchForeignTaxDeductedFromDividendIncomePage(country.code), taxTakenOff)
+                }
+              claimForeignTaxCreditRelief <- foreignDividendsAnswers.foreignTaxCreditRelief
+                .fold[Try[UserAnswers]](Success(howMuchForeignTaxDeductedFromDividendIncome)) { foreignTaxCreditRelief =>
+                  howMuchForeignTaxDeductedFromDividendIncome.set(pages.foreignincome.dividends.ClaimForeignTaxCreditReliefPage(country.code), foreignTaxCreditRelief)
+                }
+            } yield claimForeignTaxCreditRelief
+        }
+      }
   }
+
+
 }

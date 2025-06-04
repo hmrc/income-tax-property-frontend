@@ -2,7 +2,7 @@ import sbt.*
 
 object AppDependencies {
 
-  private val bootstrapVersion = "9.11.0"
+  private val bootstrapVersion = "9.12.0"
   private val hmrcMongoVersion = "2.6.0"
 
   val compile: Seq[ModuleID] = Seq(
@@ -23,7 +23,6 @@ object AppDependencies {
     "org.mockito"         %% "mockito-scala"           % "1.17.37",
     "org.scalamock"       %% "scalamock"               % "5.2.0",
     "org.scalacheck"      %% "scalacheck"              % "1.18.1",
-    "org.pegdown"          % "pegdown"                 % "1.6.0",
     "org.jsoup"            % "jsoup"                   % "1.20.1",
     "com.vladsch.flexmark" % "flexmark-all"            % "0.64.8"
   ).map(_ % Test)
