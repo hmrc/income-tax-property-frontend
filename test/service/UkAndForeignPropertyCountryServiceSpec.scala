@@ -29,6 +29,7 @@ import pages.ukandforeignproperty.SelectCountryPage
 import play.api.mvc.AnyContent
 import play.api.test.{DefaultAwaitTimeout, FakeRequest, FutureAwaits}
 import repositories.SessionRepository
+import testHelpers.UserHelper.aUser
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -39,7 +40,7 @@ class UkAndForeignPropertyCountryServiceSpec extends SpecBase with FutureAwaits 
   val spain: Country = Country("Spain", "ES")
   val greece: Country = Country("Greece", "GRC")
   val testCountries: List[Country] = List(france, spain)
-  val user: User = User("mtditid", "nino", "group", None)
+  val user: User = aUser.copy("mtditid", "nino", "group", agentRef = None)
 
   private def buildUserAnswers(countries: List[Country]): UserAnswers =
     emptyUserAnswers.set(SelectCountryPage, countries).success.value

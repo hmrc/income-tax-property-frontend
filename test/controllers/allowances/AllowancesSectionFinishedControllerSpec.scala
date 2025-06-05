@@ -33,6 +33,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
 import service.JourneyAnswersService
+import testHelpers.UserHelper.aUser
 import views.html.allowances.AllowancesSectionFinishedView
 
 import scala.concurrent.Future
@@ -92,7 +93,7 @@ class AllowancesSectionFinishedControllerSpec extends SpecBase with MockitoSugar
 
       val mockSessionRepository = mock[SessionRepository]
       val mockJourneyAnswersService = mock[JourneyAnswersService]
-      val user: User = User(
+      val user: User = aUser.copy(
         mtditid = "mtditid",
         nino = "nino",
         affinityGroup = "affinityGroup",

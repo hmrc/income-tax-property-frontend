@@ -35,6 +35,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
 import service.JourneyAnswersService
+import testHelpers.UserHelper.aUser
 import uk.gov.hmrc.http.HeaderCarrier
 import views.html.foreign.ForeignTaxSectionCompleteView
 
@@ -51,7 +52,7 @@ class ForeignTaxSectionCompleteControllerSpec extends SpecBase with MockitoSugar
   val form: Form[Boolean] = formProvider()
 
   implicit val hc: HeaderCarrier = HeaderCarrier()
-  val user: User = User(
+  val user: User = aUser.copy(
     mtditid = "mtditid",
     nino = "nino",
     affinityGroup = "affinityGroup",
