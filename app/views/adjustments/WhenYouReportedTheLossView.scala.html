@@ -26,7 +26,7 @@
 
 @(form: Form[_], taxYear: Int, individualOrAgent: String, previousLoss: String, mode: Mode, propertyType: PropertyType)(implicit request: Request[_], messages: Messages)
 
-@layout(pageTitle = title(form, messages("whenYouReportedTheLoss.title"))) {
+@layout(pageTitle = title(form, messages("whenYouReportedTheLoss.title.${individualOrAgent}"))) {
 
     @formHelper(action = controllers.adjustments.routes.WhenYouReportedTheLossController.onSubmit(taxYear, mode, propertyType), 'autoComplete -> "off") {
 
