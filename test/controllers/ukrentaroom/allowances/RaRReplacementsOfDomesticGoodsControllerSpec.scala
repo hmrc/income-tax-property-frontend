@@ -32,6 +32,7 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
+import testHelpers.UserHelper.aUser
 import views.html.ukrentaroom.allowances.ReplacementsOfDomesticGoodsView
 
 import scala.concurrent.Future
@@ -51,7 +52,7 @@ class RaRReplacementsOfDomesticGoodsControllerSpec extends SpecBase with Mockito
 
   val scenarios = Table[String, Boolean](("AgentOrIndividual", "IsAgent"), ("agent", true), ("individual", false))
   forAll(scenarios) { (agentOrIndividual, isAgent) =>
-    val user = User(
+    val user = aUser.copy(
       "",
       "",
       "",

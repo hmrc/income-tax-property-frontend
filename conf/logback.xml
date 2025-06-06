@@ -10,10 +10,9 @@
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-            <pattern>%date{ISO8601} level=[%level] logger=[%logger] thread=[%thread] rid=[%X{X-Request-ID}] user=[%X{Authorization}] message=[%message] %replace(exception=[%xException]){'^exception=\[\]$',''}%n</pattern>
+            <pattern>[%highlight(%.-4level)] %date{ISO8601} %message %replace(exception=[%xException]){'^exception=\[\]$',''} %n</pattern>
         </encoder>
     </appender>
-
 
     <appender name="CONNECTOR_LOG_FILE" class="ch.qos.logback.core.FileAppender">
         <file>logs/connector.log</file>
@@ -22,11 +21,14 @@
         </encoder>
     </appender>
 
-    <logger name="com.google.inject" level="INFO"/>
+    <logger name="com.google.inject" level="WARN"/>
 
-    <logger name="uk.gov" level="INFO"/>
-
-    <logger name="application" level="DEBUG"/>
+    <logger name="uk.gov" level="WARN"/>
+    <logger name="org.apache" level="WARN"/>
+    <logger name="play" level="WARN"/>
+    <logger name="org.eclipse.jetty" level="WARN"/>
+    <logger name="org.mongodb" level="WARN"/>
+    <logger name="connector" level="WARN"/>
 
     <logger name="org.asynchttpclient.netty" level="INFO"/>
     <logger name="io.netty.buffer" level="INFO"/>
@@ -34,23 +36,14 @@
 
     <logger name="reactivemongo.core" level="INFO"/>
     <logger name="akka" level="INFO"/>
-    <logger name="play" level="INFO"/>
     <logger name="org.jose4j" level="INFO"/>
     <logger name="class org.jose4j" level="INFO"/>
 
     <logger name="javax.management" level="INFO"/>
 
-    <logger name="org.eclipse.jetty" level="INFO"/>
-
-    <logger name="org.apache.http" level="INFO"/>
-
     <logger name="org.jboss" level="INFO"/>
     <logger name="io.netty" level="INFO"/>
     <logger name="sun.net.www.protocol.http" level="INFO"/>
-
-    <logger name="connector" level="TRACE">
-        <appender-ref ref="STDOUT"/>
-    </logger>
 
     <root level="DEBUG">
         <appender-ref ref="FILE"/>

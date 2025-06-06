@@ -34,6 +34,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
 import service.JourneyAnswersService
+import testHelpers.UserHelper.aUser
 import uk.gov.hmrc.http.HeaderCarrier
 import views.html.foreign.ForeignSelectCountriesCompleteView
 
@@ -46,7 +47,7 @@ class ForeignSelectCountriesCompleteControllerSpec extends SpecBase with Mockito
   val taxYear = 2024
   implicit val hc: HeaderCarrier = HeaderCarrier()
   val user: User =
-    User(
+    aUser.copy(
       mtditid = "mtditid",
       nino = "nino",
       affinityGroup = "affinityGroup",

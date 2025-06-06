@@ -30,6 +30,7 @@ import play.api.test.{DefaultAwaitTimeout, FutureAwaits}
 import testHelpers.Fixture
 import uk.gov.hmrc.http.HeaderCarrier
 import models.IncomeSourcePropertyType
+import testHelpers.UserHelper.aUser
 
 import java.time.LocalDate
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -40,7 +41,7 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
   val propertyPeriodicSubmissionConnector: PropertySubmissionConnector = mock[PropertySubmissionConnector]
   val mockBusinessConnector: BusinessService = mock[BusinessService]
   val taxYear = 2024
-  val user: User = User("mtditid", "nino", "individual", Some("agentReferenceNumber"))
+  val user: User = aUser.copy("mtditid", "nino", "individual", agentRef = Some("agentReferenceNumber"))
   implicit val hc: HeaderCarrier = HeaderCarrier()
   val propertyPeriodSubmissionService =
     new PropertySubmissionService(propertyPeriodicSubmissionConnector, mockBusinessConnector)
@@ -142,7 +143,7 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
   }
 
   "saveJourneyAnswers" - {
-    val user = User("mtditid", "nino", "group", Some("agentReferenceNumber"))
+    val user = aUser.copy("mtditid", "nino", "group", agentRef = Some("agentReferenceNumber"))
     val taxYear = 2024
     val context =
       JourneyContext(

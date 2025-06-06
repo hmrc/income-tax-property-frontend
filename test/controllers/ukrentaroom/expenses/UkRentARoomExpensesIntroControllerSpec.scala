@@ -24,6 +24,7 @@ import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
 import pages.TotalIncomePage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import testHelpers.UserHelper.aUser
 import views.html.ukrentaroom.UkRentARoomExpensesIntroView
 
 class UkRentARoomExpensesIntroControllerSpec extends SpecBase {
@@ -77,7 +78,7 @@ class UkRentARoomExpensesIntroControllerSpec extends SpecBase {
       isLessThanEightyFiveThousandWithContainingString: Option[(Boolean, String)],
       nextPageUrl: String
     ) =>
-      val user = User(
+      val user = aUser.copy(
         "",
         "",
         "",

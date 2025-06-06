@@ -30,6 +30,7 @@ import play.api.test.FakeRequest
 import repositories.SessionRepository
 import service.PropertySubmissionService
 import testHelpers.Fixture
+import testHelpers.UserHelper.aUser
 import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.ExecutionContext.Implicits.global
@@ -43,7 +44,7 @@ class PropertyPeriodSessionRecoverySpec extends SpecBase with MockitoSugar with 
     new PropertyPeriodSessionRecovery(propertyPeriodSubmissionService, sessionRepository)
 
   val taxYear = 2024
-  val user: User = User("", "", "", Some("agentReferenceNumber"))
+  val user: User = aUser.copy("", "", "", agentRef = Some("agentReferenceNumber"))
 
   "PropertyPeriodSessionRecovery" - {
     "call the connector and set repository" in {

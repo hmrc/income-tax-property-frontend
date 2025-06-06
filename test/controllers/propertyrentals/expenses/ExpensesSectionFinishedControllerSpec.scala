@@ -34,6 +34,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
 import service.{CYADiversionService, JourneyAnswersService}
+import testHelpers.UserHelper.aUser
 import views.html.propertyrentals.expenses.ExpensesSectionFinishedView
 
 import scala.concurrent.Future
@@ -89,7 +90,7 @@ class ExpensesSectionFinishedControllerSpec extends SpecBase with MockitoSugar {
 
       val mockSessionRepository = mock[SessionRepository]
       val mockJourneyAnswersService = mock[JourneyAnswersService]
-      val user: User = User(
+      val user: User = aUser.copy(
         mtditid = "mtditid",
         nino = "nino",
         affinityGroup = "affinityGroup",

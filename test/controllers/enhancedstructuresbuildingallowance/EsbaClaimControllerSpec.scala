@@ -31,6 +31,7 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
+import testHelpers.UserHelper.aUser
 import views.html.enhancedstructuresbuildingallowance.EsbaClaimView
 
 import scala.concurrent.Future
@@ -48,11 +49,11 @@ class EsbaClaimControllerSpec extends SpecBase with MockitoSugar {
   val validAnswer = BigDecimal(0)
   val taxYear = 2024
   val index = 0
-  val user = User(
+  val user = aUser.copy(
     "",
     "",
     "",
-    None
+    agentRef = None
   )
   private val isAgentMessageKey = "individual"
   "EsbaClaimAmount Controller" - {

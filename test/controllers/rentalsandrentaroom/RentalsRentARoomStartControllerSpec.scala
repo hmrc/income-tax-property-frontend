@@ -22,6 +22,7 @@ import models.{NormalMode, RentalsRentARoom, User}
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import testHelpers.UserHelper.aUser
 import views.html.rentalsandrentaroom.RentalsRentARoomStartView
 class RentalsRentARoomStartControllerSpec extends SpecBase {
   private val taxYear = 2024
@@ -32,7 +33,7 @@ class RentalsRentARoomStartControllerSpec extends SpecBase {
       (true, "agent")
     )
     forAll(scenarios) { (isAgent: Boolean, agentOrIndividual: String) =>
-      val user = User(
+      val user = aUser.copy(
         "",
         "",
         "",

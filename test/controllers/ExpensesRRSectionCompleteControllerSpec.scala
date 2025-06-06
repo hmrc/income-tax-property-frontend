@@ -33,6 +33,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
 import service.JourneyAnswersService
+import testHelpers.UserHelper.aUser
 import uk.gov.hmrc.http.HeaderCarrier
 import views.html.ukrentaroom.expenses.ExpensesRRSectionCompleteView
 
@@ -45,7 +46,7 @@ class ExpensesRRSectionCompleteControllerSpec extends SpecBase with MockitoSugar
   val formProvider = new ExpensesRRSectionCompleteFormProvider()
   val form: Form[Boolean] = formProvider()
   val taxYear = 2024
-  val user = User(
+  val user = aUser.copy(
     mtditid = "mtditid",
     nino = "nino",
     affinityGroup = "affinityGroup",

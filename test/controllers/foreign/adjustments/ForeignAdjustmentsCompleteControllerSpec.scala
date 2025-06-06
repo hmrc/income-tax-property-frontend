@@ -33,6 +33,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
 import service.JourneyAnswersService
+import testHelpers.UserHelper.aUser
 import uk.gov.hmrc.http.HeaderCarrier
 import views.html.foreign.adjustments.ForeignAdjustmentsCompleteView
 
@@ -94,7 +95,7 @@ class ForeignAdjustmentsCompleteControllerSpec extends SpecBase with MockitoSuga
 
       val mockSessionRepository = mock[SessionRepository]
       val mockJourneyAnswersService = mock[JourneyAnswersService]
-      val user = User(
+      val user = aUser.copy(
         mtditid = "mtditid",
         nino = "nino",
         affinityGroup = "affinityGroup",

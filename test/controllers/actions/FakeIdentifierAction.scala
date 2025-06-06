@@ -16,9 +16,9 @@
 
 package controllers.actions
 
-import models.User
 import models.requests.IdentifierRequest
 import play.api.mvc._
+import testHelpers.UserHelper.aUser
 
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -30,7 +30,7 @@ class FakeAgentIdentifierAction @Inject()(bodyParsers: PlayBodyParsers) extends 
       IdentifierRequest(
         request,
         "id",
-        User(
+        aUser.copy(
           mtditid = "mtditid",
           nino = "nino",
           affinityGroup = "affinityGroup",
@@ -53,7 +53,7 @@ class FakeIndividualIdentifierAction @Inject()(bodyParsers: PlayBodyParsers) ext
       IdentifierRequest(
         request,
         "id",
-        User(
+        aUser.copy(
           mtditid = "mtditid",
           nino = "nino",
           affinityGroup = "affinityGroup",

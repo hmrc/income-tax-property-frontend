@@ -22,6 +22,7 @@ import models.requests.DataRequest
 import models.{Rentals, User}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import testHelpers.UserHelper.aUser
 import viewmodels.checkAnswers.structurebuildingallowance.StructureBuildingAllowancePage
 import views.html.structurebuildingallowance.StructureBuildingAllowanceView
 
@@ -32,7 +33,7 @@ class AddClaimStructureBuildingAllowanceControllerSpec extends SpecBase {
 
   s"must return OK and the correct view for a GET" in {
 
-    val user = User(
+    val user = aUser.copy(
       "",
       "",
       "",

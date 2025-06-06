@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,14 +14,23 @@
  * limitations under the License.
  */
 
-package models.authorisation
+package common
 
-sealed abstract class Enrolment(val key: String, val value: String)
-
-object Enrolment {
-  case object Individual extends Enrolment(key = "HMRC-MTD-IT", value = "MTDITID")
-  case object SupportingAgent extends Enrolment(key = "HMRC-MTD-IT-SUPP", value = "MTDITID")
-  case object Agent extends Enrolment(key = "HMRC-AS-AGENT", value = "AgentReferenceNumber")
-  case object Nino extends Enrolment(key = "HMRC-NI", value = "NINO")
+object EnrolmentKeys {
+  val Individual = "HMRC-MTD-IT"
+  val Agent = "HMRC-AS-AGENT"
+  val Supporting = "HMRC-MTD-IT-SUPP"
+  val nino = "HMRC-NI"
 }
 
+object EnrolmentIdentifiers {
+  val individualId = "MTDITID"
+  val supportingAgentId = "MTDITID"
+  val agentReference = "AgentReferenceNumber"
+  val nino = "NINO"
+}
+
+object DelegatedAuthRules {
+  val agentDelegatedAuthRule = "mtd-it-auth"
+  val supportingAgentDelegatedAuthRule = "mtd-it-auth-supp"
+}

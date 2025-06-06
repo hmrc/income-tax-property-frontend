@@ -32,6 +32,7 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
+import testHelpers.UserHelper.aUser
 import views.html.ukrentaroom.JointlyLetView
 
 import scala.concurrent.Future
@@ -56,11 +57,11 @@ class JointlyLetControllerSpec extends SpecBase with MockitoSugar {
 
   forAll(scenarios) { (isAgent: Boolean, agentOrIndividual: String) =>
     val form = formProvider(agentOrIndividual)
-    val user = User(
+    val user = aUser.copy(
       "",
       "",
       "",
-      Option.when(isAgent)("agentReferenceNumber")
+      agentRef = Option.when(isAgent)("agentReferenceNumber")
     )
     s"JointlyLet Controller for $agentOrIndividual" - {
 

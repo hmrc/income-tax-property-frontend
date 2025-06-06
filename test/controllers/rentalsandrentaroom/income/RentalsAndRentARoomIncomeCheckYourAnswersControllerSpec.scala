@@ -31,6 +31,7 @@ import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import service.{BusinessService, PropertySubmissionService}
+import testHelpers.UserHelper.aUser
 import viewmodels.govuk.SummaryListFluency
 import views.html.rentalsandrentaroom.income.RentalsAndRentARoomIncomeCheckYourAnswersView
 
@@ -47,7 +48,7 @@ class RentalsAndRentARoomIncomeCheckYourAnswersControllerSpec
     (true, "agent")
   )
   forAll(scenarios) { (isAgent: Boolean, agentOrIndividual: String) =>
-    val user = User(
+    val user = aUser.copy(
       "",
       "",
       "",

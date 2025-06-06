@@ -38,6 +38,7 @@ trait FrontendAppConfig {
   def incomeTaxSubmissionIvRedirect: String
   def propertyServiceBaseUrl: String
   def languageTranslationEnabled: Boolean
+  def sessionCookieServiceEnabled: Boolean
   def languageMap: Map[String, Lang]
   def timeout: Int
   def countdown: Int
@@ -80,6 +81,7 @@ class FrontendAppConfigImpl @Inject() (configuration: Configuration) extends Fro
   lazy val propertyServiceBaseUrl: String = s"${configuration.get[String](propertyUrlKey)}/income-tax-property"
 
   val languageTranslationEnabled: Boolean = configuration.get[Boolean]("feature-switch.welshToggleEnabled")
+  val sessionCookieServiceEnabled: Boolean = configuration.get[Boolean]("feature-switch.sessionCookieServiceEnabled")
 
   def languageMap: Map[String, Lang] = Map(
     "en" -> Lang("en"),

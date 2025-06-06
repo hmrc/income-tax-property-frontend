@@ -33,6 +33,11 @@ trait MockAppConfig extends MockFactory {
 
     def incomeTaxSubmissionIvRedirect(url: String): CallHandler0[String] =
       (() => mockAppConfig.incomeTaxSubmissionIvRedirect).expects().returns(url).anyNumberOfTimes()
+
+    def mockSessionServiceEnabled(response: Boolean): CallHandler0[Boolean] =
+      (() => mockAppConfig.sessionCookieServiceEnabled)
+        .expects()
+        .returning(response)
   }
 
 }

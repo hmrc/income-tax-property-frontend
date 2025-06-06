@@ -32,6 +32,7 @@ import play.api.test.Helpers._
 import repositories.SessionRepository
 import forms.ukrentaroom.expenses.CostOfServicesProvidedFormProvider
 import pages.ukrentaroom.expenses.CostOfServicesProvidedRRPage
+import testHelpers.UserHelper.aUser
 import views.html.ukrentaroom.expenses.CostOfServicesProvidedRRView
 
 import scala.concurrent.Future
@@ -47,11 +48,11 @@ class CostOfServicesProvidedRRControllerSpec extends SpecBase with MockitoSugar 
   val taxYear = 2024
   forAll(scenarios) { (isAgent: Boolean, agentOrIndividual: String) =>
     val form = formProvider(agentOrIndividual)
-    val user = User(
+    val user = aUser.copy(
       "",
       "",
       "",
-      Option.when(isAgent)("agentReferenceNumber")
+      agentRef = Option.when(isAgent)("agentReferenceNumber")
     )
     lazy val costOfServicesProvidedRoute =
       controllers.ukrentaroom.expenses.routes.CostOfServicesProvidedRRController.onPageLoad(taxYear, NormalMode).url

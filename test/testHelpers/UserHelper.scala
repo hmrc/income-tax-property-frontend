@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,19 @@
  * limitations under the License.
  */
 
-package models
+package testHelpers
 
-case class User(mtditid: String,
-                nino: String,
-                affinityGroup: String,
-                sessionId: String,
-                agentRef: Option[String],
-                isSupportingAgent: Boolean = false) {
+import models.User
+import uk.gov.hmrc.auth.core.AffinityGroup
 
-  val isAgent: Boolean = agentRef.isDefined
+object UserHelper {
 
-  def isAgentMessageKey: String = if (isAgent) "agent" else "individual"
+  val aUser: User = User(
+    mtditid = "1234567890",
+    nino = "AA123456A",
+    affinityGroup = AffinityGroup.Individual.toString,
+    sessionId = "sessionId-eb3158c2-0aff-4ce8-8d1b-f2208ace52fe",
+    agentRef = None
+  )
 
 }
