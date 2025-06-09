@@ -17,12 +17,13 @@
 package controllers.about
 
 import base.SpecBase
+import common.{EnrolmentIdentifiers, EnrolmentKeys}
 import connectors.error.{ApiError, SingleErrorBody}
 import controllers.exceptions.InternalErrorFailure
 import models.IncomeSourcePropertyType.UKProperty
-import models.authorisation.Enrolment.Nino
 import models.authorisation.SessionValues
 import models.backend.PropertyDetails
+import models.errors
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
@@ -48,10 +49,10 @@ class UKPropertyDetailsControllerSpec extends SpecBase with MockitoSugar {
 
   private val enrolments = Enrolments(
     Set(
-      Enrolment(Nino.key, Seq(EnrolmentIdentifier(Nino.value, "nino")), "Activated"),
+      Enrolment(EnrolmentKeys.nino, Seq(EnrolmentIdentifier(EnrolmentIdentifiers.nino, "nino")), "Activated"),
       Enrolment(
-        models.authorisation.Enrolment.Individual.key,
-        Seq(EnrolmentIdentifier(models.authorisation.Enrolment.Individual.value, "individual")),
+        EnrolmentKeys.Individual,
+        Seq(EnrolmentIdentifier(EnrolmentIdentifiers.individualId, "individual")),
         "Activated"
       )
     )

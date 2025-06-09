@@ -34,6 +34,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
 import service.JourneyAnswersService
+import testHelpers.UserHelper.aUser
 import views.html.foreign.income.ForeignIncomeSectionCompleteView
 
 import scala.concurrent.Future
@@ -48,7 +49,7 @@ class ForeignIncomeCompleteControllerSpec extends SpecBase with MockitoSugar {
   val form: Form[Boolean] = formProvider()
 
   val user: User =
-    User(
+    aUser.copy(
       mtditid = "mtditid",
       nino = "nino",
       affinityGroup = "affinityGroup",

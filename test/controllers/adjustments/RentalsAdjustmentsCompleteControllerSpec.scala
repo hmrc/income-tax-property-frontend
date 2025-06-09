@@ -33,6 +33,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
 import service.JourneyAnswersService
+import testHelpers.UserHelper.aUser
 import uk.gov.hmrc.http.HeaderCarrier
 import views.html.adjustments.RentalsAdjustmentsCompleteView
 
@@ -45,7 +46,7 @@ class RentalsAdjustmentsCompleteControllerSpec extends SpecBase with MockitoSuga
   val formProvider = new RentalsAdjustmentsCompleteFormProvider()
   val form: Form[Boolean] = formProvider()
   val taxYear = 2024
-  val user = User(
+  val user = aUser.copy(
     mtditid = "mtditid",
     nino = "nino",
     affinityGroup = "affinityGroup",

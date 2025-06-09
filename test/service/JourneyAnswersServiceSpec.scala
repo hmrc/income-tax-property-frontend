@@ -28,6 +28,7 @@ import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar.mock
 import play.api.http.Status.INTERNAL_SERVER_ERROR
 import play.api.test.{DefaultAwaitTimeout, FutureAwaits}
+import testHelpers.UserHelper.aUser
 import uk.gov.hmrc.http.HeaderCarrier
 
 import java.time.LocalDate
@@ -44,7 +45,7 @@ class JourneyAnswersServiceSpec extends AnyWordSpec with FutureAwaits with Defau
   private val underTest = new JourneyAnswersService(mockJourneyAnswersConnector, mockBusinessService)
 
   "setStatus" should {
-    val user = User("mtditid", "nino", "group", agentRef = Some("agentReferenceNumber"))
+    val user = aUser.copy("mtditid", "nino", "group", agentRef = Some("agentReferenceNumber"))
 
     when(mockBusinessService.getUkPropertyDetails(user.nino, user.mtditid)) thenReturn Future(
       Right(

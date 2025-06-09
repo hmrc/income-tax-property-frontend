@@ -33,6 +33,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
 import service.JourneyAnswersService
+import testHelpers.UserHelper.aUser
 import uk.gov.hmrc.http.HeaderCarrier
 import views.html.ukrentaroom.allowances.RaRAllowancesCompleteView
 
@@ -45,7 +46,7 @@ class RaRAllowancesCompleteControllerSpec extends SpecBase with MockitoSugar {
   private val formProvider = new RaRAllowancesCompleteFormProvider()
   private val form: Form[Boolean] = formProvider()
   val taxYear = 2024
-  private val user = User(
+  private val user = aUser.copy(
     mtditid = "mtditid",
     nino = "nino",
     affinityGroup = "affinityGroup",

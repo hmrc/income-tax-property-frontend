@@ -32,6 +32,7 @@ import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
+import testHelpers.UserHelper.aUser
 import views.html.ukrentaroom.allowances.OtherCapitalAllowancesView
 
 import scala.concurrent.Future
@@ -50,11 +51,11 @@ class RaROtherCapitalAllowancesControllerSpec extends SpecBase with MockitoSugar
   val taxYear = 2024
   forAll(scenarios) { (isAgent: Boolean, agentOrIndividual: String) =>
     val form = formProvider(agentOrIndividual)
-    val user = User(
+    val user = aUser.copy(
       "",
       "",
       "",
-      Option.when(isAgent)("agentReferenceNumber")
+      agentRef = Option.when(isAgent)("agentReferenceNumber")
     )
     s"OtherCapitalAllowances Controller for $agentOrIndividual" - {
 

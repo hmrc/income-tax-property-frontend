@@ -19,4 +19,5 @@ package models.authorisation
 object SessionValues {
   val ClientMtdid = "ClientMTDID"
   val ClientNino = "ClientNino"
+  val SessionId = "sessionId"
 }

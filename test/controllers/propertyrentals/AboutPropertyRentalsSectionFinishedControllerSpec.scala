@@ -32,6 +32,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
 import service.JourneyAnswersService
+import testHelpers.UserHelper.aUser
 import views.html.propertyrentals.AboutPropertyRentalsSectionFinishedView
 
 import scala.concurrent.Future
@@ -43,7 +44,7 @@ class AboutPropertyRentalsSectionFinishedControllerSpec extends SpecBase with Mo
   val taxYear: Int = 2024
   val formProvider = new AboutPropertyRentalsSectionFinishedFormProvider()
   val form = formProvider()
-  val user: User = User(
+  val user: User = aUser.copy(
     mtditid = "mtditid",
     nino = "nino",
     affinityGroup = "affinityGroup",

@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,13 @@
  * limitations under the License.
  */
 
-package models
+package models.errors
 
-case class User(mtditid: String,
-                nino: String,
-                affinityGroup: String,
-                sessionId: String,
-                agentRef: Option[String],
-                isSupportingAgent: Boolean = false) {
+import scala.util.control.NoStackTrace
 
-  val isAgent: Boolean = agentRef.isDefined
-
-  def isAgentMessageKey: String = if (isAgent) "agent" else "individual"
-
+sealed trait ErrorResponse {
+  val message: String
+  val statusCode: Option[Int] = None
 }
+
+case class MissingAgentClientDetails(message: String) extends Exception(message) with NoStackTrace with ErrorResponse

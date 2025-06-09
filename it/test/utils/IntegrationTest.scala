@@ -31,6 +31,7 @@ import play.api.libs.ws.WSClient
 import play.api.mvc.MessagesControllerComponents
 import play.api.test.FakeRequest
 import play.api.{Application, Environment, Mode}
+import testHelpers.UserHelper.aUser
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.http.test.WireMockSupport
 
@@ -64,7 +65,7 @@ trait IntegrationTest extends AnyWordSpecLike with Matchers with GuiceOneServerP
   implicit lazy val messages: Messages = messagesApi.preferred(FakeRequest())
   lazy val welshMessages: Messages = messagesApi.preferred(Seq(Lang("cy")))
 
-  implicit lazy val user: User = User(mtditid, nino, affinityGroup, None)
+  implicit lazy val user: User = aUser.copy(mtditid, nino, affinityGroup, agentRef = None)
   implicit val correlationId: String = UUID.randomUUID().toString
 
   implicit val ec: ExecutionContext = ExecutionContext.Implicits.global

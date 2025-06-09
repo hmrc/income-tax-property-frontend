@@ -19,7 +19,6 @@ package service
 import connectors.BusinessConnector
 import connectors.error.{ApiError, SingleErrorBody}
 import models.IncomeSourcePropertyType.UKProperty
-import models.User
 import models.backend.{BusinessDetails, HttpParserError, PropertyDetails}
 import org.mockito.Mockito.when
 import org.scalatest.matchers.should.Matchers
@@ -27,6 +26,7 @@ import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar.mock
 import play.api.http.Status.INTERNAL_SERVER_ERROR
 import play.api.test.{DefaultAwaitTimeout, FutureAwaits}
+import testHelpers.UserHelper.aUser
 import uk.gov.hmrc.http.HeaderCarrier
 
 import java.time.LocalDate
@@ -42,7 +42,7 @@ class BusinessServiceSpec extends AnyWordSpec with FutureAwaits with DefaultAwai
   private val underTest = new BusinessService(mockBusinessConnector)
 
   "getBusinessDetails" should {
-    val user = User("mtditid", "nino", "group", Some("agentReferenceNumber"))
+    val user = aUser.copy("mtditid", "nino", "group", agentRef = Some("agentReferenceNumber"))
 
     "return error when fails to get data" in {
       when(mockBusinessConnector.getBusinessDetails(user.nino, user.mtditid)) thenReturn Future(
@@ -64,7 +64,7 @@ class BusinessServiceSpec extends AnyWordSpec with FutureAwaits with DefaultAwai
   }
 
   "getUkPropertyDetails" should {
-    val user = User("mtditid", "nino", "group", Some("agentReferenceNumber"))
+    val user = aUser.copy("mtditid", "nino", "group", agentRef = Some("agentReferenceNumber"))
 
     "return error when fails to get data" in {
       when(mockBusinessConnector.getBusinessDetails(user.nino, user.mtditid)) thenReturn Future(

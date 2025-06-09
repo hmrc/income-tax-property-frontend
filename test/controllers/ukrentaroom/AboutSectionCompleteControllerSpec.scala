@@ -34,6 +34,7 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
 import service.JourneyAnswersService
+import testHelpers.UserHelper.aUser
 import uk.gov.hmrc.http.HeaderCarrier
 import views.html.ukrentaroom.AboutSectionCompleteView
 
@@ -48,7 +49,7 @@ class AboutSectionCompleteControllerSpec extends SpecBase with MockitoSugar {
   val form = formProvider()
   val taxYear = 2024
   implicit val hc = HeaderCarrier()
-  val user = User(
+  val user = aUser.copy(
     mtditid = "mtditid",
     nino = "nino",
     affinityGroup = "affinityGroup",

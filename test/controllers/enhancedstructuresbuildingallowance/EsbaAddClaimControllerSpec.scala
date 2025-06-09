@@ -21,6 +21,7 @@ import models.requests.DataRequest
 import models.{Rentals, User}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
+import testHelpers.UserHelper.aUser
 import viewmodels.checkAnswers.enhancedstructurebuildingallowance.EsbaAddClaimPage
 import views.html.enhancedstructuresbuildingallowance.EsbaAddClaimView
 
@@ -35,7 +36,7 @@ class EsbaAddClaimControllerSpec extends SpecBase {
 
   s"EsbaAddClaimController for an $individualOrAgent must return OK and the correct view for a GET" in {
 
-    val user = User(
+    val user = aUser.copy(
       "",
       "",
       "",

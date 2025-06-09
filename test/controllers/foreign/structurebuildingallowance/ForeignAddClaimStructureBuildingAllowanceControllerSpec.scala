@@ -23,6 +23,7 @@ import models.{Rentals, User}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import pages.foreign.structurebuildingallowance.ForeignStructureBuildingAllowancePage
+import testHelpers.UserHelper.aUser
 import views.html.foreign.structurebuildingallowance.ForeignStructureBuildingAllowanceView
 
 class ForeignAddClaimStructureBuildingAllowanceControllerSpec extends SpecBase {
@@ -34,7 +35,7 @@ class ForeignAddClaimStructureBuildingAllowanceControllerSpec extends SpecBase {
 
   s"must return OK and the correct view for a GET" in {
 
-    val user = User(
+    val user = aUser.copy(
       "",
       "",
       "",
