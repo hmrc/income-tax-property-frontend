@@ -18,7 +18,6 @@ package utils
 
 import config.FrontendAppConfig
 import play.api.Logging
-import play.api.libs.json.{Json, Reads}
 import play.api.mvc.Results.Redirect
 import play.api.mvc.{Request, Result}
 import uk.gov.hmrc.http.{HeaderCarrier, SessionKeys}
@@ -28,16 +27,6 @@ import scala.concurrent.Future
 trait SessionHelper extends Logging {
 
   val appConfig: FrontendAppConfig
-
-  def sessionIdIsUUID(id: String): Boolean = id.matches("^[A-Za-z0-9\\-\n]{36}$")
-
-  def getFromSession(key: String)(implicit request: Request[_]): Option[String] = {
-    request.session.get(key)
-  }
-
-  def getModelFromSession[T](key: String)(implicit request: Request[_], reads: Reads[T]): Option[T] = {
-    getFromSession(key).flatMap(sessionData => Json.parse(sessionData).asOpt[T])
-  }
 
   def withSessionId[A](block: String => Future[Result])
                       (implicit request: Request[A], hc: HeaderCarrier): Future[Result] =

@@ -67,7 +67,6 @@ class AuthenticatedIdentifierAction @Inject() (
         case Some(internalId) ~ Some(individualUser) => individualAuthentication(block, individualUser, internalId, sessionId)(request, hc)
       } recoverWith {
         case _: NoActiveSession =>
-          logger.error(s"[IdentifierAction][invokeBlock] - No active session found for User")
           Future(Redirect(appConfig.loginUrl))
         case _: AuthorisationException =>
           logger.warn(s"[IdentifierAction][invokeBlock] - User failed to authenticate")
@@ -105,11 +104,7 @@ class AuthenticatedIdentifierAction @Inject() (
                 )
               )
             )
-          case (mtditid, nino) =>
-            logger.warn(
-              s"[AuthorisedAction][individualAuthentication] - User has missing MTDITID and/or NINO." +
-                s"Redirecting to ${appConfig.loginUrl}. MTDITID missing:${mtditid.isEmpty}, NINO missing:${nino.isEmpty}"
-            )
+          case (_, _) =>
             Future.successful(Redirect(appConfig.loginUrl))
         }
       case _ ~ confidenceLevel =>
@@ -167,14 +162,14 @@ class AuthenticatedIdentifierAction @Inject() (
                                isSupportingAgent: Boolean,
                                sessionId: String)(implicit request: Request[A]): Future[Result] =
     if (isSupportingAgent) {
-      logger.warn(s"$agentAuthLogString - Secondary agent unauthorised")
+      logger.info(s"$agentAuthLogString - Secondary agent unauthorised")
       Future.successful(Redirect(controllers.routes.SupportingAgentAuthErrorController.show))
     } else {
       enrolmentGetIdentifierValue(EnrolmentKeys.Agent, EnrolmentIdentifiers.agentReference, enrolments) match {
         case Some(arn) =>
           block(IdentifierRequest(request, internalId, models.User(mtdItId, nino, AffinityGroup.Agent.toString, sessionId, Some(arn), isSupportingAgent)))
         case None =>
-          logger.warn(s"$agentAuthLogString Agent with no HMRC-AS-AGENT enrolment. Rendering unauthorised view.")
+          logger.info(s"$agentAuthLogString Agent with no HMRC-AS-AGENT enrolment. Rendering unauthorised view.")
           Future.successful(Redirect(routes.UnauthorisedController.onPageLoad))
       }
     }
