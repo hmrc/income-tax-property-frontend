@@ -21,10 +21,9 @@ import models.{CheckMode, PropertyType, UserAnswers}
 import pages.structurebuildingallowance.StructureBuildingQualifyingDatePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import utils.DateTimeFormats.localDateTimeFormatter
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
-
-import java.time.format.DateTimeFormatter
 
 object StructureBuildingQualifyingDateSummary {
 
@@ -32,11 +31,10 @@ object StructureBuildingQualifyingDateSummary {
     messages: Messages
   ): Option[SummaryListRow] =
     answers.get(StructureBuildingQualifyingDatePage(idx, propertyType)).map { answer =>
-      val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
 
       SummaryListRowViewModel(
         key = "structureBuildingQualifyingDate.checkYourAnswersLabel",
-        value = ValueViewModel(answer.format(dateFormatter)),
+        value = ValueViewModel(answer.format(localDateTimeFormatter)),
         actions = Seq(
           ActionItemViewModel(
             "site.change",

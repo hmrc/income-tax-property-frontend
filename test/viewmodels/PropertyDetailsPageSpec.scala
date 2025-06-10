@@ -18,20 +18,56 @@ package viewmodels
 
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
+import play.api.i18n.{Lang, Messages}
+import play.api.test.Helpers.{stubLangs, stubMessagesApi}
 
 import java.time.LocalDate
+import java.util.Locale
 
 class PropertyDetailsPageSpec extends AnyWordSpec with Matchers {
+  implicit val messages: Messages = stubMessagesApi().preferred(List(Lang(Locale.ENGLISH)))
 
   "cashOrAccrualsMessageKey" should {
     val taxYear = LocalDate.now().getYear
 
     "output the cash message key when it is false" in {
-      PropertyDetailsPage(taxYear, "individual", LocalDate.now, accrualsOrCash = true).cashOrAccrualsMessageKey shouldBe "businessDetails.accruals"
+      PropertyDetailsPage(
+        taxYear,
+        "individual",
+        LocalDate.now,
+        accrualsOrCash = true
+      ).cashOrAccrualsMessageKey shouldBe "businessDetails.accruals"
     }
 
     "output the cash message key when it is true" in {
-      PropertyDetailsPage(taxYear, "individual", LocalDate.now, accrualsOrCash = false).cashOrAccrualsMessageKey shouldBe "businessDetails.cash"
+      PropertyDetailsPage(
+        taxYear,
+        "individual",
+        LocalDate.now,
+        accrualsOrCash = false
+      ).cashOrAccrualsMessageKey shouldBe "businessDetails.cash"
+    }
+
+    "tradingStartDateFormatted" should {
+      "output the English message Date" in {
+        PropertyDetailsPage(
+          taxYear,
+          "individual",
+          LocalDate.of(2020, 10, 10),
+          accrualsOrCash = false
+        ).tradingStartDateFormatted shouldBe "10 Oct 2020"
+      }
+      "output the Welsh message Date" in {
+        implicit val messages: Messages =
+          stubMessagesApi(langs = stubLangs(List(Lang("cy")))).preferred(List(Lang("cy")))
+        PropertyDetailsPage(
+          taxYear,
+          "individual",
+          LocalDate.of(2020, 10, 15),
+          accrualsOrCash = false
+        ).tradingStartDateFormatted shouldBe "15 Hyd 2020"
+      }
+
     }
   }
 }

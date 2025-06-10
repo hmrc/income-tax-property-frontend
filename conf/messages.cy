@@ -1886,7 +1886,7 @@ foreignCountriesRentList.checkYourAnswersLabel.agent = *Missing Welsh*
 
 foreignPropertyDetails.title = Manylion eiddo tramor
 foreignPropertyDetails.para1 = Rhoesoch wybod i ni am y canlynol o''r blaen:
-foreignPropertyDetails.bullet1.individual = Gwnaethoch ddechrau rhentu''ch eiddo ar
+foreignPropertyDetails.bullet1.individual = Gwnaethoch ddechrau rhentu''ch eiddo ar {0}
 foreignPropertyDetails.bullet1.agent = Bod eich cleient wedi dechrau rhentu ei eiddo ar
 foreignPropertyDetails.bullet2.individual = Eich dull cyfrifyddu yw:
 foreignPropertyDetails.bullet2.agent = Ei ddull cyfrifyddu yw:

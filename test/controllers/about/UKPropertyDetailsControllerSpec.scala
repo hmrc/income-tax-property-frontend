@@ -92,7 +92,8 @@ class UKPropertyDetailsControllerSpec extends SpecBase with MockitoSugar {
             "individual",
             propertyDetails.tradingStartDate.get,
             propertyDetails.accrualsOrCash.get
-          )
+          )(messages(application))
+
         )(request, messages(application)).toString
 
       }
@@ -131,7 +132,7 @@ class UKPropertyDetailsControllerSpec extends SpecBase with MockitoSugar {
             "agent",
             propertyDetails.tradingStartDate.get,
             propertyDetails.accrualsOrCash.get
-          )
+          )(messages(application))
         )(request, messages(application)).toString
       }
     }

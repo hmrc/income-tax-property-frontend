@@ -21,6 +21,7 @@ import models.{CheckMode, PropertyType, UserAnswers}
 import pages.enhancedstructuresbuildingallowance.EsbaQualifyingDatePage
 import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
+import utils.DateTimeFormats.localDateTimeFormatter
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
@@ -32,11 +33,10 @@ object EsbaQualifyingDateSummary {
     messages: Messages
   ): Option[SummaryListRow] =
     answers.get(EsbaQualifyingDatePage(index, propertyType)).map { answer =>
-      val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
 
       SummaryListRowViewModel(
         key = "esbaQualifyingDate.checkYourAnswersLabel",
-        value = ValueViewModel(answer.format(dateFormatter)),
+        value = ValueViewModel(answer.format(localDateTimeFormatter)),
         actions = Seq(
           ActionItemViewModel(
             "site.change",
