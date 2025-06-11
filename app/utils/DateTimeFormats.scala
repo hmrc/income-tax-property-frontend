@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2025 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,22 +14,21 @@
  * limitations under the License.
  */
 
-package viewmodels
+package utils
 
 import play.api.i18n.Messages
 
-import java.time.LocalDate
-import utils.DateTimeFormats.localDateTimeAbbreviatedMonthFormatter
+import java.time.format.DateTimeFormatter
 
-case class PropertyDetailsPage(
-  taxYear: Int,
-  individualOrAgent: String,
-  tradingStartDate: LocalDate,
-  accrualsOrCash: Boolean
-)(implicit message: Messages){
+object DateTimeFormats {
 
-  def cashOrAccrualsMessageKey: String = if (accrualsOrCash) "businessDetails.accruals" else "businessDetails.cash"
+  private val dateTimeFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
 
-  def tradingStartDateFormatted: String = tradingStartDate.format(localDateTimeAbbreviatedMonthFormatter)
+  def localDateTimeFormatter()(implicit messages: Messages):DateTimeFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy", messages.lang.locale)
+
+  def localDateTimeAbbreviatedMonthFormatter()(implicit messages: Messages):DateTimeFormatter = DateTimeFormatter.ofPattern("d MMM yyyy", messages.lang.locale)
+
+  val dateTimeHintFormat: DateTimeFormatter =
+    DateTimeFormatter.ofPattern("d M yyyy")
 
 }

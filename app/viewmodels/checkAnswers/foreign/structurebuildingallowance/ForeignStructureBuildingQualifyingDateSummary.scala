@@ -24,6 +24,7 @@ import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.checkAnswers.FormatUtils.keyCssClass
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
+import utils.DateTimeFormats.localDateTimeFormatter
 
 import java.time.format.DateTimeFormatter
 
@@ -33,11 +34,10 @@ object ForeignStructureBuildingQualifyingDateSummary {
     messages: Messages
   ): Option[SummaryListRow] =
     answers.get(ForeignStructureBuildingQualifyingDatePage(countryCode, index)).map { answer =>
-      val dateFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
 
       SummaryListRowViewModel(
         key = KeyViewModel("foreignStructureBuildingQualifyingDate.checkYourAnswersLabel").withCssClass(keyCssClass),
-        value = ValueViewModel(answer.format(dateFormatter)),
+        value = ValueViewModel(answer.format(localDateTimeFormatter)),
         actions = Seq(
           ActionItemViewModel(
             "site.change",

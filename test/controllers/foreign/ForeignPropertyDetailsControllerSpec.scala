@@ -59,8 +59,8 @@ class ForeignPropertyDetailsControllerSpec extends SpecBase with MockitoSugar {
   "ForeignPropertyDetails Controller" - {
 
     "must return OK and the correct view for an Individual" in {
-      val authConnector =
-        new FakeAuthConnector(Some(Individual) ~ Some("internalId") ~ ConfidenceLevel.L250 ~ enrolments)
+      val authConnector = new FakeAuthConnector(Some(Individual) ~ Some("internalId") ~ ConfidenceLevel.L250 ~ enrolments)
+
       val businessService = mock[BusinessService]
       val propertyDetails =
         PropertyDetails(Some(ForeignProperty.toString), Some(LocalDate.now), accrualsOrCash = Some(false), "incomeSourceId")
@@ -90,7 +90,7 @@ class ForeignPropertyDetailsControllerSpec extends SpecBase with MockitoSugar {
             "individual",
             propertyDetails.tradingStartDate.get,
             propertyDetails.accrualsOrCash.get
-          )
+          )(messages(application))
         )(request, messages(application)).toString
 
       }
@@ -129,7 +129,7 @@ class ForeignPropertyDetailsControllerSpec extends SpecBase with MockitoSugar {
             "agent",
             propertyDetails.tradingStartDate.get,
             propertyDetails.accrualsOrCash.get
-          )
+          )(messages(application))
         )(request, messages(application)).toString
       }
     }
