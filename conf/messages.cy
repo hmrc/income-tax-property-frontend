@@ -2468,7 +2468,6 @@ foreignZeroEmissionGoodsVehicles.error.nonNumeric = Mae’n rhaid i’r swm ar g
 foreignZeroEmissionGoodsVehicles.error.required.individual = Nodwch y swm rydych am ei hawlio ar gyfer lwfans allyriadau sero ar gyfer cerbyd cario nwyddau
 foreignZeroEmissionGoodsVehicles.error.required.agent = Nodwch y swm mae’ch cleient am ei hawlio ar gyfer lwfans allyriadau sero ar gyfer cerbyd cario nwyddau
 foreignZeroEmissionGoodsVehicles.error.twoDecimalPlaces = Mae’n rhaid i’r swm ar gyfer lwfans allyriadau sero ar gyfer cerbyd cario nwyddau gynnwys punnoedd a cheiniogau yn unig, er enghraifft £600 neu £600.20
-foreignZeroEmissionGoodsVehicles.error.required = = *Missing Welsh*
 foreignZeroEmissionGoodsVehicles.error.wholeNumber = Mae’n rhaid i’r swm ar gyfer lwfans allyriadau sero ar gyfer cerbyd cario nwyddau gynnwys rhifau cyfan yn unig
 foreignZeroEmissionGoodsVehicles.error.outOfRange = Nodwch swm rhwng £{0} a £{1}
 foreignZeroEmissionGoodsVehicles.change.hidden = Cerbydau nwyddau ag allyriadau sero
