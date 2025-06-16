@@ -33,15 +33,15 @@
 
 @layout(pageTitle = titleNoForm(titleHtml.toString()), showBackLink = true) {
 
-  <h1 class="govuk-heading-l">@titleHtml</h1>
-
-  <p class="govuk-body">@messages("doYouWantToRemoveCountry.p.1")</p>
-
   @formWithCsrf(action = controllers.ukandforeignproperty.routes.RemoveCountryController.onSubmit(taxYear, index, NormalMode)) {
 
     @if(form.errors.nonEmpty) {
         @govukErrorSummary(ErrorSummaryViewModel(form))
     }
+
+    <h1 class="govuk-heading-l">@titleHtml</h1>
+
+    <p class="govuk-body">@messages("doYouWantToRemoveCountry.p.1")</p>
 
     @govukRadios(
         RadiosViewModel.yesNo(
