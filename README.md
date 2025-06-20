@@ -30,6 +30,63 @@ To run locally stop the service manager service for frontend:
     sm2 --stop INCOME_TAX_PROPERTY_FRONTEND
     ./run.sh **OR** sbt -Dplay.http.router=testOnlyDoNotUseInAppConf.Routes run
 
+## Using the service
+
+There are two main flows:
+
+* Agent sign up
+* Individual sign up
+
+### Local
+
+#### Individual
+* Login via: [http://localhost:9949/auth-login-stub/gg-sign-in](http://localhost:9949/auth-login-stub/gg-sign-in)
+* Entry page: [http://localhost:9302/update-and-submit-income-tax-return/2025/start](http://localhost:9302/update-and-submit-income-tax-return/2025/start)
+
+| Enrolment Key | Identifier Name | Identifier Value |
+|---------------|-----------------|------------------|
+| HMRC-MTD-IT   | MTDITID         | 1234567890       |
+
+
+### Agent 
+* Login via: [http://localhost:9949/auth-login-stub/gg-sign-in](http://localhost:9949/auth-login-stub/gg-sign-in)
+* Entry page : [http://localhost:9302/update-and-submit-income-tax-return/test-only/2024/additional-parameters?ClientNino=AC180000A&ClientMTDID=1234567890](http://localhost:9302/update-and-submit-income-tax-return/test-only/2024/additional-parameters?ClientNino=AC180000A&ClientMTDID=1234567890)
+
+| Enrolment Key  | Identifier Name      | Identifier Value	 |
+|----------------|----------------------|-------------------|
+| HMRC-MTD-IT    | MTDITID              | 1234567890        |
+| HMRC-AS-AGENT  | AgentReferenceNumber | XARN1234567       |
+
+### Staging
+
+*Requires HMRC VPN*
+
+#### Individual
+* Login via: [https://www.staging.tax.service.gov.uk/auth-login-stub/gg-sign-in](https://www.staging.tax.service.gov.uk/auth-login-stub/gg-sign-in)
+* Entry page : [http://localhost:9302/update-and-submit-income-tax-return/test-only/2024/additional-parameters?ClientNino=AC180000A&ClientMTDID=1234567890](http://localhost:9302/update-and-submit-income-tax-return/test-only/2024/additional-parameters?ClientNino=AC180000A&ClientMTDID=1234567890)
+
+| Enrolment Key | Identifier Name | Identifier Value |
+|---------------|-----------------|------------------|
+| HMRC-MTD-IT   | MTDITID         | 1234567890       |
+
+#### Agent
+* Login via: [https://www.staging.tax.service.gov.uk/auth-login-stub/gg-sign-in](https://www.staging.tax.service.gov.uk/auth-login-stub/gg-sign-in)
+* Entry page : [http://localhost:9302/update-and-submit-income-tax-return/test-only/2024/additional-parameters?ClientNino=AC180000A&ClientMTDID=1234567890](http://localhost:9302/update-and-submit-income-tax-return/test-only/2024/additional-parameters?ClientNino=AC180000A&ClientMTDID=1234567890)
+
+| Enrolment Key  | Identifier Name      | Identifier Value	 |
+|----------------|----------------------|-------------------|
+| HMRC-MTD-IT    | MTDITID              | 1234567890        |
+| HMRC-AS-AGENT  | AgentReferenceNumber | XARN1234567       |
+
+
+## Testing the service
+
+* Run unit tests: `sbt clean test`
+* Run integration tests: `sbt clean it/test`
+* Run performance tests: provided in the repo [income-tax-submission-performance-tests](https://github.com/hmrc/income-tax-submission-performance-tests)
+* Run acceptance tests: provided in the repo [income-tax-submission-journey-tests](https://github.com/hmrc/income-tax-submission-journey-tests)
+
+
 ## Ninos with stub data for Property in Staging Environment
 
 | Nino      | Description           |
