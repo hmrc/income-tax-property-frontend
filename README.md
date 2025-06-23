@@ -30,6 +30,17 @@ To run locally stop the service manager service for frontend:
     sm2 --stop INCOME_TAX_PROPERTY_FRONTEND
     ./run.sh **OR** sbt -Dplay.http.router=testOnlyDoNotUseInAppConf.Routes run
 
+To test the branch you're working on locally. You will need to run `sm2 --stop INCOME_TAX_PROPERTY_FRONTEND` followed by
+`./run.sh`
+
+### Running Tests
+
+- Run Unit Tests:  `sbt test`
+- Run Integration Tests: `sbt it/test`
+- Run Unit and Integration Tests: `sbt test it/test`
+- Run Unit and Integration Tests with coverage report: `./check.sh`<br/>
+  which runs `sbt clean coverage test it/test coverageReport dependencyUpdates`
+
 ## Ninos with stub data for Property in Staging Environment
 
 | Nino      | Description           |
