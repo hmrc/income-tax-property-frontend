@@ -30,6 +30,24 @@ To run locally stop the service manager service for frontend:
     sm2 --stop INCOME_TAX_PROPERTY_FRONTEND
     ./run.sh **OR** sbt -Dplay.http.router=testOnlyDoNotUseInAppConf.Routes run
 
+To test the branch you're working on locally. You will need to run `sm2 --stop INCOME_TAX_PROPERTY_FRONTEND` followed by
+`./run.sh`
+
+### Running Tests
+
+- Run Unit Tests:  `sbt test`
+- Run Integration Tests: `sbt it/test`
+- Run Unit and Integration Tests: `sbt test it/test`
+- Run Unit and Integration Tests with coverage report: `./check.sh`<br/>
+  which runs `sbt clean coverage test it/test coverageReport dependencyUpdates`
+
+### Feature Switches
+
+| Feature                         | Description                                                         |
+|---------------------------------|---------------------------------------------------------------------|
+| Welsh Language                  | Enables a toggle to allow the user to change language to/from Welsh |
+| sessionCookieServiceEnabled     | Retrieves session data from V&C when enabled                        |
+
 ## Using the service
 
 There are two main flows:
@@ -85,7 +103,6 @@ There are two main flows:
 * Run integration tests: `sbt clean it/test`
 * Run performance tests: provided in the repo [income-tax-submission-performance-tests](https://github.com/hmrc/income-tax-submission-performance-tests)
 * Run acceptance tests: provided in the repo [income-tax-submission-journey-tests](https://github.com/hmrc/income-tax-submission-journey-tests)
-
 
 ## Ninos with stub data for Property in Staging Environment
 

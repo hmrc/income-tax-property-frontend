@@ -17,12 +17,13 @@
 package handlers
 
 import org.scalamock.scalatest.MockFactory
+import org.scalatest.TestSuite
 import play.api.mvc.Request
 import play.api.mvc.Results.InternalServerError
 
 import scala.concurrent.Future
 
-trait MockErrorHandler extends MockFactory {
+trait MockErrorHandler extends MockFactory { _: TestSuite =>
 
   protected val mockErrorHandler: ErrorHandler = mock[ErrorHandler]
 
