@@ -40,7 +40,14 @@ To test the branch you're working on locally. You will need to run `sm2 --stop I
 - Run Unit and Integration Tests: `sbt test it/test`
 - Run Unit and Integration Tests with coverage report: `./check.sh`<br/>
   which runs `sbt clean coverage test it/test coverageReport dependencyUpdates`
-  
+
+### Feature Switches
+
+| Feature                         | Description                                                         |
+|---------------------------------|---------------------------------------------------------------------|
+| Welsh Language                  | Enables a toggle to allow the user to change language to/from Welsh |
+| sessionCookieServiceEnabled     | Retrieves session data from V&C when enabled                        |
+
 ## Using the service
 
 There are two main flows:
