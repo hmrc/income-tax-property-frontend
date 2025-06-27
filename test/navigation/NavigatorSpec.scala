@@ -24,18 +24,19 @@ import controllers.propertyrentals.expenses.routes._
 import controllers.routes
 import models.TotalIncome.Under
 import models._
+import org.apache.pekko.stream.javadsl.UnzipWith
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
 import pages._
 import pages.adjustments._
 import pages.allowances._
 import pages.enhancedstructuresbuildingallowance._
 import pages.premiumlease._
-import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
+import pages.propertyrentals.{AboutPropertyRentalsSectionFinishedPage, ClaimPropertyIncomeAllowancePage}
 import pages.propertyrentals.expenses._
 import pages.propertyrentals.income._
 import pages.rentalsandrentaroom.adjustments._
 import pages.structurebuildingallowance._
-import pages.ukrentaroom.adjustments.RaRUnusedResidentialCostsPage
+import pages.ukrentaroom.adjustments.{RaRBalancingChargePage, RaRUnusedResidentialCostsPage}
 import pages.ukrentaroom.allowances._
 import pages.ukrentaroom.expenses._
 import pages.ukrentaroom.{AboutSectionCompletePage, ClaimExpensesOrReliefPage, JointlyLetPage, TotalIncomeAmountPage}
@@ -84,6 +85,7 @@ class NavigatorSpec extends SpecBase {
           UserAnswers("test")
         ) mustBe controllers.about.routes.UKPropertySelectController.onPageLoad(taxYear, NormalMode)
       }
+
       "must go from TotalIncomePage to Report property income page if total income is under" in {
         navigator.nextPage(
           TotalIncomePage,
@@ -168,6 +170,51 @@ class NavigatorSpec extends SpecBase {
           UserAnswers("test"),
           UserAnswers("test")
         ) mustBe ResidentialFinanceCostController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+      }
+
+      "must go from ConsolidatedExpensesRRPage to ExpensesCheckYourAnswersRRPage " +
+        "when the user selects yes" in {
+        val userAnswers = UserAnswers("test").set(ConsolidatedExpensesRRPage, ConsolidatedRRExpenses(true, Some(BigDecimal(99.99)))).get
+        navigator.nextPage(
+          ConsolidatedExpensesRRPage,
+          taxYear,
+          NormalMode,
+          userAnswers,
+          userAnswers,
+        ) mustBe controllers.ukrentaroom.expenses.routes.ExpensesCheckYourAnswersRRController.onPageLoad(taxYear)
+
+      }
+
+      "must go from ConsolidatedExpensesRRPage to RentsRatesAndInsuranceRRPage " +
+        "when the user selects no" in {
+        val userAnswers = UserAnswers("test").set(ConsolidatedExpensesRRPage, ConsolidatedRRExpenses(false, None)).get
+        navigator.nextPage(
+          ConsolidatedExpensesRRPage,
+          taxYear,
+          NormalMode,
+          userAnswers,
+          userAnswers,
+        ) mustBe controllers.ukrentaroom.expenses.routes.RentsRatesAndInsuranceRRController.onPageLoad(taxYear, NormalMode)
+      }
+
+      "must go from JointlyLetPage to TotalIncomeAmountPage for Rent A Room" in {
+        navigator.nextPage(
+          JointlyLetPage(RentARoom),
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          UserAnswers("test")
+        ) mustBe controllers.ukrentaroom.routes.TotalIncomeAmountController.onPageLoad(taxYear, NormalMode, RentARoom)
+      }
+
+      "must go from JointlyLetPage to TotalIncomeAmountPage for Rentals and Rent A Room" in {
+        navigator.nextPage(
+          JointlyLetPage(RentalsRentARoom),
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          UserAnswers("test")
+        ) mustBe controllers.ukrentaroom.routes.TotalIncomeAmountController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
       }
 
       val scenarios = Table[PropertyType, String](
@@ -503,6 +550,7 @@ class NavigatorSpec extends SpecBase {
           ) mustBe controllers.propertyrentals.expenses.routes.OtherProfessionalFeesController
             .onPageLoad(taxYear, NormalMode, propertyType)
         }
+
         s"must go from OtherProfessionalFeesPage to CostsOfServicesProvidedPage for $propertyTypeDefinition" in {
           navigator.nextPage(
             OtherProfessionalFeesPage(propertyType),
@@ -513,6 +561,7 @@ class NavigatorSpec extends SpecBase {
           ) mustBe controllers.propertyrentals.expenses.routes.CostsOfServicesProvidedController
             .onPageLoad(taxYear, NormalMode, propertyType)
         }
+
         s"must go from CostsOfServicesProvidedPage to PropertyBusinessTravelCostsPage for $propertyTypeDefinition" in {
           navigator.nextPage(
             CostsOfServicesProvidedPage(propertyType),
@@ -533,6 +582,19 @@ class NavigatorSpec extends SpecBase {
             UserAnswers("test")
           ) mustBe controllers.propertyrentals.expenses.routes.OtherAllowablePropertyExpensesController
             .onPageLoad(taxYear, NormalMode, propertyType)
+        }
+
+        s"must go from OtherAllowablePropertyExpensesPage to ExpensesCheckYourAnswersController for $propertyTypeDefinition" in {
+          navigator.nextPage(
+            OtherAllowablePropertyExpensesPage(propertyType),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            UserAnswers("test")
+          ) mustBe (propertyType match {
+            case Rentals => ExpensesCheckYourAnswersController.onPageLoad(taxYear)
+            case RentalsRentARoom => controllers.rentalsandrentaroom.expenses.routes.RentalsAndRaRExpensesCheckYourAnswersController.onPageLoad(taxYear)
+          })
         }
 
         s"must go from CapitalAllowancesForACarPage to AnnualInvestmentAllowancePage for $propertyTypeDefinition" in {
@@ -571,6 +633,7 @@ class NavigatorSpec extends SpecBase {
             UserAnswers("test")
           ) mustBe ZeroEmissionGoodsVehicleAllowanceController.onPageLoad(taxYear, NormalMode, propertyType)
         }
+
         s"must go from ZeroEmissionGoodsVehicleAllowancePage to BusinessPremisesRenovationPage for $propertyTypeDefinition" in {
           navigator.nextPage(
             ZeroEmissionGoodsVehicleAllowancePage(propertyType),
@@ -590,6 +653,7 @@ class NavigatorSpec extends SpecBase {
             UserAnswers("test")
           ) mustBe OtherCapitalAllowanceController.onPageLoad(taxYear, NormalMode, propertyType)
         }
+
         s"must go from OtherCapitalAllowancePage to AllowancesCheckYourAnswersPage for $propertyTypeDefinition" in {
           navigator.nextPage(
             OtherCapitalAllowancePage(propertyType),
@@ -607,56 +671,390 @@ class NavigatorSpec extends SpecBase {
           })
         }
 
-      }
-      s"must go from BusinessPremisesRenovationPage to ReplacementOfDomesticGoodsPage for Rentals" in {
-        navigator.nextPage(
-          BusinessPremisesRenovationPage(Rentals),
-          taxYear,
-          NormalMode,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe ReplacementOfDomesticGoodsController.onPageLoad(taxYear, NormalMode, Rentals)
-      }
-
-      "must go from PrivateUseAdjustmentPage to BalancingChargePage" in {
-        navigator.nextPage(
-          PrivateUseAdjustmentPage(Rentals),
-          taxYear,
-          NormalMode,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe BalancingChargeController.onPageLoad(taxYear, NormalMode, Rentals)
-      }
-
-      "must go from BalancingChargePage to PropertyIncomeAllowancePage if the user has selected Yes, claim property income allowance " +
-        "on the Claiming Property Income Allowance' page" in {
+        s"must go from PropertyIncomeAllowancePage to RenovationAllowanceBalancingChargePage for $propertyTypeDefinition" in {
           navigator.nextPage(
-            BalancingChargePage(Rentals),
+            PropertyIncomeAllowancePage(propertyType),
             taxYear,
             NormalMode,
             UserAnswers("test"),
-            UserAnswers("test").set(ClaimPropertyIncomeAllowancePage(Rentals), true).get
-          ) mustBe PropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode, Rentals)
+            UserAnswers("test")
+          ) mustBe (propertyType match {
+            case Rentals => RenovationAllowanceBalancingChargeController.onPageLoad(taxYear, NormalMode, Rentals)
+            case RentalsRentARoom => controllers.rentalsandrentaroom.adjustments.routes.BusinessPremisesRenovationBalancingChargeController.onPageLoad(taxYear, NormalMode)
+          })
         }
 
-      "must go from BalancingChargePage to RenovationAllowanceBalancingCharge" in {
-        navigator.nextPage(
-          BalancingChargePage(Rentals),
-          taxYear,
-          NormalMode,
-          UserAnswers("test"),
-          UserAnswers("test").set(ClaimPropertyIncomeAllowancePage(Rentals), false).get
-        ) mustBe RenovationAllowanceBalancingChargeController.onPageLoad(taxYear, NormalMode, Rentals)
-      }
+        s"must go from BusinessPremisesRenovationPage to ReplacementOfDomesticGoodsPage for $propertyType" in {
+          navigator.nextPage(
+            BusinessPremisesRenovationPage(propertyType),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            UserAnswers("test")
+          ) mustBe ReplacementOfDomesticGoodsController.onPageLoad(taxYear, NormalMode, propertyType)
+        }
 
-      "must go from PropertyIncomeAllowancePage to RenovationAllowanceBalancingChargePage" in {
-        navigator.nextPage(
-          PropertyIncomeAllowancePage(Rentals),
-          taxYear,
-          NormalMode,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe RenovationAllowanceBalancingChargeController.onPageLoad(taxYear, NormalMode, Rentals)
+        s"must go from PrivateUseAdjustmentPage to BalancingChargePage for $propertyType" in {
+          navigator.nextPage(
+            PrivateUseAdjustmentPage(propertyType),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            UserAnswers("test")
+          ) mustBe BalancingChargeController.onPageLoad(taxYear, NormalMode, propertyType)
+        }
+
+        "must go from BalancingChargePage to PropertyIncomeAllowancePage if the user has selected Yes, claim property income allowance " +
+          s"on the Claiming Property Income Allowance' page for $propertyType" in {
+          navigator.nextPage(
+            BalancingChargePage(propertyType),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            UserAnswers("test").set(ClaimPropertyIncomeAllowancePage(propertyType), true).get
+          ) mustBe PropertyIncomeAllowanceController.onPageLoad(taxYear, NormalMode, propertyType)
+        }
+
+        s"must go from BalancingChargePage to RenovationAllowanceBalancingCharge for $propertyType" in {
+          navigator.nextPage(
+            BalancingChargePage(propertyType),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            UserAnswers("test").set(ClaimPropertyIncomeAllowancePage(propertyType), false).get
+          ) mustBe (propertyType match {
+            case Rentals => RenovationAllowanceBalancingChargeController.onPageLoad(taxYear, NormalMode, propertyType)
+            case RentalsRentARoom => controllers.rentalsandrentaroom.adjustments.routes.BusinessPremisesRenovationBalancingChargeController.onPageLoad(taxYear, NormalMode)
+          })
+        }
+
+        s"must go from ResidentialFinanceCostPage to UnusedResidentialFinanceCostPage for $propertyType" in {
+          navigator.nextPage(
+            ResidentialFinanceCostPage(propertyType),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            UserAnswers("test")
+          ) mustBe UnusedResidentialFinanceCostController.onPageLoad(taxYear, NormalMode, propertyType)
+        }
+
+        s"must go from UnusedResidentialFinanceCostPage to UnusedLossesBroughtForwardPage for $propertyType" in {
+          navigator.nextPage(
+            UnusedResidentialFinanceCostPage(propertyType),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            UserAnswers("test")
+          ) mustBe UnusedLossesBroughtForwardController.onPageLoad(taxYear, NormalMode, propertyType)
+        }
+
+        s"must go from UnusedLossesBroughtForwardPage to WhenYouReportedTheLossPage" +
+          s" when the user selects yes for $propertyType" in {
+          val userAnswers = UserAnswers("test")
+            .set(UnusedLossesBroughtForwardPage(propertyType), UnusedLossesBroughtForward(isUnusedLossesBroughtForward = true, Some(BigDecimal(10))))
+            .get
+          navigator.nextPage(
+            UnusedLossesBroughtForwardPage(propertyType),
+            taxYear,
+            NormalMode,
+            userAnswers,
+            userAnswers
+          ) mustBe WhenYouReportedTheLossController.onPageLoad(taxYear, NormalMode, propertyType)
+        }
+
+        s"must go from UnusedLossesBroughtForwardPage to AdjustmentsCheckYourAnswersPage" +
+          s" when the user selects no for $propertyType" in {
+          val userAnswers = UserAnswers("test")
+            .set(UnusedLossesBroughtForwardPage(propertyType), UnusedLossesBroughtForward(isUnusedLossesBroughtForward = false, None))
+            .get
+          navigator.nextPage(
+            UnusedLossesBroughtForwardPage(propertyType),
+            taxYear,
+            NormalMode,
+            userAnswers,
+            userAnswers
+          ) mustBe (propertyType match {
+            case Rentals => AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+            case RentalsRentARoom => controllers.rentalsandrentaroom.adjustments.routes
+              .RentalsAndRentARoomAdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+          })
+        }
+
+        s"must go from WhenYouReportedTheLossPage to AdjustmentsCheckYourAnswersPage for $propertyType" in {
+          val userAnswers = UserAnswers("test")
+            .set(WhenYouReportedTheLossPage(propertyType), WhenYouReportedTheLoss.y2018to2019)
+            .get
+          navigator.nextPage(
+            WhenYouReportedTheLossPage(propertyType),
+            taxYear,
+            NormalMode,
+            userAnswers,
+            userAnswers
+          ) mustBe (propertyType match {
+            case Rentals => AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+            case RentalsRentARoom => controllers.rentalsandrentaroom.adjustments.routes.RentalsAndRentARoomAdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+          })
+        }
+
+        s"must go from AboutSectionCompletePage to AdjustmentsCheckYourAnswersPage for $propertyType" in {
+          val userAnswers = UserAnswers("test")
+            .set(WhenYouReportedTheLossPage(propertyType), WhenYouReportedTheLoss.y2018to2019)
+            .get
+          navigator.nextPage(
+            WhenYouReportedTheLossPage(propertyType),
+            taxYear,
+            NormalMode,
+            userAnswers,
+            userAnswers
+          ) mustBe (propertyType match {
+            case Rentals => AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+            case RentalsRentARoom => controllers.rentalsandrentaroom.adjustments.routes.RentalsAndRentARoomAdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
+          })
+        }
+
+
+        s"must go from StructureBuildingQualifyingDatePage to StructureBuildingQualifyingAmountPage for $propertyType" in {
+          navigator.sbaNextPage(
+            StructureBuildingQualifyingDatePage(index, propertyType),
+            taxYear,
+            NormalMode,
+            0,
+            UserAnswers("test"),
+            UserAnswers("test")
+          ) mustBe controllers.structuresbuildingallowance.routes.StructureBuildingQualifyingAmountController
+            .onPageLoad(taxYear, NormalMode, 0, propertyType)
+        }
+
+        s"must go from StructureBuildingQualifyingAmountPage to StructureBuildingAllowanceClaimPage for $propertyType" in {
+          navigator.sbaNextPage(
+            StructureBuildingQualifyingAmountPage(index, propertyType),
+            taxYear,
+            NormalMode,
+            0,
+            UserAnswers("test"),
+            UserAnswers("test")
+          ) mustBe controllers.structuresbuildingallowance.routes.StructureBuildingAllowanceClaimController
+            .onPageLoad(taxYear, NormalMode, 0, propertyType)
+        }
+
+        s"must go from EsbaQualifyingDatePage to EsbaQualifyingAmountPage for $propertyType" in {
+          navigator.esbaNextPage(
+            EsbaQualifyingDatePage(index, propertyType),
+            taxYear,
+            NormalMode,
+            index,
+            UserAnswers("test"),
+            UserAnswers("test")
+          ) mustBe controllers.enhancedstructuresbuildingallowance.routes.EsbaQualifyingAmountController
+            .onPageLoad(taxYear, index, NormalMode, propertyType)
+        }
+
+        s"must go from EsbaQualifyingAmountPage to EsbaClaimPage for $propertyType" in {
+          navigator.esbaNextPage(
+            EsbaQualifyingAmountPage(index, propertyType),
+            taxYear,
+            NormalMode,
+            index,
+            UserAnswers("test"),
+            UserAnswers("test")
+          ) mustBe controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimController
+            .onPageLoad(taxYear, NormalMode, index, propertyType)
+        }
+
+        s"must go from EsbaClaimPage to EsbaAddressPage for $propertyType" in {
+          navigator.esbaNextPage(
+            EsbaQualifyingAmountPage(index, propertyType),
+            taxYear,
+            NormalMode,
+            index,
+            UserAnswers("test"),
+            UserAnswers("test")
+          ) mustBe controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimController
+            .onPageLoad(taxYear, NormalMode, index, propertyType)
+        }
+
+        s"must go from PremiumsGrantLeasePage to ReversePremiumsReceivedPage for $propertyType" in {
+          navigator.nextPage(
+            premiumlease.PremiumsGrantLeasePage(propertyType),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            UserAnswers("test")
+          ) mustBe controllers.propertyrentals.income.routes.ReversePremiumsReceivedController.onPageLoad(taxYear, NormalMode, propertyType)
+        }
+
+        s"must go from UnusedResidentialFinanceCostPage to UnusedLossesBroughtForward for $propertyType" in {
+          navigator.nextPage(
+            UnusedResidentialFinanceCostPage(propertyType),
+            taxYear,
+            NormalMode,
+            UserAnswers("test"),
+            UserAnswers("test")
+          ) mustBe UnusedLossesBroughtForwardController.onPageLoad(taxYear, NormalMode, propertyType)
+        }
+
+        "must go from ClaimStructureBuildingAllowancePage to SbaClaimsPage " +
+          s"when user selects yes and has SBA claims for $propertyType" in {
+          val userAnswers = UserAnswers("test")
+            .set(ClaimStructureBuildingAllowancePage(propertyType), true)
+            .flatMap(_.set(StructureBuildingAllowanceGroup(propertyType), Array(StructureBuildingAllowance(LocalDate.now(), BigDecimal(11.11), BigDecimal(22.22), StructuredBuildingAllowanceAddress("building-name", "2", "AB1 2CD")))))
+            .get
+
+          navigator.nextPage(
+            ClaimStructureBuildingAllowancePage(propertyType),
+            taxYear,
+            NormalMode,
+            userAnswers,
+            userAnswers
+          ) mustBe controllers.structuresbuildingallowance.routes.SbaClaimsController.onPageLoad(taxYear, propertyType)
+        }
+
+        "must go from ClaimStructureBuildingAllowancePage to AddClaimStructureBuildingAllowancePage " +
+          s"when user selects yes and does not have any sba claims for $propertyType" in {
+          val userAnswers = UserAnswers("test")
+            .set(ClaimStructureBuildingAllowancePage(propertyType), true)
+            .get
+
+          navigator.nextPage(
+            ClaimStructureBuildingAllowancePage(propertyType),
+            taxYear,
+            NormalMode,
+            userAnswers,
+            userAnswers
+          ) mustBe controllers.structuresbuildingallowance.routes.AddClaimStructureBuildingAllowanceController.onPageLoad(taxYear, propertyType)
+        }
+
+        "must go from ClaimStructureBuildingAllowancePage to ClaimSbaCheckYourAnswersPage " +
+          s"when user selects no for $propertyType" in {
+          val userAnswers = UserAnswers("test")
+            .set(ClaimStructureBuildingAllowancePage(propertyType), false)
+            .get
+
+          navigator.nextPage(
+            ClaimStructureBuildingAllowancePage(propertyType),
+            taxYear,
+            NormalMode,
+            userAnswers,
+            userAnswers
+          ) mustBe controllers.structuresbuildingallowance.routes.ClaimSbaCheckYourAnswersController.onPageLoad(taxYear, propertyType)
+        }
+
+        "must go from SbaRemoveConfirmationPage to AddClaimStructureBuildingAllowancePage " +
+          s"when user selects yes and has no other sba claims for $propertyType" in {
+          val userAnswers = UserAnswers("test")
+            .set(SbaRemoveConfirmationPage(propertyType), true)
+            .flatMap(_.set(StructureBuildingAllowanceGroup(propertyType), Array.empty[StructureBuildingAllowance]))
+            .get
+
+          navigator.nextPage(
+            SbaRemoveConfirmationPage(propertyType),
+            taxYear,
+            NormalMode,
+            userAnswers,
+            userAnswers
+          ) mustBe controllers.structuresbuildingallowance.routes.AddClaimStructureBuildingAllowanceController.onPageLoad(taxYear, propertyType)
+        }
+
+        "must go from SbaRemoveConfirmationPage to SbaClaimsPage " +
+          s"when the user selects yes and has other sba claims for $propertyType" in {
+          val userAnswers = UserAnswers("test")
+            .set(SbaRemoveConfirmationPage(propertyType), true)
+            .flatMap(_.set(StructureBuildingAllowanceGroup(propertyType), Array(StructureBuildingAllowance(LocalDate.now(), BigDecimal(11.11), BigDecimal(22.22), StructuredBuildingAllowanceAddress("building-name", "2", "AB1 2CD")))))
+            .get
+          navigator.nextPage(
+            SbaRemoveConfirmationPage(propertyType),
+            taxYear,
+            NormalMode,
+            userAnswers,
+            userAnswers
+          ) mustBe controllers.structuresbuildingallowance.routes.SbaClaimsController.onPageLoad(taxYear, propertyType)
+        }
+
+        "must go from SbaRemoveConfirmationPage to SbaClaimsPage " +
+          s"when the user selects no for $propertyType" in {
+          val userAnswers = UserAnswers("test")
+            .set(SbaRemoveConfirmationPage(propertyType), false)
+            .flatMap(_.set(StructureBuildingAllowanceGroup(propertyType), Array(StructureBuildingAllowance(LocalDate.now(), BigDecimal(11.11), BigDecimal(22.22), StructuredBuildingAllowanceAddress("building-name", "2", "AB1 2CD")))))
+            .get
+          navigator.nextPage(
+            SbaRemoveConfirmationPage(propertyType),
+            taxYear,
+            NormalMode,
+            userAnswers,
+            userAnswers
+          ) mustBe controllers.structuresbuildingallowance.routes.SbaClaimsController.onPageLoad(taxYear, propertyType)
+        }
+
+        s"must go from ClaimEsbaPage to EsbaClaimsPage " +
+          s"when user selects yes and has ESBA claims for $propertyType" in {
+          val userAnswers = UserAnswers("test")
+            .set(ClaimEsbaPage(propertyType), true)
+            .flatMap(_.set(EnhancedStructureBuildingAllowanceGroup(propertyType), Array(EnhancedStructuresBuildingAllowance(LocalDate.now(), BigDecimal(11.11), BigDecimal(22.22)))))
+            .get
+          navigator.nextPage(
+            ClaimEsbaPage(propertyType),
+            taxYear,
+            NormalMode,
+            userAnswers,
+            userAnswers
+          ) mustBe controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimsController.onPageLoad(taxYear, propertyType)
+        }
+
+        s"must go from ClaimEsbaPage to EsbaAddClaimPage " +
+          s"when user selects yes and has no ESBA claims for $propertyType" in {
+          val userAnswers = UserAnswers("test")
+            .set(ClaimEsbaPage(propertyType), true)
+            .get
+          navigator.nextPage(
+            ClaimEsbaPage(propertyType),
+            taxYear,
+            NormalMode,
+            userAnswers,
+            userAnswers
+          ) mustBe controllers.enhancedstructuresbuildingallowance.routes.EsbaAddClaimController.onPageLoad(taxYear, propertyType)
+        }
+
+        s"must go from ClaimEsbaPage to ClaimEsbaCheckYourAnswersPage " +
+          s"when user selects no for $propertyType" in {
+          val userAnswers = UserAnswers("test")
+            .set(ClaimEsbaPage(propertyType), false)
+            .get
+          navigator.nextPage(
+            ClaimEsbaPage(propertyType),
+            taxYear,
+            NormalMode,
+            userAnswers,
+            userAnswers
+          ) mustBe controllers.enhancedstructuresbuildingallowance.routes.ClaimEsbaCheckYourAnswersController.onPageLoad(taxYear, propertyType)
+        }
+
+
+        s"must go from EsbaClaimsPage to EsbaAddClaimPage " +
+          s"when the user selects yes for $propertyType" in {
+          val userAnswers = emptyUserAnswers.set(EsbaClaimsPage(propertyType), true).get
+          navigator.nextPage(
+            EsbaClaimsPage(propertyType),
+            taxYear,
+            NormalMode,
+            userAnswers,
+            userAnswers
+          ) mustBe controllers.enhancedstructuresbuildingallowance.routes.EsbaAddClaimController.onPageLoad(taxYear, propertyType)
+        }
+        s"must go from EsbaClaimsPage to EsbaSectionFinished " +
+          s"when the user selects no for $propertyType" in {
+          val userAnswers = emptyUserAnswers.set(EsbaClaimsPage(propertyType), false).get
+          navigator.nextPage(
+            EsbaClaimsPage(propertyType),
+            taxYear,
+            NormalMode,
+            userAnswers,
+            userAnswers
+          ) mustBe controllers.enhancedstructuresbuildingallowance.routes.EsbaSectionFinishedController.onPageLoad(taxYear, propertyType)
+        }
+
+
+
+
       }
 
       "must go from RenovationAllowanceBalancingChargePage to ResidentialFinanceCostPage" in {
@@ -667,109 +1065,6 @@ class NavigatorSpec extends SpecBase {
           UserAnswers("test"),
           UserAnswers("test")
         ) mustBe ResidentialFinanceCostController.onPageLoad(taxYear, NormalMode, Rentals)
-      }
-
-      "must go from ResidentialFinanceCostPage to UnusedResidentialFinanceCostPage" in {
-        navigator.nextPage(
-          ResidentialFinanceCostPage(Rentals),
-          taxYear,
-          NormalMode,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe UnusedResidentialFinanceCostController.onPageLoad(taxYear, NormalMode, Rentals)
-      }
-
-      "must go from UnusedResidentialFinanceCostPage to UnusedLossesBroughtForwardPage" in {
-        navigator.nextPage(
-          UnusedResidentialFinanceCostPage(Rentals),
-          taxYear,
-          NormalMode,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe UnusedLossesBroughtForwardController.onPageLoad(taxYear, NormalMode, Rentals)
-      }
-      "must go from UnusedLossesBroughtForwardPage to WhenYouReportedTheLossPage" in {
-        val userAnswers = UserAnswers("test")
-          .set(UnusedLossesBroughtForwardPage(Rentals), UnusedLossesBroughtForward(isUnusedLossesBroughtForward = true, Some(BigDecimal(10))))
-          .get
-        navigator.nextPage(
-          UnusedLossesBroughtForwardPage(Rentals),
-          taxYear,
-          NormalMode,
-          userAnswers,
-          userAnswers
-        ) mustBe WhenYouReportedTheLossController.onPageLoad(taxYear, NormalMode, Rentals)
-      }
-      "must go from WhenYouReportedTheLossPage to AdjustmentsCheckYourAnswersPage" in {
-        val userAnswers = UserAnswers("test")
-          .set(WhenYouReportedTheLossPage(Rentals), WhenYouReportedTheLoss.y2018to2019)
-          .get
-        navigator.nextPage(
-          WhenYouReportedTheLossPage(Rentals),
-          taxYear,
-          NormalMode,
-          userAnswers,
-          userAnswers
-        ) mustBe AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
-      }
-      "must go from StructureBuildingQualifyingDatePage to StructureBuildingQualifyingAmountPage" in {
-        navigator.sbaNextPage(
-          StructureBuildingQualifyingDatePage(index, Rentals),
-          taxYear,
-          NormalMode,
-          0,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe controllers.structuresbuildingallowance.routes.StructureBuildingQualifyingAmountController
-          .onPageLoad(taxYear, NormalMode, 0, Rentals)
-      }
-
-      "must go from StructureBuildingQualifyingAmountPage to StructureBuildingAllowanceClaimPage" in {
-        navigator.sbaNextPage(
-          StructureBuildingQualifyingAmountPage(index, Rentals),
-          taxYear,
-          NormalMode,
-          0,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe controllers.structuresbuildingallowance.routes.StructureBuildingAllowanceClaimController
-          .onPageLoad(taxYear, NormalMode, 0, Rentals)
-      }
-
-      "must go from EsbaQualifyingDatePage to EsbaQualifyingAmountPage" in {
-        navigator.esbaNextPage(
-          EsbaQualifyingDatePage(index, Rentals),
-          taxYear,
-          NormalMode,
-          index,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe controllers.enhancedstructuresbuildingallowance.routes.EsbaQualifyingAmountController
-          .onPageLoad(taxYear, index, NormalMode, Rentals)
-      }
-
-      "must go from EsbaQualifyingAmountPage to EsbaClaimPage" in {
-        navigator.esbaNextPage(
-          EsbaQualifyingAmountPage(index, Rentals),
-          taxYear,
-          NormalMode,
-          index,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimController
-          .onPageLoad(taxYear, NormalMode, index, Rentals)
-      }
-
-      "must go from EsbaClaimPage to EsbaAddressPage" in {
-        navigator.esbaNextPage(
-          EsbaQualifyingAmountPage(index, Rentals),
-          taxYear,
-          NormalMode,
-          index,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe controllers.enhancedstructuresbuildingallowance.routes.EsbaClaimController
-          .onPageLoad(taxYear, NormalMode, index, Rentals)
       }
 
       "must go from RentsRatesAndInsuranceRRPage to RepairsAndMaintenanceCostsRRPage" in {
@@ -783,6 +1078,96 @@ class NavigatorSpec extends SpecBase {
           .onPageLoad(taxYear, NormalMode)
       }
 
+      "must go from RaRAllowancesCompletePage to SummaryPage" in {
+        navigator.nextPage(
+          RaRAllowancesCompletePage,
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          UserAnswers("test")
+        ) mustBe controllers.routes.SummaryController.show(taxYear)
+      }
+
+      "must go from ExpensesRRSectionCompletePage to SummaryPage" in {
+        navigator.nextPage(
+          ExpensesRRSectionCompletePage,
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          UserAnswers("test")
+        ) mustBe controllers.routes.SummaryController.show(taxYear)
+      }
+
+      "must go from AboutPropertyRentalsSectionFinishedPage to SummaryPage" in {
+        navigator.nextPage(
+          AboutPropertyRentalsSectionFinishedPage,
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          UserAnswers("test")
+        ) mustBe controllers.routes.SummaryController.show(taxYear)
+      }
+
+      "must go from OtherPropertyExpensesRRPage to ExpensesCheckYourAnswersRRPage" in {
+        navigator.nextPage(
+          OtherPropertyExpensesRRPage,
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          UserAnswers("test")
+        ) mustBe controllers.ukrentaroom.expenses.routes.ExpensesCheckYourAnswersRRController.onPageLoad(taxYear)
+      }
+
+      "must go from StructureBuildingAllowancePage to ClaimStructureBuildingAllowancePage" in {
+        navigator.nextPage(
+          StructureBuildingAllowancePage,
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          UserAnswers("test")
+        ) mustBe controllers.structuresbuildingallowance.routes.ClaimStructureBuildingAllowanceController.onPageLoad(taxYear, NormalMode, Rentals)
+      }
+
+      "must go from TotalIncomeAmountPage to ClaimExpensesOrReliefPage for Rent a Room" in {
+        navigator.nextPage(
+          TotalIncomeAmountPage(RentARoom),
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          UserAnswers("test")
+        ) mustBe controllers.ukrentaroom.routes.ClaimExpensesOrReliefController.onPageLoad(taxYear, NormalMode, RentARoom)
+      }
+
+      "must go from TotalIncomeAmountPage to ClaimExpensesOrReliefPage for Rentals and Rent a Room" in {
+        navigator.nextPage(
+          TotalIncomeAmountPage(RentalsRentARoom),
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          UserAnswers("test")
+        ) mustBe controllers.ukrentaroom.routes.ClaimExpensesOrReliefController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+      }
+
+      "must go from ClaimExpensesOrReliefPage to PropertyRentalIncomePage for Rentals and Rent a Room" in {
+        navigator.nextPage(
+          ClaimExpensesOrReliefPage(RentalsRentARoom),
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          UserAnswers("test")
+        ) mustBe controllers.propertyrentals.income.routes.PropertyRentalIncomeController.onPageLoad(taxYear, NormalMode, RentalsRentARoom)
+      }
+
+
+      "must go from RaRBalancingChargePage to RaRUnusedResidentialCostsPage" in {
+        navigator.nextPage(
+          RaRBalancingChargePage,
+          taxYear,
+          NormalMode,
+          UserAnswers("test"),
+          UserAnswers("test")
+        ) mustBe controllers.ukrentaroom.adjustments.routes.RaRUnusedResidentialCostsController.onPageLoad(taxYear, NormalMode)
+      }
     }
 
     "in Check mode" - {
@@ -842,6 +1227,7 @@ class NavigatorSpec extends SpecBase {
           UserAnswers("test")
         ) mustBe controllers.propertyrentals.routes.PropertyRentalsCheckYourAnswersController.onPageLoad(taxYear)
       }
+
       val scenarios = Table[PropertyType, String](
         ("property type", "type definition"),
         (Rentals, "rentals"),
@@ -1122,6 +1508,7 @@ class NavigatorSpec extends SpecBase {
                   .onPageLoad(taxYear)
             })
         }
+
         s"must go from ZeroEmissionCarAllowancePage to AllowancesCheckYourAnswersPage for $propertyTypeDefinition" in {
           navigator.nextPage(
             ZeroEmissionCarAllowancePage(propertyType),
@@ -1138,6 +1525,7 @@ class NavigatorSpec extends SpecBase {
                 .onPageLoad(taxYear)
           })
         }
+
         s"must go from ZeroEmissionGoodsVehicleAllowancePage to AllowancesCheckYourAnswersPage for $propertyTypeDefinition" in {
           navigator.nextPage(
             ZeroEmissionGoodsVehicleAllowancePage(propertyType),
@@ -1154,6 +1542,7 @@ class NavigatorSpec extends SpecBase {
                 .onPageLoad(taxYear)
           })
         }
+
         s"must go from ReplacementOfDomesticGoodsPage to AllowancesCheckYourAnswersPage for $propertyTypeDefinition" in {
           navigator.nextPage(
             ReplacementOfDomesticGoodsPage(propertyType),
@@ -1170,6 +1559,7 @@ class NavigatorSpec extends SpecBase {
                 .onPageLoad(taxYear)
           })
         }
+
         s"must go from OtherCapitalAllowancePage to AllowancesCheckYourAnswersPage for $propertyTypeDefinition" in {
           navigator.nextPage(
             OtherCapitalAllowancePage(propertyType),
@@ -1351,16 +1741,6 @@ class NavigatorSpec extends SpecBase {
           UserAnswers("test"),
           UserAnswers("test")
         ) mustBe controllers.ukrentaroom.expenses.routes.ExpensesCheckYourAnswersRRController.onPageLoad(taxYear)
-      }
-
-      "must go from RaRCapitalAllowancesForACarPage to RaRAllowancesCheckYourAnswers" in {
-        navigator.nextPage(
-          RaRCapitalAllowancesForACarPage,
-          taxYear,
-          CheckMode,
-          UserAnswers("test"),
-          UserAnswers("test")
-        ) mustBe controllers.ukrentaroom.allowances.routes.RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear)
       }
 
       "must go from RaRElectricChargePointAllowanceForAnEVPage to RaRAllowancesCheckYourAnswers" in {

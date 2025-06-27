@@ -98,8 +98,6 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
               case Some(ConsolidatedRRExpenses(false, None)) =>
                   RentsRatesAndInsuranceRRController.onPageLoad(taxYear, NormalMode)
             }
-    case ExpensesRRSectionCompletePage =>
-      taxYear => _ => _ => SummaryController.show(taxYear)
     case OtherPropertyExpensesRRPage =>
       taxYear => _ => _ => ExpensesCheckYourAnswersRRController.onPageLoad(taxYear)
     case CostOfServicesProvidedRRPage =>
@@ -326,13 +324,6 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
           userAnswers =>
             diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "adjustments", Rentals) {
               UnusedResidentialFinanceCostController.onPageLoad(taxYear, NormalMode, Rentals)
-            }
-    case UnusedResidentialFinanceCostPage(Rentals) =>
-      taxYear =>
-        _ =>
-          userAnswers =>
-            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "adjustments", Rentals) {
-              UnusedLossesBroughtForwardController.onPageLoad(taxYear, NormalMode, Rentals)
             }
     case ResidentialFinanceCostPage(RentalsRentARoom) =>
       taxYear =>
@@ -576,55 +567,8 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
       taxYear => _ => _ => AboutSectionCompleteController.onPageLoad(taxYear)
     case TotalIncomeAmountPage(RentARoom) =>
       taxYear => _ => _ => ClaimExpensesOrReliefController.onPageLoad(taxYear, NormalMode, RentARoom)
-    case AboutSectionCompletePage =>
-      taxYear =>
-        _ =>
-          _ =>
-            AboutSectionCompleteController.onPageLoad(taxYear)
 
         // Rent a Room
-    case RentsRatesAndInsuranceRRPage =>
-      taxYear =>
-        _ =>
-          userAnswers =>
-              RepairsAndMaintenanceCostsRRController.onPageLoad(taxYear, NormalMode)
-
-    case RaRCapitalAllowancesForACarPage =>
-      taxYear =>
-        _ =>
-          userAnswers =>
-            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "allowances", RentARoom) {
-              RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear)
-            }
-
-    case RaRElectricChargePointAllowanceForAnEVPage =>
-      taxYear =>
-        _ =>
-          userAnswers =>
-            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "allowances", RentARoom) {
-              RaRZeroEmissionCarAllowanceController.onPageLoad(taxYear, NormalMode)
-            }
-    case RaRZeroEmissionCarAllowancePage =>
-      taxYear =>
-        _ =>
-          userAnswers =>
-            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "allowances", RentARoom) {
-              RaRReplacementsOfDomesticGoodsController.onPageLoad(taxYear, NormalMode)
-            }
-    case RaRReplacementsOfDomesticGoodsPage =>
-      taxYear =>
-        _ =>
-          userAnswers =>
-            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "allowances", RentARoom) {
-              RaROtherCapitalAllowancesController.onPageLoad(taxYear, NormalMode)
-            }
-    case RaROtherCapitalAllowancesPage =>
-      taxYear =>
-        _ =>
-          userAnswers =>
-            diversionService.redirectCallToCYAIfFinished(taxYear, userAnswers, "allowances", RentARoom) {
-              RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear)
-            }
     case JointlyLetPage(RentARoom) =>
       taxYear =>
         userAnswers =>
@@ -971,12 +915,7 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
     case ClaimExpensesOrReliefPage(RentARoom) =>
       taxYear => _ => _ => controllers.ukrentaroom.routes.CheckYourAnswersController.onPageLoad(taxYear)
 
-    case RaRCapitalAllowancesForACarPage =>
-      taxYear => _ => _ => RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear)
-
     case RaRElectricChargePointAllowanceForAnEVPage =>
-      taxYear => _ => _ => RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear)
-    case RaRZeroEmissionCarAllowancePage =>
       taxYear => _ => _ => RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear)
     case RaRReplacementsOfDomesticGoodsPage =>
       taxYear => _ => _ => RaRAllowancesCheckYourAnswersController.onPageLoad(taxYear)
