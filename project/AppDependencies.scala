@@ -21,8 +21,8 @@ object AppDependencies {
     "org.scalatestplus"   %% "scalacheck-1-15"         % "3.2.11.0",
     "org.scalatestplus"   %% "mockito-3-4"             % "3.2.10.0",
     "org.mockito"         %% "mockito-scala"           % "2.0.0",
-    "org.scalamock"       %% "scalamock"               % "7.4.1",
-    "org.scalacheck"      %% "scalacheck"              % "1.18.1",
+    "org.scalamock"       %% "scalamock"               % "7.5.0",
+    "org.scalacheck"      %% "scalacheck"              % "1.19.0",
     "org.jsoup"            % "jsoup"                   % "1.21.2",
     "com.vladsch.flexmark" % "flexmark-all"            % "0.64.8"
   ).map(_ % Test)
