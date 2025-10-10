@@ -23,6 +23,7 @@ import models.{CapitalAllowancesForACar, RentalsRentARoom, UserAnswers}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.mockito.MockitoSugar.{times, verify}
+import org.scalatest.concurrent.Eventually
 import org.scalatest.prop.TableFor2
 import org.scalatestplus.mockito.MockitoSugar.mock
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
@@ -37,7 +38,7 @@ import views.html.rentalsandrentaroom.allowances.RentalsAndRentARoomAllowancesCh
 import java.time.LocalDate
 import scala.concurrent.Future
 
-class RentalsAndRentARoomAllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency {
+class RentalsAndRentARoomAllowancesCheckYourAnswersControllerSpec extends SpecBase with SummaryListFluency with Eventually {
   private val taxYear = 2024
   val scenarios: TableFor2[Boolean, String] = Table[Boolean, String](
     ("isAgent", "individualOrAgent"),
@@ -128,7 +129,9 @@ class RentalsAndRentARoomAllowancesCheckYourAnswersControllerSpec extends SpecBa
 
           whenReady(result) { _ =>
             verify(mockPropertySubmissionService, times(1)).saveUkPropertyJourneyAnswers(any(), any())(any(), any())
-            verify(mockAuditService, times(1)).sendAuditEvent(any())(any(), any())
+            eventually {
+              verify(mockAuditService, times(1)).sendAuditEvent(any())(any(), any())
+            }
           }
 
         }
