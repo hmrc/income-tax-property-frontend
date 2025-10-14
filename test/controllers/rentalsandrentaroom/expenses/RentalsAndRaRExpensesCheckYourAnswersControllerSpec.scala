@@ -121,7 +121,7 @@ class RentalsAndRaRExpensesCheckYourAnswersControllerSpec extends SpecBase with 
             any(),
             any()
           )
-      ) thenReturn Future(Right())
+      ) thenReturn Future(Right((): Unit))
 
       val application = applicationBuilder(userAnswers = userAnswers, isAgent = true)
         .overrides(

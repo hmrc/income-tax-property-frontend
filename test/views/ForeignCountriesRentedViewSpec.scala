@@ -31,7 +31,6 @@ import play.api.mvc.Request
 import play.twirl.api.Html
 import uk.gov.hmrc.govukfrontend.views.html.components.GovukTag
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.{SummaryList, SummaryListRow}
-import viewmodels.checkAnswers.foreign.CountriesRentedPropertySummary
 import viewmodels.checkAnswers.ukandforeignproperty.SelectCountrySummary
 import views.html.templates.Layout
 import views.html.ukandforeignproperty.ForeignCountriesRentedView

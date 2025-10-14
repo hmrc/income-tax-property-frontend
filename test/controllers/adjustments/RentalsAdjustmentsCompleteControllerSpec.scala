@@ -19,7 +19,7 @@ package controllers.adjustments
 import base.SpecBase
 import forms.adjustments.RentalsAdjustmentsCompleteFormProvider
 import models.JourneyPath.RentalAdjustments
-import models.{JourneyContext, NormalMode, User, UserAnswers}
+import models.{JourneyContext, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any

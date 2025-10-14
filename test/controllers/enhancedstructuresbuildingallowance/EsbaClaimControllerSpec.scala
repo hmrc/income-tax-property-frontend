@@ -20,7 +20,7 @@ import base.SpecBase
 import controllers.routes
 import forms.enhancedstructuresbuildingallowance.EsbaClaimAmountFormProvider
 import models.requests.DataRequest
-import models.{NormalMode, Rentals, User, UserAnswers}
+import models.{NormalMode, Rentals, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when

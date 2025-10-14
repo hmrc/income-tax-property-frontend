@@ -25,8 +25,6 @@ import utils.DateTimeFormats.localDateTimeFormatter
 import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 
-import java.time.format.DateTimeFormatter
-
 object EsbaQualifyingDateSummary {
 
   def row(taxYear: Int, index: Int, answers: UserAnswers, propertyType: PropertyType)(implicit
@@ -36,7 +34,7 @@ object EsbaQualifyingDateSummary {
 
       SummaryListRowViewModel(
         key = "esbaQualifyingDate.checkYourAnswersLabel",
-        value = ValueViewModel(answer.format(localDateTimeFormatter)),
+        value = ValueViewModel(answer.format(localDateTimeFormatter())),
         actions = Seq(
           ActionItemViewModel(
             "site.change",

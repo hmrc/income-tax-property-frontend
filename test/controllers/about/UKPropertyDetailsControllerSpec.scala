@@ -23,7 +23,6 @@ import controllers.exceptions.InternalErrorFailure
 import models.IncomeSourcePropertyType.UKProperty
 import models.authorisation.SessionValues
 import models.backend.PropertyDetails
-import models.errors
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when

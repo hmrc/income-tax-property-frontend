@@ -24,7 +24,6 @@ import controllers.exceptions.SaveJourneyAnswersFailed
 import controllers.foreign.routes.ForeignTaxSectionCompleteController
 import models._
 import models.requests.DataRequest
-import pages.foreign.Country
 import pages.foreign.income.{ForeignPropertyTax, ReadForeignPropertyTax}
 import play.api.Logging
 import play.api.i18n.{I18nSupport, MessagesApi}

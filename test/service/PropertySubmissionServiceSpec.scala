@@ -172,9 +172,9 @@ class PropertySubmissionServiceSpec extends SpecBase with FutureAwaits with Defa
 
       when(
         propertyPeriodicSubmissionConnector.saveUkPropertyJourneyAnswers[PropertyAbout](context, propertyAbout, "incomeSourceId")
-      ) thenReturn Future(Right())
+      ) thenReturn Future(Right((): Unit))
 
-      await(propertyPeriodSubmissionService.saveUkPropertyJourneyAnswers(context, propertyAbout)) mustBe Right()
+      await(propertyPeriodSubmissionService.saveUkPropertyJourneyAnswers(context, propertyAbout)) mustBe Right((): Unit)
     }
 
     "return error for failure save" in {

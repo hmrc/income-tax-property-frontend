@@ -34,7 +34,7 @@ object StructureBuildingQualifyingDateSummary {
 
       SummaryListRowViewModel(
         key = "structureBuildingQualifyingDate.checkYourAnswersLabel",
-        value = ValueViewModel(answer.format(localDateTimeFormatter)),
+        value = ValueViewModel(answer.format(localDateTimeFormatter())),
         actions = Seq(
           ActionItemViewModel(
             "site.change",

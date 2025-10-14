@@ -20,7 +20,7 @@ import base.SpecBase
 import controllers.routes
 import forms.foreign.adjustments.ForeignUnusedLossesPreviousYearsFormProvider
 import models.{NormalMode, UnusedLossesPreviousYears, UserAnswers}
-import navigation.{FakeForeignPropertyNavigator, FakeNavigator, ForeignPropertyNavigator, Navigator}
+import navigation.{FakeForeignPropertyNavigator, ForeignPropertyNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar

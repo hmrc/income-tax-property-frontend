@@ -19,7 +19,7 @@ package controllers.foreignincome.dividends
 import controllers.actions._
 import forms.foreignincome.dividends.ClaimForeignTaxCreditReliefFormProvider
 import models.Mode
-import navigation.{ForeignIncomeNavigator, Navigator}
+import navigation.ForeignIncomeNavigator
 import pages.foreignincome.dividends.ClaimForeignTaxCreditReliefPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}

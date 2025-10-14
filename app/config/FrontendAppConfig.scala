@@ -20,7 +20,8 @@ import com.google.inject.{ImplementedBy, Inject, Singleton}
 import play.api.Configuration
 import play.api.i18n.Lang
 import play.api.mvc.RequestHeader
-import uk.gov.hmrc.play.bootstrap.binders.SafeRedirectUrl
+
+import java.net.URLEncoder
 
 @ImplementedBy(classOf[FrontendAppConfigImpl])
 trait FrontendAppConfig {
@@ -59,7 +60,7 @@ class FrontendAppConfigImpl @Inject() (configuration: Configuration) extends Fro
   val contactFormServiceIdentifier = "income-tax-property-frontend"
 
   def feedbackUrl(implicit request: RequestHeader): String =
-    s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier&backUrl=${SafeRedirectUrl(host + request.uri).encodedUrl}"
+    s"$contactHost/contact/beta-feedback?service=$contactFormServiceIdentifier&backUrl=${URLEncoder.encode(host + request.uri, "UTF-8")}"
 
   val loginUrl: String = configuration.get[String]("urls.login")
   val loginContinueUrl: String = configuration.get[String]("urls.loginContinue")

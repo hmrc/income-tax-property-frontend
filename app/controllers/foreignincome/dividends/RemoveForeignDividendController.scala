@@ -28,7 +28,7 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
 import repositories.SessionRepository
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import uk.gov.hmrc.play.language.LanguageUtils
-import viewmodels.checkAnswers.foreignincome.dividends.{RemoveForeignDividendSummary, YourForeignDividendsByCountrySummary}
+import viewmodels.checkAnswers.foreignincome.dividends.RemoveForeignDividendSummary
 import views.html.foreignincome.dividends.RemoveForeignDividendView
 
 import javax.inject.Inject

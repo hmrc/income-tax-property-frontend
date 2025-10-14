@@ -15,8 +15,8 @@ GET         /there-is-a-problem                                                 
 
 GET         /error/supporting-agent-not-authorised                                                                       controllers.SupportingAgentAuthErrorController.show
 
-GET         /account/sign-out-survey                                                                                     controllers.auth.AuthController.signOut
-GET         /account/sign-out                                                                                            controllers.auth.AuthController.signOutNoSurvey
+GET         /account/sign-out-survey                                                                                     controllers.auth.AuthController.signOut()
+GET         /account/sign-out                                                                                            controllers.auth.AuthController.signOutNoSurvey()
 GET         /account/signed-out                                                                                          controllers.auth.SignedOutController.onPageLoad
 
 GET         /unauthorised                                                                                                controllers.UnauthorisedController.onPageLoad

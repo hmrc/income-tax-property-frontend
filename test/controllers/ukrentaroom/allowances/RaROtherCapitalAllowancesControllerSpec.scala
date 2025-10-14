@@ -20,7 +20,7 @@ import base.SpecBase
 import controllers.routes
 import forms.ukrentaroom.allowances.OtherCapitalAllowancesFormProvider
 import models.requests.DataRequest
-import models.{NormalMode, User, UserAnswers}
+import models.{NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when

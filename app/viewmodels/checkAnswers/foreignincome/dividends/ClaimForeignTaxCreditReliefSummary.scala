@@ -16,7 +16,6 @@
 
 package viewmodels.checkAnswers.foreignincome.dividends
 
-import controllers.routes
 import models.{CheckMode, UserAnswers}
 import pages.foreignincome.dividends.ClaimForeignTaxCreditReliefPage
 import play.api.i18n.Messages

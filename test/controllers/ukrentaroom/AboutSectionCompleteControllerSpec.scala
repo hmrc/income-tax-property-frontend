@@ -21,7 +21,7 @@ import connectors.JourneyAnswersConnector
 import controllers.ukrentaroom.routes.AboutSectionCompleteController
 import forms.ukrentaroom.AboutSectionCompleteFormProvider
 import models.JourneyPath.RentARoomAbout
-import models.{JourneyContext, NormalMode, User, UserAnswers}
+import models.{JourneyContext, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any

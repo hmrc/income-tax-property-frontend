@@ -21,14 +21,12 @@ import common.{EnrolmentIdentifiers, EnrolmentKeys}
 import config.MockAppConfig
 import connectors.MockAuthConnector
 import handlers.MockErrorHandler
-import models.authorisation
 import models.authorisation.{DelegatedAuthRules, SessionValues}
 import models.errors.MissingAgentClientDetails
 import models.session.UserSessionData
-import play.api.mvc.{Action, AnyContent, AnyContentAsEmpty, BodyParsers, MessagesControllerComponents, Request, Results}
+import play.api.mvc.{Action, AnyContent, BodyParsers, MessagesControllerComponents, Request, Results}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
-import service.SessionDataService
 import mocks.MockSessionDataService
 import testHelpers.UserHelper.aUser
 import uk.gov.hmrc.auth.core._

@@ -17,7 +17,7 @@
 package pages.ukandforeignproperty
 
 import models.UKAndForeignProperty
-import pages.PageConstants.{aboutPath, selectCountryPath}
+import pages.PageConstants.aboutPath
 import pages.QuestionPage
 import pages.foreign.Country
 import play.api.libs.json.JsPath

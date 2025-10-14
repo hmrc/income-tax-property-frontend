@@ -32,7 +32,6 @@ import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import service.{BusinessService, PropertySubmissionService}
 import uk.gov.hmrc.http.HeaderCarrier
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
-import viewmodels.checkAnswers.adjustments
 import viewmodels.checkAnswers.adjustments._
 import viewmodels.govuk.SummaryListFluency
 import views.html.rentalsandrentaroom.adjustments.RentalsAndRentARoomAdjustmentsCheckYourAnswersView

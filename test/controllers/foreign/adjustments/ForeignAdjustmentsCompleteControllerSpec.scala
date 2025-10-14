@@ -19,7 +19,7 @@ package controllers.foreign.adjustments
 import base.SpecBase
 import forms.foreign.adjustments.ForeignAdjustmentsCompleteFormProvider
 import models.JourneyPath.ForeignPropertyAdjustments
-import models.{JourneyContext, NormalMode, User, UserAnswers}
+import models.{JourneyContext, NormalMode, UserAnswers}
 import navigation.{FakeForeignPropertyNavigator, ForeignPropertyNavigator}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any

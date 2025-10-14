@@ -20,7 +20,6 @@ import forms.mappings.Mappings
 import models.ukAndForeign.UkAndForeignPropertyAmountReceivedForGrantOfLease
 import play.api.data.Forms._
 import play.api.data._
-import uk.gov.voa.play.form.ConditionalMappings.mandatoryIfTrue
 
 import javax.inject.Inject
 

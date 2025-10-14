@@ -18,22 +18,20 @@ package controllers.ukandforeignproperty
 
 import base.SpecBase
 import controllers.ukandforeignproperty.UkAndForeignPropertyHelper._
-import forms.ukandforeignproperty.{UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesFormProvider, UkAndForeignPropertyPremiumGrantLeaseTaxFormProvider}
+import forms.ukandforeignproperty.UkAndForeignPropertyPremiumGrantLeaseTaxFormProvider
 import models.ukAndForeign.UkAndForeignPropertyPremiumGrantLeaseTax
-import models.{NormalMode, UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses, UkAndForeignPropertyRentalTypeUk}
-import navigation.{FakeUKAndForeignPropertyNavigator, UkAndForeignPropertyNavigator}
+import models.NormalMode
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
-import pages.UkAndForeignPropertyRentalTypeUkPage
-import pages.ukandforeignproperty.{UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesPage, UkPremiumGrantLeaseTaxPage}
+import pages.ukandforeignproperty.UkPremiumGrantLeaseTaxPage
 import play.api.Application
 import play.api.inject.bind
 import play.api.mvc.Call
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import repositories.SessionRepository
-import views.html.ukandforeignproperty.{UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesView, UkAndForeignPropertyPremiumGrantLeaseTaxView}
+import views.html.ukandforeignproperty.UkAndForeignPropertyPremiumGrantLeaseTaxView
 
 import scala.concurrent.Future
 

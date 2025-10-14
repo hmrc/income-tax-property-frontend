@@ -20,7 +20,7 @@ import audit.AuditService
 import base.SpecBase
 import connectors.error.ApiError
 import models.backend.PropertyDetails
-import models.{DeductingTax, RentalsRentARoom, ReversePremiumsReceived, User, UserAnswers}
+import models.{DeductingTax, RentalsRentARoom, ReversePremiumsReceived, UserAnswers}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{doNothing, when}
 import org.mockito.MockitoSugar.{times, verify}

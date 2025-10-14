@@ -16,7 +16,6 @@
 
 package viewmodels.checkAnswers.ukandforeignproperty
 
-import controllers.routes
 import models.{BalancingCharge, CheckMode, UserAnswers}
 import pages.ukandforeignproperty.ForeignUkandForeignBalancingChargePage
 import play.api.i18n.Messages

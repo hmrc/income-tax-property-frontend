@@ -16,7 +16,6 @@
 
 package viewmodels.checkAnswers.ukandforeignproperty
 
-import controllers.routes
 import models.{CheckMode, UserAnswers}
 import pages.ukandforeignproperty.ForeignPremiumsForTheGrantOfALeasePage
 import play.api.i18n.Messages

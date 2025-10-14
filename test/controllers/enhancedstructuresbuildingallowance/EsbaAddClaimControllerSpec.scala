@@ -18,7 +18,7 @@ package controllers.enhancedstructuresbuildingallowance
 
 import base.SpecBase
 import models.requests.DataRequest
-import models.{Rentals, User}
+import models.Rentals
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import testHelpers.UserHelper.aUser

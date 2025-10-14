@@ -16,7 +16,6 @@
 
 package viewmodels.checkAnswers.foreign.adjustments
 
-import controllers.routes
 import models.{CheckMode, UserAnswers}
 import pages.foreign.adjustments.ForeignWhenYouReportedTheLossPage
 import play.api.i18n.Messages
