@@ -26,7 +26,6 @@ import viewmodels.checkAnswers.enhancedstructurebuildingallowance.EsbaAddClaimPa
 import views.html.enhancedstructuresbuildingallowance.EsbaAddClaimView
 
 import javax.inject.Inject
-import scala.concurrent.ExecutionContext
 
 class EsbaAddClaimController @Inject() (
   override val messagesApi: MessagesApi,
@@ -35,8 +34,8 @@ class EsbaAddClaimController @Inject() (
   getData: DataRetrievalAction,
   val controllerComponents: MessagesControllerComponents,
   view: EsbaAddClaimView
-)(implicit ec: ExecutionContext)
-    extends FrontendBaseController with I18nSupport {
+)
+  extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int, propertyType: PropertyType): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>

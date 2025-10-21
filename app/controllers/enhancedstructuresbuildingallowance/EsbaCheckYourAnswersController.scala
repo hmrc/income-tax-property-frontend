@@ -28,7 +28,6 @@ import viewmodels.govuk.summarylist._
 import views.html.enhancedstructuresbuildingallowance.EsbaCheckYourAnswersView
 
 import javax.inject.Inject
-import scala.concurrent.ExecutionContext
 
 class EsbaCheckYourAnswersController @Inject() (
   override val messagesApi: MessagesApi,
@@ -39,8 +38,8 @@ class EsbaCheckYourAnswersController @Inject() (
   val controllerComponents: MessagesControllerComponents,
   audit: AuditService,
   view: EsbaCheckYourAnswersView
-)(implicit ec: ExecutionContext)
-    extends FrontendBaseController with I18nSupport {
+)
+  extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int, index: Int, propertyType: PropertyType): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>

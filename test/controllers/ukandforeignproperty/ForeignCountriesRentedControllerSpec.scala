@@ -36,7 +36,6 @@ import play.api.test.Helpers._
 import repositories.SessionRepository
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryList
 import viewmodels.govuk.all.SummaryListViewModel
-import views.html.ukandforeignproperty.ForeignCountriesRentedView
 
 import scala.concurrent.Future
 
@@ -89,7 +88,6 @@ class ForeignCountriesRentedControllerSpec extends SpecBase with MockitoSugar {
         running(application) {
           val request = FakeRequest(GET, foreignCountriesRentedRoute)
           val controller = application.injector.instanceOf[ForeignCountriesRentedController]
-          val view = application.injector.instanceOf[ForeignCountriesRentedView]
 
           val result = controller.onPageLoad(taxYear, NormalMode)(request)
 

@@ -203,11 +203,6 @@ class PremiumsGrantLeaseControllerSpec extends SpecBase with MockitoSugar {
           .url
       }
 
-      val rentalsRentARoomUserAnswers = UserAnswers(userAnswersId)
-        .set(YearLeaseAmountPage(RentalsRentARoom), 10)
-        .success
-        .value
-
       val rentalsRentARoomApplication = applicationBuilder(userAnswers = Some(rentalsUserAnswers), true).build()
 
       running(rentalsRentARoomApplication) {

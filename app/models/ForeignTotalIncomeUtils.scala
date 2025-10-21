@@ -41,7 +41,7 @@ object ForeignTotalIncomeUtils {
       case Some(_) =>
         totalIncome(userAnswers, countryCode) < BigDecimal(totalIncomeCapped)
       case None =>
-        val userSelectedIncome = userAnswers.get(TotalIncomePage).getOrElse(0)
+        val userSelectedIncome = userAnswers.get(TotalIncomePage)//.getOrElse(0)
         userSelectedIncome == Under || userSelectedIncome == Between
     }
   }

@@ -101,10 +101,6 @@ class EsbaRemoveConfirmationControllerSpec extends SpecBase with MockitoSugar {
           FakeRequest(POST, esbaRemoveConfirmationRoute)
             .withFormUrlEncodedBody(("esbaRemoveConfirmation", ""))
 
-        val boundForm = form.bind(Map("esbaRemoveConfirmation" -> ""))
-
-        val view = application.injector.instanceOf[EsbaRemoveConfirmationView]
-
         val result = route(application, request).value
 
         status(result) mustEqual BAD_REQUEST

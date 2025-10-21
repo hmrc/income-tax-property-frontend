@@ -27,7 +27,6 @@ import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import service.PropertySubmissionService
 import viewmodels.govuk.SummaryListFluency
-import views.html.propertyrentals.CheckYourAnswersView
 
 import scala.concurrent.Future
 
@@ -50,9 +49,6 @@ class PropertyIncomeCheckYourAnswersControllerSpec extends SpecBase with Summary
         val request = FakeRequest(GET, routes.PropertyIncomeCheckYourAnswersController.onPageLoad(taxYear).url)
 
         val result = route(application, request).value
-
-        val view = application.injector.instanceOf[CheckYourAnswersView]
-        val list = SummaryListViewModel(Seq.empty)
 
         status(result) mustEqual OK
         //        contentAsString(result) mustEqual view(list, taxYear)(request, messages(application)).toString
