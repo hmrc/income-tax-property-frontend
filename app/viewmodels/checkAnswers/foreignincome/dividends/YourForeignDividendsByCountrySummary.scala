@@ -17,7 +17,6 @@
 package viewmodels.checkAnswers.foreignincome.dividends
 
 import models.{ForeignDividendByCountryTableRow, UserAnswers}
-import pages.foreign.Country
 import pages.foreignincome.{DividendIncomeSourceCountries, IncomeBeforeForeignTaxDeductedPage}
 import service.CountryNamesDataSource
 

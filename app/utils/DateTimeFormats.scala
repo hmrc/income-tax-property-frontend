@@ -22,13 +22,8 @@ import java.time.format.DateTimeFormatter
 
 object DateTimeFormats {
 
-  private val dateTimeFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy")
-
   def localDateTimeFormatter()(implicit messages: Messages):DateTimeFormatter = DateTimeFormatter.ofPattern("d MMMM yyyy", messages.lang.locale)
 
   def localDateTimeAbbreviatedMonthFormatter()(implicit messages: Messages):DateTimeFormatter = DateTimeFormatter.ofPattern("d MMM yyyy", messages.lang.locale)
-
-  val dateTimeHintFormat: DateTimeFormatter =
-    DateTimeFormatter.ofPattern("d M yyyy")
 
 }

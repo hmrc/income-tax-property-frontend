@@ -19,7 +19,7 @@ package controllers.session
 import base.SpecBase
 import models.backend.ForeignPropertyDetailsError
 import models.requests.OptionalDataRequest
-import models.{CapitalAllowancesForACar, FetchedData, FetchedForeignPropertyData, FetchedPropertyData, FetchedUKPropertyData, ForeignIncomeTax, ForeignPropertyTax, User}
+import models.{CapitalAllowancesForACar, FetchedData, FetchedForeignPropertyData, FetchedUKPropertyData, ForeignIncomeTax, ForeignPropertyTax, User}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{times, verify, when}
 import org.scalatest.matchers.must.Matchers

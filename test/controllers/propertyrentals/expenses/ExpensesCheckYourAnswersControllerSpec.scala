@@ -94,7 +94,7 @@ class ExpensesCheckYourAnswersControllerSpec extends SpecBase with MockitoSugar 
             any(),
             any()
           )
-      ) thenReturn Future(Right())
+      ) thenReturn Future(Right((): Unit))
 
       val application = applicationBuilder(userAnswers = userAnswers, isAgent = true)
         .overrides(bind[PropertySubmissionService].toInstance(propertySubmissionService))

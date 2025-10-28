@@ -19,7 +19,7 @@
 @import uk.gov.hmrc.hmrcfrontend.views.config.StandardAlphaBanner
 @import uk.gov.hmrc.hmrcfrontend.views.html.components._
 @import uk.gov.hmrc.hmrcfrontend.views.html.helpers._
-@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.hmrcstandardpage._
+@import uk.gov.hmrc.hmrcfrontend.views.viewmodels.hmrcstandardpage
 
 @this(
         appConfig: FrontendAppConfig,
@@ -62,17 +62,17 @@
 @hmrcReportTechnicalIssueHelper()
 }
 
-@hmrcStandardPage(HmrcStandardPageParams(
+@hmrcStandardPage(hmrcstandardpage.HmrcStandardPageParams(
     pageTitle = Some(pageTitle),
-    templateOverrides = TemplateOverrides(
+    templateOverrides = hmrcstandardpage.TemplateOverrides(
         additionalHeadBlock = Some(head),
         additionalScriptsBlock = Some(autocompleteJavascript())
     ),
-    serviceURLs = ServiceURLs(
+    serviceURLs = hmrcstandardpage.ServiceURLs(
         serviceUrl = Some(routes.IndexController.onPageLoad.url),
         signOutUrl = if(showSignOut) Some(controllers.auth.routes.AuthController.signOut.url) else None
     ),
-    banners = Banners(
+    banners = hmrcstandardpage.Banners(
         displayHmrcBanner = showHmrcBanner,
         phaseBanner = Some(alphaBanner(appConfig.feedbackUrl))
     ),

@@ -18,7 +18,7 @@ package controllers.foreignincome.dividends
 
 import base.SpecBase
 import forms.foreignincome.dividends.YourForeignDividendsByCountryFormProvider
-import models.{NormalMode, ForeignDividendByCountryTableRow}
+import models.ForeignDividendByCountryTableRow
 import navigation.{FakeForeignIncomeNavigator, ForeignIncomeNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when

@@ -24,7 +24,6 @@ import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.foreign.structurebuildingallowance.ForeignStructureBuildingAllowanceView
 
 import javax.inject.Inject
-import scala.concurrent.ExecutionContext
 
 class ForeignAddClaimStructureBuildingAllowanceController @Inject() (
   override val messagesApi: MessagesApi,
@@ -33,8 +32,8 @@ class ForeignAddClaimStructureBuildingAllowanceController @Inject() (
   requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
   view: ForeignStructureBuildingAllowanceView
-)(implicit ec: ExecutionContext)
-    extends FrontendBaseController with I18nSupport {
+)
+  extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int, countryCode: String): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>

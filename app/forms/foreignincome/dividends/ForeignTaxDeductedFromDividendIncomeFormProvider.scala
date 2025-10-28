@@ -17,7 +17,6 @@
 package forms.foreignincome.dividends
 
 import forms.mappings.Mappings
-import pages.ukandforeignproperty.UkAndForeignPropertySummaryPage.CountryName
 import play.api.data.Form
 
 import javax.inject.Inject

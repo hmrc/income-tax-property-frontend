@@ -58,7 +58,7 @@ class UkAndForeignCYADiversionService @Inject() {
     block: => T
   )(transform: Call => T): T =
     userAnswers.fold(
-      forOther(block)(mode, journeyName)
+      forOther(block)((mode, journeyName))
     )(ua => redirectToCYAIfFinished(taxYear, ua, journeyName, mode)(block)(transform))
 
   def redirectToCYAIfFinished[T](

@@ -98,7 +98,7 @@ class ForeignCountriesCheckYourAnswersControllerSpec extends SpecBase with Mocki
             any(),
             any()
           )
-      ) thenReturn Future(Right())
+      ) thenReturn Future(Right((): Unit))
 
       when(businessService.getForeignPropertyDetails(any(), any())(any())) thenReturn Future(
         Right(Some(foreignPropertyDetails))

@@ -16,7 +16,6 @@
 
 package viewmodels.checkAnswers.ukandforeignproperty
 
-import controllers.routes
 import models.ukAndForeign.DeductingTaxFromNonUkResidentLandlord
 import models.{CheckMode, UserAnswers}
 import pages.ukandforeignproperty.UkDeductingTaxFromNonUkResidentLandlordPage

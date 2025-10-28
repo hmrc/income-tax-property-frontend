@@ -19,7 +19,7 @@ package controllers.adjustments
 import base.SpecBase
 import controllers.routes
 import forms.adjustments.WhenYouReportedTheLossFormProvider
-import models.{NormalMode, RentARoom, Rentals, RentalsRentARoom, UnusedLossesBroughtForward, UserAnswers, WhenYouReportedTheLoss}
+import models.{NormalMode, Rentals, RentalsRentARoom, UnusedLossesBroughtForward, UserAnswers, WhenYouReportedTheLoss}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when

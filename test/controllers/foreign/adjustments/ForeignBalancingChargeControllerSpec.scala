@@ -32,7 +32,6 @@ import play.api.test.Helpers._
 import repositories.SessionRepository
 import views.html.foreign.adjustments.ForeignBalancingChargeView
 
-import java.time.LocalDate
 import scala.concurrent.Future
 
 class ForeignBalancingChargeControllerSpec extends SpecBase with MockitoSugar {

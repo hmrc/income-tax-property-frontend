@@ -21,7 +21,7 @@ import pages.foreign.ForeignSummaryPage
 import pages.rentalsandrentaroom.RentalsRaRAboutCompletePage
 import pages.ukandforeignproperty.UkAndForeignPropertySummaryPage._
 import pages.{SummaryPage, isSelected}
-import service.{BusinessService, CYADiversionService, ForeignCYADiversionService, UkAndForeignCYADiversionService}
+import service.{CYADiversionService, ForeignCYADiversionService, UkAndForeignCYADiversionService}
 import viewmodels.summary.{TaskListItem, TaskListTag}
 
 case class UkAndForeignPropertySummaryPage(

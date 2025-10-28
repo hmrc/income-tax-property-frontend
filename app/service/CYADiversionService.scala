@@ -231,7 +231,7 @@ class CYADiversionService @Inject() {
     block: => T
   )(transform: Call => T): T =
     userAnswers.fold(
-      forOther(block)(mode, journeyName, propertyType)
+      forOther(block)((mode, journeyName, propertyType))
     )(ua => redirectToCYAIfFinished(taxYear, ua, journeyName, propertyType, mode)(block)(transform))
 
   def redirectToCYAIfFinished[T](

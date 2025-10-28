@@ -17,8 +17,6 @@
 package controllers.adjustments
 
 import base.SpecBase
-import models.{Rentals, UnusedLossesBroughtForward, UserAnswers}
-import pages.adjustments.UnusedLossesBroughtForwardPage
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import viewmodels.govuk.SummaryListFluency

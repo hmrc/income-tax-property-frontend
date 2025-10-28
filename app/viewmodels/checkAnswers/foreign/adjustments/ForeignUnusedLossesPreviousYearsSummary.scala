@@ -16,7 +16,6 @@
 
 package viewmodels.checkAnswers.foreign.adjustments
 
-import controllers.routes
 import models.{CheckMode, UnusedLossesPreviousYears, UserAnswers}
 import pages.foreign.adjustments.ForeignUnusedLossesPreviousYearsPage
 import play.api.i18n.Messages

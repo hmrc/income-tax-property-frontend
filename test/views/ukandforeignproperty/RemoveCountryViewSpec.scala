@@ -16,8 +16,8 @@
 
 package views.ukandforeignproperty
 
-import forms.ukandforeignproperty.{RemoveCountryFormProvider, TotalPropertyIncomeFormProvider}
-import models.{Index, NormalMode, TotalPropertyIncome}
+import forms.ukandforeignproperty.RemoveCountryFormProvider
+import models.{Index, NormalMode}
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import pages.foreign.Country

@@ -130,7 +130,7 @@ class UkAndForeignPropertyCheckYourAnswersControllerSpec extends SpecBase with S
             any(),
             any()
           )
-      ) thenReturn Future(Right())
+      ) thenReturn Future(Right((): Unit))
 
       val application = applicationBuilder(userAnswers = Some(updated), isAgent = false)
         .overrides(inject.bind[PropertySubmissionService].toInstance(propertySubmissionService))
@@ -161,7 +161,7 @@ class UkAndForeignPropertyCheckYourAnswersControllerSpec extends SpecBase with S
             any(),
             any()
           )
-      ) thenReturn Future(Right())
+      ) thenReturn Future(Right((): Unit))
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false)
         .overrides(inject.bind[PropertySubmissionService].toInstance(propertySubmissionService))

@@ -23,7 +23,7 @@ import controllers.exceptions.SaveJourneyAnswersFailed
 import forms.foreignincome.dividends.YourForeignDividendsByCountryFormProvider
 import models.AccountingMethod.{Cash, Traditional}
 import models.requests.DataRequest
-import models.{AuditPropertyType, ForeignIncomeDividends, JourneyContext, JourneyName, JourneyPath, Mode, NormalMode, ReadForeignDividendsByCountry, SectionName}
+import models.{AuditPropertyType, ForeignIncomeDividends, JourneyContext, JourneyName, JourneyPath, NormalMode, ReadForeignDividendsByCountry, SectionName}
 import navigation.ForeignIncomeNavigator
 import pages.foreign.Country
 import pages.foreignincome.DividendIncomeSourceCountries

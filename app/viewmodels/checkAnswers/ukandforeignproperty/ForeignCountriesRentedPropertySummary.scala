@@ -17,7 +17,7 @@
 package viewmodels.checkAnswers.ukandforeignproperty
 
 import controllers.ukandforeignproperty.routes
-import models.{CheckMode, Index, UserAnswers}
+import models.{CheckMode, UserAnswers}
 import pages.foreign.Country
 import pages.ukandforeignproperty.SelectCountryPage
 import play.api.i18n.Messages

@@ -17,7 +17,7 @@
 package pages.foreign.allowances
 
 import models.ForeignProperty
-import pages.PageConstants.{allowancesPath, incomePath}
+import pages.PageConstants.allowancesPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 

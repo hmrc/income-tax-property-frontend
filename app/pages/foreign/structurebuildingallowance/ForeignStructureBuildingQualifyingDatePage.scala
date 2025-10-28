@@ -17,7 +17,7 @@
 package pages.foreign.structurebuildingallowance
 
 import models.ForeignProperty
-import pages.PageConstants.{foreignSbaFormGroup, sbaPath, structureBuildingFormGroup}
+import pages.PageConstants.{foreignSbaFormGroup, sbaPath}
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 

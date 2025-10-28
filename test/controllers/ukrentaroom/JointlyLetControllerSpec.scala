@@ -20,7 +20,7 @@ import base.SpecBase
 import controllers.routes
 import forms.ukrentaroom.JointlyLetFormProvider
 import models.requests.DataRequest
-import models.{NormalMode, RentARoom, RentalsRentARoom, User, UserAnswers}
+import models.{NormalMode, RentARoom, RentalsRentARoom, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when

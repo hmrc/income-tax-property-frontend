@@ -22,7 +22,7 @@ import controllers.ukandforeignproperty.routes.LeaseGrantAmountReceivedControlle
 import forms.ukandforeignproperty.LeaseGrantAmountReceivedFormProvider
 import views.html.ukandforeignproperty.LeaseGrantAmountReceivedView
 import models.{NormalMode, UserAnswers}
-import navigation.{FakeNavigator, FakeUKAndForeignPropertyNavigator, Navigator, UkAndForeignPropertyNavigator}
+import navigation.{FakeUKAndForeignPropertyNavigator, UkAndForeignPropertyNavigator}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar

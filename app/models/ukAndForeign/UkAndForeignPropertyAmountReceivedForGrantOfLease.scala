@@ -16,7 +16,7 @@
 
 package models.ukAndForeign
 
-import play.api.libs.json.{Format, Json, OFormat}
+import play.api.libs.json.{Json, OFormat}
 
 final case class UkAndForeignPropertyAmountReceivedForGrantOfLease(amountReceivedForGrantOfLease: BigDecimal)
 

@@ -17,9 +17,7 @@
 package controllers.foreign.structurebuildingallowance
 
 import base.SpecBase
-import controllers.foreign.structuresbuildingallowance.routes
 import models.requests.DataRequest
-import models.{Rentals, User}
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import pages.foreign.structurebuildingallowance.ForeignStructureBuildingAllowancePage

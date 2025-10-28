@@ -18,7 +18,7 @@ package service
 
 import jakarta.inject.Inject
 import models.requests.DataRequest
-import models.{CheckMode, Index, Mode, NormalMode, UserAnswers}
+import models.{Index, UserAnswers}
 import pages.foreign.Country
 import pages.ukandforeignproperty.SelectCountryPage
 import repositories.SessionRepository

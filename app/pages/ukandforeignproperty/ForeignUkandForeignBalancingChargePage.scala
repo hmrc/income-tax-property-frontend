@@ -17,7 +17,7 @@
 package pages.ukandforeignproperty
 
 import models.{BalancingCharge, UKAndForeignProperty}
-import pages.PageConstants.{aboutPath, adjustmentsPath}
+import pages.PageConstants.aboutPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath
 

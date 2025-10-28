@@ -20,7 +20,7 @@ import base.SpecBase
 import connectors.JourneyAnswersConnector
 import forms.rentalsandrentaroom.RentalsAndRaRAboutCompleteFormProvider
 import models.JourneyPath.PropertyRentalsAndRentARoomAbout
-import models.{JourneyContext, NormalMode, User, UserAnswers}
+import models.{JourneyContext, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any

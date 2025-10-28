@@ -20,7 +20,7 @@ import base.SpecBase
 import controllers.ukandforeignproperty.routes
 import models.JourneyName.{reads, writes}
 import models._
-import models.ukAndForeign.{UKPremiumsGrantLease, UkAndForeignPropertyAmountReceivedForGrantOfLease, UkAndForeignPropertyPremiumGrantLeaseTax}
+import models.ukAndForeign.{UkAndForeignPropertyAmountReceivedForGrantOfLease, UkAndForeignPropertyPremiumGrantLeaseTax}
 import pages.adjustments.ResidentialFinanceCostPage
 import pages.foreign.Country
 import pages.propertyrentals.income.PropertyRentalIncomePage
@@ -1036,15 +1036,6 @@ class UkAndForeignPropertyNavigatorSpec extends SpecBase {
       "Premiums for the grant of a lease" - {
         "in Normal mode" - {
           "must go to the 'Other income from UK property' page" in {
-            val ua = UserAnswers("id")
-              .set(
-                UKPremiumsGrantLeasePage,
-                UKPremiumsGrantLease(
-                  premiumsGrantLeaseReceived = true,
-                  premiumsGrantLease = Some(BigDecimal(123.45))
-                )
-              )
-              .get
 
             navigator.nextPage(
               UKPremiumsGrantLeasePage,
@@ -1058,15 +1049,6 @@ class UkAndForeignPropertyNavigatorSpec extends SpecBase {
         }
         "in Check mode" - {
           "must go to the 'CYA' page" in {
-            val ua = UserAnswers("id")
-              .set(
-                UKPremiumsGrantLeasePage,
-                UKPremiumsGrantLease(
-                  premiumsGrantLeaseReceived = true,
-                  premiumsGrantLease = Some(BigDecimal(123.45))
-                )
-              )
-              .get
 
             navigator.nextPage(
               UKPremiumsGrantLeasePage,

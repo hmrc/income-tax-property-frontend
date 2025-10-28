@@ -18,12 +18,13 @@ package controllers.rentalsandrentaroom
 
 import base.SpecBase
 import models.requests.DataRequest
-import models.{NormalMode, RentalsRentARoom, User}
+import models.{NormalMode, RentalsRentARoom}
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import testHelpers.UserHelper.aUser
 import views.html.rentalsandrentaroom.RentalsRentARoomStartView
+
 class RentalsRentARoomStartControllerSpec extends SpecBase {
   private val taxYear = 2024
   "RentalsAndRentARoomStart Controller" - {

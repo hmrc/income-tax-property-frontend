@@ -19,7 +19,7 @@ package controllers.ukrentaroom.allowances
 import base.SpecBase
 import forms.ukrentaroom.allowances.RaRAllowancesCompleteFormProvider
 import models.JourneyPath.RentARoomAllowances
-import models.{JourneyContext, NormalMode, User, UserAnswers}
+import models.{JourneyContext, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any

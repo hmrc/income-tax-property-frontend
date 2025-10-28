@@ -24,7 +24,7 @@ import controllers.foreign.adjustments.routes.ForeignAdjustmentsCompleteControll
 import models.AuditPropertyType.ForeignProperty
 import models.requests.DataRequest
 import models.{AccountingMethod, ForeignPropertyAdjustments, JourneyContext, JourneyName, JourneyPath, ReadForeignPropertyAdjustments, SectionName}
-import pages.foreign.{ClaimPropertyIncomeAllowanceOrExpensesPage, Country}
+import pages.foreign.ClaimPropertyIncomeAllowanceOrExpensesPage
 import pages.foreign.adjustments.ForeignUnusedLossesPreviousYearsPage
 import pages.isUkAndForeignAboutJourneyComplete
 import play.api.i18n.{I18nSupport, MessagesApi}

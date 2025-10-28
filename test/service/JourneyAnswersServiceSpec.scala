@@ -20,7 +20,7 @@ import connectors.JourneyAnswersConnector
 import connectors.error.{ApiError, SingleErrorBody}
 import models.JourneyPath.RentARoomExpenses
 import models.backend.{HttpParserError, PropertyDetails}
-import models.{JourneyContext, User}
+import models.JourneyContext
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
 import org.scalatest.matchers.should.Matchers

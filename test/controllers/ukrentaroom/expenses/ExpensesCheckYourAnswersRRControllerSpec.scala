@@ -127,7 +127,7 @@ class ExpensesCheckYourAnswersRRControllerSpec extends SpecBase with SummaryList
             any(),
             any()
           )
-      ) thenReturn Future(Right())
+      ) thenReturn Future(Right((): Unit))
 
       running(application) {
         val request = FakeRequest(POST, routes.ExpensesCheckYourAnswersRRController.onSubmit(taxYear).url)

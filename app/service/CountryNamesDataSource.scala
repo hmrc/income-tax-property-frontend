@@ -52,7 +52,7 @@ object CountryNamesDataSource {
   lazy val loadCountriesEn: Seq[Country] =
     CSVReader
       .open(Source.fromInputStream(getClass.getResourceAsStream("/iso-countries.csv"), "UTF-8"))
-      .allWithOrderedHeaders
+      .allWithOrderedHeaders()
       ._2
       .sortBy(x => x("short_name"))
       .map(y => Country(name = y("short_name"), code = y("alpha_3_code")))
@@ -60,7 +60,7 @@ object CountryNamesDataSource {
   lazy val loadCountriesCy: Seq[Country] =
     CSVReader
       .open(Source.fromInputStream(getClass.getResourceAsStream("/iso-countries-cy.csv"), "UTF-8"))
-      .allWithOrderedHeaders
+      .allWithOrderedHeaders()
       ._2
       .sortBy(x => x("short_name"))
       .map(y => Country(name = y("short_name"), code = y("alpha_3_code")))

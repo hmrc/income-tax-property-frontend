@@ -90,7 +90,7 @@ class CheckYourAnswersControllerSpec extends SpecBase with MockitoSugar with Sum
             any(),
             any()
           )
-      ) thenReturn Future(Right())
+      ) thenReturn Future(Right((): Unit))
 
       val application = applicationBuilder(userAnswers = Some(ans), isAgent = false)
         .overrides(bind[PropertySubmissionService].toInstance(propertySubmissionService))

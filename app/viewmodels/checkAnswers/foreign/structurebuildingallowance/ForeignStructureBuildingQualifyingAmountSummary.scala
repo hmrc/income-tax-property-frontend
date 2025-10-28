@@ -23,7 +23,6 @@ import play.api.i18n.Messages
 import uk.gov.hmrc.govukfrontend.views.viewmodels.summarylist.SummaryListRow
 import viewmodels.checkAnswers.FormatUtils.{bigDecimalCurrency, keyCssClass}
 import viewmodels.govuk.summarylist._
-import viewmodels.checkAnswers.FormatUtils.keyCssClass
 import viewmodels.implicits._
 
 object ForeignStructureBuildingQualifyingAmountSummary {

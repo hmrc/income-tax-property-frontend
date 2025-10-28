@@ -24,7 +24,7 @@ import pages.propertyrentals.expenses.RentsRatesAndInsurancePage
 import play.api.http.Status.OK
 import play.api.mvc.Call
 import play.api.test.FakeRequest
-import play.api.test.Helpers.{GET, contentAsString, defaultAwaitTimeout, route, running, status}
+import play.api.test.Helpers.{GET, contentAsString, route, running, status}
 import repositories.SessionRepository
 import views.html.propertyrentals.expenses.RentsRatesAndInsuranceView
 import navigation.{FakeNavigator, Navigator}

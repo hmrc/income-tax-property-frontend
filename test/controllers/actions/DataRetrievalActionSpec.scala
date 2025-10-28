@@ -18,7 +18,7 @@ package controllers.actions
 
 import base.SpecBase
 import models.requests.{IdentifierRequest, OptionalDataRequest}
-import models.{User, UserAnswers}
+import models.UserAnswers
 import org.mockito.Mockito._
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.test.FakeRequest

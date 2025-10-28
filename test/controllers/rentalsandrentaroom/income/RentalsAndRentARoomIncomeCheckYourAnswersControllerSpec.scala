@@ -20,7 +20,7 @@ import audit.AuditService
 import base.SpecBase
 import connectors.error.ApiError
 import models.backend.PropertyDetails
-import models.{DeductingTax, RentalsRentARoom, ReversePremiumsReceived, User, UserAnswers}
+import models.{DeductingTax, RentalsRentARoom, ReversePremiumsReceived, UserAnswers}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{doNothing, when}
 import org.mockito.MockitoSugar.{times, verify}
@@ -31,7 +31,6 @@ import play.api.inject.bind
 import play.api.test.FakeRequest
 import play.api.test.Helpers._
 import service.{BusinessService, PropertySubmissionService}
-import testHelpers.UserHelper.aUser
 import viewmodels.govuk.SummaryListFluency
 import views.html.rentalsandrentaroom.income.RentalsAndRentARoomIncomeCheckYourAnswersView
 
@@ -48,12 +47,6 @@ class RentalsAndRentARoomIncomeCheckYourAnswersControllerSpec
     (true, "agent")
   )
   forAll(scenarios) { (isAgent: Boolean, agentOrIndividual: String) =>
-    val user = aUser.copy(
-      "",
-      "",
-      "",
-      agentRef = Option.when(isAgent)("agentReferenceNumber")
-    )
     s"RentalsAndRentARoomIncomeCheckYourAnswers Controller for $agentOrIndividual" - {
 
       "must return OK and the correct view for a GET" in {

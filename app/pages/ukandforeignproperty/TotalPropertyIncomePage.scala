@@ -16,7 +16,7 @@
 
 package pages.ukandforeignproperty
 
-import models.{TotalIncome, TotalPropertyIncome, UKAndForeignProperty}
+import models.{TotalPropertyIncome, UKAndForeignProperty}
 import pages.PageConstants.aboutPath
 import pages.QuestionPage
 import play.api.libs.json.JsPath

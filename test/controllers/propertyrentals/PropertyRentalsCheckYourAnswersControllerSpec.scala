@@ -90,7 +90,7 @@ class PropertyRentalsCheckYourAnswersControllerSpec extends SpecBase with Mockit
             any(),
             any()
           )
-      ) thenReturn Future(Right())
+      ) thenReturn Future(Right((): Unit))
 
       val application = applicationBuilder(userAnswers = Some(userAnswers), isAgent = false)
         .overrides(inject.bind[PropertySubmissionService].toInstance(propertySubmissionService))

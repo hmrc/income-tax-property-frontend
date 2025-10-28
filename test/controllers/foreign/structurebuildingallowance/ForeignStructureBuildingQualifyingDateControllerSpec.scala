@@ -17,7 +17,6 @@
 package controllers.foreign.structurebuildingallowance
 
 import base.SpecBase
-import controllers.structuresbuildingallowance.routes
 import forms.foreign.structurebuildingallowance.ForeignStructureBuildingQualifyingDateFormProvider
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeForeignPropertyNavigator, ForeignPropertyNavigator}

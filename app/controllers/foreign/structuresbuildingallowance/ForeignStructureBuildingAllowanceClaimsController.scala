@@ -23,7 +23,6 @@ import forms.ForeignStructureBuildingAllowanceClaimsFormProvider
 import models.backend.PropertyDetails
 import models.requests.DataRequest
 import models.{AccountingMethod, AuditPropertyType, JourneyContext, JourneyName, JourneyPath, NormalMode, SectionName, UserAnswers}
-import pages.foreign.Country
 import pages.foreign.structurebuildingallowance._
 import play.api.data.Form
 import play.api.i18n.Lang.logger

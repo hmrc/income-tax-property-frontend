@@ -17,7 +17,6 @@
 package forms.ukandforeignproperty
 
 import forms.behaviours.BooleanFieldBehaviours
-import models.ForeignPremiumsGrantLease
 import models.ukAndForeign.UkAndForeignPropertyForeignPremiumsGrantLease
 import org.scalatest.OptionValues
 import org.scalatest.prop.TableFor1

@@ -30,6 +30,6 @@ case class PropertyDetailsPage(
 
   def cashOrAccrualsMessageKey: String = if (accrualsOrCash) "businessDetails.accruals" else "businessDetails.cash"
 
-  def tradingStartDateFormatted: String = tradingStartDate.format(localDateTimeAbbreviatedMonthFormatter)
+  def tradingStartDateFormatted: String = tradingStartDate.format(localDateTimeAbbreviatedMonthFormatter())
 
 }

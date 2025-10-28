@@ -17,7 +17,7 @@
 package controllers.ukandforeignproperty
 import base.SpecBase
 import forms.ukandforeignproperty.UkAndForeignPropertyClaimExpensesOrReliefFormProvider
-import models.{NormalMode, UkAndForeignPropertyClaimExpensesOrRelief, UserAnswers}
+import models.{NormalMode, UkAndForeignPropertyClaimExpensesOrRelief}
 import org.scalatestplus.mockito.MockitoSugar
 import pages.ukandforeignproperty.UkAndForeignPropertyClaimExpensesOrReliefPage
 import play.api.Application

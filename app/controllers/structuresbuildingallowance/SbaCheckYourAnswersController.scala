@@ -26,7 +26,6 @@ import viewmodels.govuk.summarylist._
 import views.html.structurebuildingallowance.SbaCheckYourAnswersView
 
 import javax.inject.Inject
-import scala.concurrent.ExecutionContext
 
 class SbaCheckYourAnswersController @Inject() (
   override val messagesApi: MessagesApi,
@@ -35,8 +34,8 @@ class SbaCheckYourAnswersController @Inject() (
   requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
   view: SbaCheckYourAnswersView
-)(implicit ec: ExecutionContext)
-    extends FrontendBaseController with I18nSupport {
+)
+  extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int, index: Int, propertyType: PropertyType): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>

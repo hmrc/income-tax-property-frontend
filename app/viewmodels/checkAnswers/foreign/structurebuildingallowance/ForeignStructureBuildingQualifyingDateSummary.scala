@@ -26,8 +26,6 @@ import viewmodels.govuk.summarylist._
 import viewmodels.implicits._
 import utils.DateTimeFormats.localDateTimeFormatter
 
-import java.time.format.DateTimeFormatter
-
 object ForeignStructureBuildingQualifyingDateSummary {
 
   def row(taxYear: Int, countryCode: String, index: Int, answers: UserAnswers)(implicit
@@ -37,7 +35,7 @@ object ForeignStructureBuildingQualifyingDateSummary {
 
       SummaryListRowViewModel(
         key = KeyViewModel("foreignStructureBuildingQualifyingDate.checkYourAnswersLabel").withCssClass(keyCssClass),
-        value = ValueViewModel(answer.format(localDateTimeFormatter)),
+        value = ValueViewModel(answer.format(localDateTimeFormatter())),
         actions = Seq(
           ActionItemViewModel(
             "site.change",

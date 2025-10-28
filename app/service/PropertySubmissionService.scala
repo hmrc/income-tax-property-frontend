@@ -20,7 +20,7 @@ import audit.RentalsIncome
 import connectors.PropertySubmissionConnector
 import connectors.error.ApiError
 import models.backend.{ForeignPropertyDetailsError, HttpParserError, ServiceError, UKPropertyDetailsError}
-import models.{DeleteJourneyAnswers, FetchedData, FetchedPropertyData, JourneyContext, User}
+import models.{DeleteJourneyAnswers, FetchedData, JourneyContext, User}
 import play.api.Logging
 import play.api.libs.json.Writes
 import uk.gov.hmrc.http.HeaderCarrier
@@ -98,7 +98,7 @@ class PropertySubmissionService @Inject() (
   ): Future[Either[ServiceError, Unit]] =
     propertyConnector.saveUkPropertyJourneyAnswers(ctx, body, incomeSourceId).map {
       case Left(error) => Left(HttpParserError(error.status))
-      case Right(_)    => Right()
+      case Right(_)    => Right((): Unit)
     }
 
   def saveUkPropertyJourneyAnswers[A: Writes](

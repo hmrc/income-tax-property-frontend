@@ -26,7 +26,6 @@ import viewmodels.checkAnswers.structurebuildingallowance.StructureBuildingAllow
 import views.html.structurebuildingallowance.StructureBuildingAllowanceView
 
 import javax.inject.Inject
-import scala.concurrent.ExecutionContext
 
 class AddClaimStructureBuildingAllowanceController @Inject() (
   override val messagesApi: MessagesApi,
@@ -35,8 +34,8 @@ class AddClaimStructureBuildingAllowanceController @Inject() (
   requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
   view: StructureBuildingAllowanceView
-)(implicit ec: ExecutionContext)
-    extends FrontendBaseController with I18nSupport {
+)
+  extends FrontendBaseController with I18nSupport {
 
   def onPageLoad(taxYear: Int, propertyType: PropertyType): Action[AnyContent] =
     (identify andThen getData andThen requireData) { implicit request =>
