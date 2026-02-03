@@ -6,7 +6,7 @@ import uk.gov.hmrc.versioning.SbtGitVersioning.autoImport.majorVersion
 lazy val appName: String = "income-tax-property-frontend"
 
 ThisBuild / majorVersion := 0
-ThisBuild / scalaVersion := "2.13.18"
+ThisBuild / scalaVersion := "2.13.16"
 
 lazy val root = Project(appName, file("."))
   .enablePlugins(PlayScala, SbtDistributablesPlugin)
