@@ -2,7 +2,7 @@ import sbt.*
 
 object AppDependencies {
 
-  private val bootstrapVersion = "10.6.0"
+  private val bootstrapVersion = "10.7.0"
   private val hmrcMongoVersion = "2.12.0"
 
   val compile: Seq[ModuleID] = Seq(
@@ -20,7 +20,7 @@ object AppDependencies {
     "org.scalatest"       %% "scalatest"               % "3.2.19",
     "org.scalatestplus"   %% "scalacheck-1-15"         % "3.2.11.0",
     "org.scalatestplus"   %% "mockito-3-4"             % "3.2.10.0",
-    "org.mockito"         %% "mockito-scala"           % "2.0.0",
+    "org.mockito"         %% "mockito-scala"           % "2.1.0",
     "org.scalamock"       %% "scalamock"               % "7.5.5",
     "org.scalacheck"      %% "scalacheck"              % "1.19.0",
     "org.jsoup"            % "jsoup"                   % "1.22.1",
