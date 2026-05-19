@@ -130,7 +130,7 @@ trait Constraints {
   def checkIfAddressAlreadyEntered[T, U](allAddresses: List[U], errorKey: String)
                                         (implicit addressableChecked: Addressable[T], addressableInList: Addressable[U]): Constraint[T] =
     Constraint[T] {
-      address: T => {
+      (address: T) => {
         if (allAddresses.exists(a => Addressable.checkAddresses[T, U](address, a))) {
           Invalid(errorKey)
         } else {
@@ -142,7 +142,7 @@ trait Constraints {
   def checkIfForeignAddressAlreadyEntered[T, U](allAddresses: List[U], errorKey: String)
                                         (implicit addressableChecked: ForeignAddressable[T], addressableInList: ForeignAddressable[U]): Constraint[T] =
     Constraint[T] {
-      address: T => {
+      (address: T) => {
         if (allAddresses.exists(a => ForeignAddressable.checkForeignAddresses[T, U](address, a))) {
           Invalid(errorKey)
         } else {

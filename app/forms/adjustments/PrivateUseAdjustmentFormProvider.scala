@@ -34,6 +34,6 @@ class PrivateUseAdjustmentFormProvider @Inject() extends Mappings {
             s"privateUseAdjustmentAmount.amount.error.nonNumeric.$individualOrAgent")
             .verifying(inRange(BigDecimal(0), BigDecimal(100000000),
               "privateUseAdjustmentAmount.amount.error.outOfRange"))
-    )(PrivateUseAdjustment.apply)(PrivateUseAdjustment.unapply))
+    )(PrivateUseAdjustment.apply)(m => Some(m.amount)))
   }
 }

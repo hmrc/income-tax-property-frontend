@@ -18,17 +18,18 @@ package utils
 
 import common.{DelegatedAuthRules, EnrolmentIdentifiers, EnrolmentKeys}
 import uk.gov.hmrc.auth.core.authorise.Predicate
-import uk.gov.hmrc.auth.core.{Enrolment, EnrolmentIdentifier, Enrolments, Enrolment => HMRCEnrolment}
+import uk.gov.hmrc.auth.core.{EnrolmentIdentifier, Enrolments}
+import uk.gov.hmrc.auth.core.{Enrolment => HMRCEnrolment}
 
 object EnrolmentHelper {
 
   def agentAuthPredicate(mtdId: String): Predicate =
-    Enrolment(EnrolmentKeys.Individual)
+    HMRCEnrolment(EnrolmentKeys.Individual)
       .withIdentifier(EnrolmentIdentifiers.individualId, mtdId)
       .withDelegatedAuthRule(DelegatedAuthRules.agentDelegatedAuthRule)
 
   def secondaryAgentPredicate(mtdId: String): Predicate =
-    Enrolment(EnrolmentKeys.Supporting)
+    HMRCEnrolment(EnrolmentKeys.Supporting)
       .withIdentifier(EnrolmentIdentifiers.individualId, mtdId)
       .withDelegatedAuthRule(DelegatedAuthRules.supportingAgentDelegatedAuthRule)
 

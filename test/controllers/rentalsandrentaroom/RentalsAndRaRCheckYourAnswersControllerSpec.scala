@@ -20,9 +20,9 @@ import audit.AuditService
 import base.SpecBase
 import controllers.exceptions.InternalErrorFailure
 import models.{ClaimExpensesOrRelief, RentalsAndRaRAbout, UserAnswers}
-import org.mockito.ArgumentMatchers
-import org.mockito.ArgumentMatchers._
-import org.mockito.MockitoSugar.{times, verify, when}
+import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchersSugar.eqTo
+import org.mockito.Mockito.{times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar
 import pages.ukrentaroom.AboutSectionCompletePage
 import play.api.inject.bind
@@ -111,7 +111,7 @@ class RentalsAndRaRCheckYourAnswersControllerSpec extends SpecBase with SummaryL
       val audit: AuditService = mock[AuditService]
 
       when(
-        propertyPeriodSubmissionService.saveUkPropertyJourneyAnswers(any(), ArgumentMatchers.eq(rentalsAndRaRAbout))(any(), any())
+        propertyPeriodSubmissionService.saveUkPropertyJourneyAnswers(any(), eqTo(rentalsAndRaRAbout))(any(), any())
       ) thenReturn Future.successful(Right(()))
 
       val application = applicationBuilder(userAnswers = Some(userAnswersWithRaRAbout), isAgent = false)

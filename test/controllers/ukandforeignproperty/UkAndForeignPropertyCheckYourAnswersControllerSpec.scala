@@ -22,8 +22,8 @@ import models.ReportIncome.DoNoWantToReport
 import models.TotalPropertyIncome.LessThan
 import models.ukAndForeign.{AboutForeign, AboutUk, AboutUkAndForeign, UkAndForeignAbout}
 import models.{JourneyContext, JourneyPath, TotalPropertyIncome, UserAnswers}
-import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchersSugar.eqTo
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.ukandforeignproperty.{ReportIncomePage, TotalPropertyIncomePage}
@@ -126,7 +126,7 @@ class UkAndForeignPropertyCheckYourAnswersControllerSpec extends SpecBase with S
 
       when(
         propertySubmissionService
-          .saveUkAndForeignPropertyJourneyAnswers(ArgumentMatchers.eq(context), ArgumentMatchers.eq(ukAndForeignAbout))(
+          .saveUkAndForeignPropertyJourneyAnswers(eqTo(context), eqTo(ukAndForeignAbout))(
             any(),
             any()
           )
@@ -157,7 +157,7 @@ class UkAndForeignPropertyCheckYourAnswersControllerSpec extends SpecBase with S
 
       when(
         propertySubmissionService
-          .saveUkAndForeignPropertyJourneyAnswers(ArgumentMatchers.eq(context), ArgumentMatchers.eq(ukAndForeignAbout))(
+          .saveUkAndForeignPropertyJourneyAnswers(eqTo(context), eqTo(ukAndForeignAbout))(
             any(),
             any()
           )

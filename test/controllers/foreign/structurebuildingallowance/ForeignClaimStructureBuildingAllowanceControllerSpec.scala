@@ -23,7 +23,7 @@ import forms.foreign.structurebuildingallowance.ForeignClaimStructureBuildingAll
 import models.{NormalMode, UserAnswers}
 import navigation.{FakeForeignPropertyNavigator, ForeignPropertyNavigator}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.MockitoSugar.when
+import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.foreign.structurebuildingallowance.ForeignClaimStructureBuildingAllowancePage
 import play.api.data.Form

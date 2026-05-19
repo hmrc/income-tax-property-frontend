@@ -21,8 +21,8 @@ import base.SpecBase
 import controllers.foreign.routes.{ForeignTaxCheckYourAnswersController, ForeignTaxSectionCompleteController}
 import models.JourneyPath.ForeignPropertyTax
 import models.{ForeignIncomeTax, JourneyContext, UserAnswers}
-import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchersSugar.eqTo
 import org.mockito.Mockito.{times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar
 import pages.foreign.income.ForeignPropertyTaxSectionAddCountryCode
@@ -92,7 +92,7 @@ class ForeignTaxCheckYourAnswersControllerSpec extends SpecBase with SummaryList
       when(
         propertySubmissionService
           .saveForeignPropertyJourneyAnswers(
-            ArgumentMatchers.eq(context),
+            eqTo(context),
             any()
           )(
             any(),

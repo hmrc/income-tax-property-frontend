@@ -40,6 +40,6 @@ class ForeignBalancingChargeFormProvider @Inject() extends Mappings {
                 "foreignBalancingCharge.amount.error.outOfRange"))
           )
         }
-      )(BalancingCharge.apply)(BalancingCharge.unapply)
+      )(BalancingCharge.apply)(m => Some((m.isBalancingCharge, m.balancingChargeAmount)))
     )
 }

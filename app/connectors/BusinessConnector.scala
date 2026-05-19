@@ -43,7 +43,7 @@ class BusinessConnector @Inject() (httpClient: HttpClientV2, appConfig: Frontend
       .setHeader("mtditid" -> mtditid)
       .setHeader("CorrelationId" -> UUID.randomUUID().toString)
       .execute[GetBusinessDetailsResponse]
-      .map { response: GetBusinessDetailsResponse =>
+      .map { (response: GetBusinessDetailsResponse) =>
         if (response.result.isLeft) {
           val correlationId =
             response.httpResponse.header(key = "CorrelationId").map(id => s" CorrelationId: $id").getOrElse("")

@@ -29,7 +29,7 @@
 
 @layout(pageTitle = title(form, messages("propertyIncomeReport.title"))) {
 
-    @formHelper(action = PropertyIncomeReportController.onSubmit(taxYear, mode), 'autoComplete -> "off") {
+    @formHelper(action = PropertyIncomeReportController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form))

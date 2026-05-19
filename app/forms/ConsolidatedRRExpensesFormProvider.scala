@@ -40,6 +40,6 @@ class ConsolidatedRRExpensesFormProvider @Inject() extends Mappings {
               .verifying(inRange(BigDecimal(0), BigDecimal(100000000), "consolidatedRRExpenses.error.outOfRange"))
           )
         }
-      )(ConsolidatedRRExpenses.apply)(ConsolidatedRRExpenses.unapply)
+      )(ConsolidatedRRExpenses.apply)(m => Some((m.isConsolidatedExpenses, m.consolidatedExpensesAmount)))
     )
 }

@@ -44,7 +44,7 @@ class StructuredBuildingAllowanceAddressFormProvider @Inject() extends Mappings 
         "postcode" -> text("structureBuildingAllowanceAddress.postcode.error.required").verifying(
           pattern(postcodeRegex, "PostCode", "structureBuildingAllowanceAddress.postcode.error.invalid")
         )
-      )(StructuredBuildingAllowanceAddress.apply)(StructuredBuildingAllowanceAddress.unapply)
+      )(StructuredBuildingAllowanceAddress.apply)(m => Some((m.buildingName, m.buildingNumber, m.postCode)))
         .verifying(
           checkIfAddressAlreadyEntered[StructuredBuildingAllowanceAddress, StructuredBuildingAllowanceAddress](
             Addressable

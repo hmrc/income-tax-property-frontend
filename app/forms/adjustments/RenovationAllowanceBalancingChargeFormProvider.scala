@@ -40,6 +40,6 @@ class RenovationAllowanceBalancingChargeFormProvider @Inject() extends Mappings 
                 "renovationAllowanceBalancingCharge.amount.error.outOfRange"))
           )
         }
-      )(RenovationAllowanceBalancingCharge.apply)(RenovationAllowanceBalancingCharge.unapply)
+      )(RenovationAllowanceBalancingCharge.apply)(m => Some((m.isRenovationAllowanceBalancingCharge, m.renovationAllowanceBalancingChargeAmount)))
     )
 }

@@ -41,6 +41,6 @@ class UkAndForeignCalculatedForeignPremiumGrantLeaseTaxableFormProvider @Inject(
               .verifying(inRange(BigDecimal(0), BigDecimal(100000000), "premiumCalculated.amount.error.outOfRange"))
           )
         }
-      )(PremiumCalculated.apply)(PremiumCalculated.unapply)
+      )(PremiumCalculated.apply)(m => Some((m.calculatedPremiumLeaseTaxable, m.premiumsOfLeaseGrant)))
     )
 }

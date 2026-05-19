@@ -23,8 +23,8 @@ import forms.ukrentaroom.AboutSectionCompleteFormProvider
 import models.JourneyPath.RentARoomAbout
 import models.{JourneyContext, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
-import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchersSugar.eqTo
 import org.mockito.Mockito.{doReturn, when}
 import org.scalatestplus.mockito.MockitoSugar
 import pages.ukrentaroom.AboutSectionCompletePage
@@ -48,7 +48,7 @@ class AboutSectionCompleteControllerSpec extends SpecBase with MockitoSugar {
   val formProvider = new AboutSectionCompleteFormProvider()
   val form = formProvider()
   val taxYear = 2024
-  implicit val hc = HeaderCarrier()
+  implicit val hc: HeaderCarrier = HeaderCarrier()
   val user = aUser.copy(
     mtditid = "mtditid",
     nino = "nino",
@@ -110,7 +110,7 @@ class AboutSectionCompleteControllerSpec extends SpecBase with MockitoSugar {
       )
         .when(mockJourneyAnswersService)
         .setUKPropertyStatus(
-          ArgumentMatchers.eq(
+          eqTo(
             JourneyContext(
               taxYear = taxYear,
               mtditid = user.mtditid,
@@ -118,8 +118,8 @@ class AboutSectionCompleteControllerSpec extends SpecBase with MockitoSugar {
               journeyPath = RentARoomAbout
             )
           ),
-          ArgumentMatchers.eq("completed"),
-          ArgumentMatchers.eq(user)
+          eqTo("completed"),
+          eqTo(user)
         )(any())
 
       val application =

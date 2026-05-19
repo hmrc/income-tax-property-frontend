@@ -18,10 +18,8 @@ object AppDependencies {
     "uk.gov.hmrc"         %% "bootstrap-test-play-30"  % bootstrapVersion,
     "uk.gov.hmrc.mongo"   %% "hmrc-mongo-test-play-30" % hmrcMongoVersion,
     "org.scalatest"       %% "scalatest"               % "3.2.19",
-    "org.scalatestplus"   %% "scalacheck-1-15"         % "3.2.11.0",
-    "org.scalatestplus"   %% "mockito-3-4"             % "3.2.10.0",
-    "org.mockito"         %% "mockito-scala"           % "2.1.0",
-    "org.scalamock"       %% "scalamock"               % "7.5.5",
+    "org.scalatestplus"   %% "scalacheck-1-18"         % "3.2.19.0",
+    "org.mockito"         %% "mockito-scala"           % "2.2.1",
     "org.scalacheck"      %% "scalacheck"              % "1.19.0",
     "org.jsoup"            % "jsoup"                   % "1.22.1",
     "com.vladsch.flexmark" % "flexmark-all"            % "0.64.8"

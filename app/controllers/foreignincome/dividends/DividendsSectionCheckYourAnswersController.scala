@@ -79,7 +79,7 @@ class DividendsSectionCheckYourAnswersController @Inject() (
     }
 
   private def getIndexedDividendCountry(countryCode: String, lang: String, userAnswers: UserAnswers): Option[(Int, Country)] = {
-    val countries = userAnswers.get(DividendIncomeSourceCountries).getOrElse(Array.empty)
+    val countries = userAnswers.get(DividendIncomeSourceCountries).getOrElse(Array.empty[Country])
     countries.find(_.code == countryCode).flatMap { incomeCountry =>
       val index = countries.indexOf(incomeCountry)
       CountryNamesDataSource.getCountry(countryCode, lang).map { country =>

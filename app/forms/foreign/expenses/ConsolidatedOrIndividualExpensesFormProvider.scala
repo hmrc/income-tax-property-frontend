@@ -39,6 +39,6 @@ class ConsolidatedOrIndividualExpensesFormProvider @Inject() extends Mappings {
               "consolidatedOrIndividualExpenses.amount.error.outOfRange"))
           )
         }
-      )(ConsolidatedOrIndividualExpenses.apply)(ConsolidatedOrIndividualExpenses.unapply)
+      )(ConsolidatedOrIndividualExpenses.apply)(m => Some((m.isConsolidatedOrIndividualExpenses, m.consolidatedExpense)))
     )
 }

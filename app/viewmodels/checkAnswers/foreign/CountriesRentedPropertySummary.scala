@@ -54,7 +54,7 @@ object CountriesRentedPropertySummary {
   def rowList(taxYear: Int, answers: UserAnswers, currentLang: String)(implicit messages: Messages): Option[SummaryListRow] = {
 
 
-    answers.get(IncomeSourceCountries).map { country: Array[Country] =>
+    answers.get(IncomeSourceCountries).map { (country: Array[Country]) =>
       val value: Seq[String] = country.toList.flatMap {
         country => CountryNamesDataSource.getCountry(country.code, currentLang).map(c => c.name).toSeq
       }

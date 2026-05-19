@@ -23,8 +23,8 @@ import controllers.exceptions.InternalErrorFailure
 import models.IncomeSourcePropertyType.UKProperty
 import models.authorisation.SessionValues
 import models.backend.PropertyDetails
-import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchersSugar.eqTo
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.http.Status.INTERNAL_SERVER_ERROR
@@ -68,8 +68,8 @@ class UKPropertyDetailsControllerSpec extends SpecBase with MockitoSugar {
 
       when(
         businessService.getUkPropertyDetails(
-          org.mockito.ArgumentMatchers.eq("nino"),
-          ArgumentMatchers.eq("mtditid")
+          eqTo("nino"),
+          eqTo("mtditid")
         )(any())
       ) thenReturn Future.successful(Right(Some(propertyDetails)))
 
@@ -106,8 +106,8 @@ class UKPropertyDetailsControllerSpec extends SpecBase with MockitoSugar {
 
       when(
         businessService.getUkPropertyDetails(
-          org.mockito.ArgumentMatchers.eq("nino"),
-          ArgumentMatchers.eq("mtditid")
+          eqTo("nino"),
+          eqTo("mtditid")
         )(any())
       ) thenReturn Future.successful(Right(Some(propertyDetails)))
 
@@ -143,8 +143,8 @@ class UKPropertyDetailsControllerSpec extends SpecBase with MockitoSugar {
 
       when(
         businessService.getUkPropertyDetails(
-          org.mockito.ArgumentMatchers.eq("nino"),
-          ArgumentMatchers.eq("mtditid")
+          eqTo("nino"),
+          eqTo("mtditid")
         )(any())
       ) thenReturn Future.successful(Left(ApiError(INTERNAL_SERVER_ERROR, SingleErrorBody.parsingError)))
 

@@ -107,7 +107,7 @@ class RentalsAndRentARoomAllowancesCheckYourAnswersController @Inject() (
     hc: HeaderCarrier
   ): Future[Unit] =
     withUkPropertyDetails[Unit](businessService, request.user.nino, request.user.mtditid) {
-      propertyDetails: PropertyDetails =>
+      (propertyDetails: PropertyDetails) =>
         Future(
           propertyDetails match {
             case PropertyDetails(_, _, Some(accrualsOrCash), _) =>

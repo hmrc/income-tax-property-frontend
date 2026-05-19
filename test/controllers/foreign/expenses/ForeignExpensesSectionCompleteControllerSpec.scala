@@ -21,8 +21,8 @@ import forms.foreign.expenses.ForeignExpensesSectionCompleteFormProvider
 import models.JourneyPath.ForeignPropertyExpenses
 import models.{JourneyContext, User, UserAnswers}
 import navigation.{FakeForeignPropertyNavigator, ForeignPropertyNavigator}
-import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchersSugar.eqTo
 import org.mockito.Mockito.{doReturn, when}
 import org.scalatest.prop.TableFor1
 import org.scalatest.prop.Tables.Table
@@ -116,7 +116,7 @@ class ForeignExpensesSectionCompleteControllerSpec extends SpecBase with Mockito
         doReturn(Future.successful(Right("completed")))
           .when(mockJourneyAnswersService)
           .setForeignPropertyStatus(
-            ArgumentMatchers.eq(
+            eqTo(
               JourneyContext(
                 taxYear = taxYear,
                 mtditid = user.mtditid,
@@ -124,9 +124,9 @@ class ForeignExpensesSectionCompleteControllerSpec extends SpecBase with Mockito
                 journeyPath = ForeignPropertyExpenses
               )
             ),
-            ArgumentMatchers.eq("completed"),
-            ArgumentMatchers.eq(user),
-            ArgumentMatchers.eq(countryCode)
+            eqTo("completed"),
+            eqTo(user),
+            eqTo(countryCode)
           )(any())
 
         val application =

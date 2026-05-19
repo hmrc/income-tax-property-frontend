@@ -39,6 +39,6 @@ class ReversePremiumsReceivedFormProvider @Inject() extends Mappings {
             .verifying(inRange(BigDecimal(0), BigDecimal(100000000), "reversePremiumsReceived.error.outOfRange"))
         )
       }
-    )(ReversePremiumsReceived.apply)(ReversePremiumsReceived.unapply))
+    )(ReversePremiumsReceived.apply)(m => Some((m.reversePremiumsReceived, m.reversePremiums))))
   }
 }

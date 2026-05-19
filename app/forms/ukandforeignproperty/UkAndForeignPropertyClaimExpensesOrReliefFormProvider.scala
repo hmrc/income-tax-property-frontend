@@ -29,6 +29,6 @@ class UkAndForeignPropertyClaimExpensesOrReliefFormProvider @Inject() extends Ma
     Form[UkAndForeignPropertyClaimExpensesOrRelief](
       mapping(
         "ukAndForeignPropertyClaimExpensesOrRelief" -> boolean(s"claimExpensesOrRelief.error.required.$individualOrAgent")
-      )(UkAndForeignPropertyClaimExpensesOrRelief.apply)(UkAndForeignPropertyClaimExpensesOrRelief.unapply)
+      )(UkAndForeignPropertyClaimExpensesOrRelief.apply)(m => Some(m.isClaimExpensesOrRelief))
     )
 }

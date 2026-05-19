@@ -28,6 +28,6 @@ class UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpensesFormProvider @In
     Form[UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses](
       mapping(
         "ukAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses" -> boolean("claimPropertyIncomeAllowanceOrExpenses.error.required")
-      )(UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.apply)(UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.unapply)
+      )(UkAndForeignPropertyClaimPropertyIncomeAllowanceOrExpenses.apply)(m => Some(m.isClaimPropertyIncomeAllowanceOrExpenses))
     )
 }

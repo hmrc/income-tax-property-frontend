@@ -21,8 +21,8 @@ import forms.foreign.adjustments.ForeignAdjustmentsCompleteFormProvider
 import models.JourneyPath.ForeignPropertyAdjustments
 import models.{JourneyContext, NormalMode, UserAnswers}
 import navigation.{FakeForeignPropertyNavigator, ForeignPropertyNavigator}
-import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchersSugar.eqTo
 import org.mockito.Mockito.{doReturn, when}
 import org.scalatestplus.mockito.MockitoSugar
 import pages.foreign.adjustments.ForeignAdjustmentsCompletePage
@@ -110,7 +110,7 @@ class ForeignAdjustmentsCompleteControllerSpec extends SpecBase with MockitoSuga
       )
         .when(mockJourneyAnswersService)
         .setForeignPropertyStatus(
-          ArgumentMatchers.eq(
+          eqTo(
             JourneyContext(
               taxYear = taxYear,
               mtditid = user.mtditid,
@@ -118,9 +118,9 @@ class ForeignAdjustmentsCompleteControllerSpec extends SpecBase with MockitoSuga
               journeyPath = ForeignPropertyAdjustments
             )
           ),
-          ArgumentMatchers.eq("completed"),
-          ArgumentMatchers.eq(user),
-          ArgumentMatchers.eq(countryCode)
+          eqTo("completed"),
+          eqTo(user),
+          eqTo(countryCode)
         )(any())
 
       val application =

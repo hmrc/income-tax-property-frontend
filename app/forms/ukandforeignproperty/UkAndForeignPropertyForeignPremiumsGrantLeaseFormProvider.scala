@@ -42,6 +42,6 @@ class UkAndForeignPropertyForeignPremiumsGrantLeaseFormProvider @Inject() extend
               .verifying(inRange(minimum, maximum, "ukAndForeignProperty.foreignPremiumsGrantLease.error.outOfRange"))
           )
         }
-      )(UkAndForeignPropertyForeignPremiumsGrantLease.apply)(UkAndForeignPropertyForeignPremiumsGrantLease.unapply)
+      )(UkAndForeignPropertyForeignPremiumsGrantLease.apply)(m => Some((m.premiumsOfLeaseGrantAgreed, m.premiumsOfLeaseGrant)))
     )
 }

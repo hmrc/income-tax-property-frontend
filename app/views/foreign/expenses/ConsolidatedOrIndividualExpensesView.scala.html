@@ -30,7 +30,7 @@
 
 @layout(pageTitle = title(form, messages("consolidatedOrIndividualExpenses.title"))) {
 
-    @formHelper(action = ConsolidatedOrIndividualExpensesController.onSubmit(taxYear, countryCode, mode), 'autoComplete -> "off") {
+    @formHelper(action = ConsolidatedOrIndividualExpensesController.onSubmit(taxYear, countryCode, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form,  errorLinkOverrides = Map("value" -> "value_0")))

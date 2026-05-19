@@ -127,7 +127,7 @@ class ForeignIncomeNavigator @Inject() (foreignIncomeCYADiversionService: Foreig
   private def yourForeignDividendsByCountryNavigation(taxYear: Int, userAnswers: UserAnswers): Call = {
     userAnswers.get(YourForeignDividendsByCountryPage) match {
       case Some(true) =>
-        val countries = userAnswers.get(DividendIncomeSourceCountries).getOrElse(Array.empty)
+        val countries = userAnswers.get(DividendIncomeSourceCountries).getOrElse(Array.empty[Country])
         val index = getNextIndex(countries, Some(userAnswers))
         CountryReceiveDividendIncomeController.onPageLoad(taxYear, index, NormalMode)
       case Some(false) =>

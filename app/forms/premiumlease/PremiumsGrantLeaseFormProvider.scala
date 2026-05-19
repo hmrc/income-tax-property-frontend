@@ -38,6 +38,6 @@ class PremiumsGrantLeaseFormProvider @Inject() extends Mappings {
               .verifying(inRange(BigDecimal(0), BigDecimal(100000000), "premiumsGrantLease.error.outOfRange"))
           )
         }
-      )(PremiumsGrantLease.apply)(PremiumsGrantLease.unapply)
+      )(PremiumsGrantLease.apply)(m => Some((m.premiumsGrantLeaseReceived, m.premiumsGrantLease)))
     )
 }

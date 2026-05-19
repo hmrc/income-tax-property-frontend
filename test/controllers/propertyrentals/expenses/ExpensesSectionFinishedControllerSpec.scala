@@ -23,8 +23,8 @@ import forms.ExpensesSectionFinishedFormProvider
 import models.JourneyPath.RentalExpenses
 import models.{JourneyContext, User, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
-import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchersSugar.eqTo
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.propertyrentals.expenses.ExpensesSectionFinishedPage
@@ -100,12 +100,12 @@ class ExpensesSectionFinishedControllerSpec extends SpecBase with MockitoSugar {
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
       when(
         mockJourneyAnswersService.setUKPropertyStatus(
-          ArgumentMatchers.eq(
+          eqTo(
             JourneyContext(taxYear, mtditid = "mtditid", nino = "nino", journeyPath = RentalExpenses)
           ),
-          ArgumentMatchers.eq("completed"),
-          ArgumentMatchers.eq(user)
-        )(ArgumentMatchers.any())
+          eqTo("completed"),
+          eqTo(user)
+        )(any())
       ) thenReturn Future.successful(
         Right("")
       )

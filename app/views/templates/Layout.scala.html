@@ -45,7 +45,7 @@
                 countdown = Some(appConfig.countdown),
                 keepAliveUrl = Some(routes.KeepAliveController.keepAlive.url),
                 keepAliveButtonText = Some(messages("timeout.keepAlive")),
-                signOutUrl = Some(controllers.auth.routes.AuthController.signOut.url),
+                signOutUrl = Some(controllers.auth.routes.AuthController.signOut().url),
                 signOutButtonText = Some(messages("timeout.signOut")),
                 title = Some(messages("timeout.title")),
                 message = Some(messages("timeout.message")),
@@ -70,7 +70,7 @@
     ),
     serviceURLs = hmrcstandardpage.ServiceURLs(
         serviceUrl = Some(routes.IndexController.onPageLoad.url),
-        signOutUrl = if(showSignOut) Some(controllers.auth.routes.AuthController.signOut.url) else None
+        signOutUrl = if(showSignOut) Some(controllers.auth.routes.AuthController.signOut().url) else None
     ),
     banners = hmrcstandardpage.Banners(
         displayHmrcBanner = showHmrcBanner,

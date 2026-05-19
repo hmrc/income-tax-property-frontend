@@ -48,7 +48,7 @@ class AuthActionSpec extends SpecBase with MockAppConfig with MockAuthConnector 
     MockAppConfig.viewAndChangeEnterUtrUrl("/enter-utr")
     MockAppConfig.incomeTaxSubmissionIvRedirect("/iv-uplift")
 
-    lazy implicit val ec = scala.concurrent.ExecutionContext.Implicits.global
+    lazy implicit val ec: scala.concurrent.ExecutionContext = scala.concurrent.ExecutionContext.Implicits.global
     lazy val application = applicationBuilder(userAnswers = None, isAgent = false).build()
     lazy val bodyParsers = application.injector.instanceOf[BodyParsers.Default]
     lazy val mcc: MessagesControllerComponents = stubMessagesControllerComponents()
@@ -86,13 +86,11 @@ class AuthActionSpec extends SpecBase with MockAppConfig with MockAuthConnector 
               .authorise(EmptyPredicate)(
                 Future.successful(new~(Some("internalId"), Some(AffinityGroup.Individual)))
               )
-              .once()
 
             MockAuthConnector
               .authorise(EmptyPredicate)(
                 Future.successful(new~(enrolments, ConfidenceLevel.L250))
               )
-              .once()
 
             val result = controller.onPageLoad()(request)
 
@@ -113,13 +111,11 @@ class AuthActionSpec extends SpecBase with MockAppConfig with MockAuthConnector 
               .authorise(EmptyPredicate)(
                 Future.successful(new~(Some("internalId"), Some(AffinityGroup.Individual)))
               )
-              .once()
 
             MockAuthConnector
               .authorise(EmptyPredicate)(
                 Future.successful(new~(enrolments, ConfidenceLevel.L250))
               )
-              .once()
 
             val result = controller.onPageLoad()(request)
 
@@ -141,13 +137,11 @@ class AuthActionSpec extends SpecBase with MockAppConfig with MockAuthConnector 
               .authorise(EmptyPredicate)(
                 Future.successful(new~(Some("internalId"), Some(AffinityGroup.Individual)))
               )
-              .once()
 
             MockAuthConnector
               .authorise(EmptyPredicate)(
                 Future.successful(new~(enrolments, ConfidenceLevel.L250))
               )
-              .once()
 
             val result = controller.onPageLoad()(request)
 
@@ -181,13 +175,11 @@ class AuthActionSpec extends SpecBase with MockAppConfig with MockAuthConnector 
             .authorise(EmptyPredicate)(
               Future.successful(new~(Some("internalId"), Some(AffinityGroup.Individual)))
             )
-            .once()
 
           MockAuthConnector
             .authorise(EmptyPredicate)(
               Future.successful(new~(enrolments, ConfidenceLevel.L200))
             )
-            .once()
 
           val result = controller.onPageLoad()(request)
 

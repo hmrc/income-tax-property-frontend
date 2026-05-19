@@ -45,7 +45,7 @@ class UkAndForeignPropertyPremiumGrantLeaseTaxFormProvider @Inject() extends Map
             )
           )
         }
-      )(UkAndForeignPropertyPremiumGrantLeaseTax.apply)(UkAndForeignPropertyPremiumGrantLeaseTax.unapply)
+      )(UkAndForeignPropertyPremiumGrantLeaseTax.apply)(m => Some((m.isPremiumGrantLease, m.premiumGrantLeaseAmount)))
     )
 }
 

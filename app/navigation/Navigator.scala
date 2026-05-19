@@ -884,8 +884,8 @@ class Navigator @Inject() (diversionService: CYADiversionService) {
             AdjustmentsCheckYourAnswersController.onPageLoad(taxYear)
     case WhenYouReportedTheLossPage(RentARoom) =>
       taxYear => _ => _ => RaRAdjustmentsCYAController.onPageLoad(taxYear)
-        // TODO add the correct property type here i.e. RentalsRentARoom
-      case PrivateUseAdjustmentPage(RentalsRentARoom) | PropertyIncomeAllowancePage(RentalsRentARoom) |
+    // TODO add the correct property type here i.e. RentalsRentARoom
+    case PrivateUseAdjustmentPage(RentalsRentARoom) | PropertyIncomeAllowancePage(RentalsRentARoom) |
         BusinessPremisesRenovationAllowanceBalancingChargePage | BalancingChargePage(RentalsRentARoom) |
         RenovationAllowanceBalancingChargePage(RentalsRentARoom) | ResidentialFinanceCostPage(RentalsRentARoom) |
         UnusedResidentialFinanceCostPage(RentalsRentARoom) | WhenYouReportedTheLossPage(RentalsRentARoom) =>

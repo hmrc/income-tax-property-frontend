@@ -48,6 +48,6 @@ class ClaimExpensesOrReliefFormProvider @Inject() extends Mappings {
               .verifying(maximumValue(maxAllowedIncome, "claimExpensesOrRelief.amount.error.maxAllowedClaim"))
           )
         }
-      )(ClaimExpensesOrRelief.apply)(ClaimExpensesOrRelief.unapply)
+      )(ClaimExpensesOrRelief.apply)(m => Some((m.isClaimExpensesOrRelief, m.rentARoomAmount)))
     )
 }

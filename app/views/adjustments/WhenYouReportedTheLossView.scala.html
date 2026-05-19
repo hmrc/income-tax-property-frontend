@@ -28,7 +28,7 @@
 
 @layout(pageTitle = title(form, messages(s"whenYouReportedTheLoss.title.${individualOrAgent}"))) {
 
-    @formHelper(action = controllers.adjustments.routes.WhenYouReportedTheLossController.onSubmit(taxYear, mode, propertyType), 'autoComplete -> "off") {
+    @formHelper(action = controllers.adjustments.routes.WhenYouReportedTheLossController.onSubmit(taxYear, mode, propertyType), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form,  errorLinkOverrides = Map("whenYouReportedTheLoss" -> "value_0")))

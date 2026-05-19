@@ -21,10 +21,10 @@ import base.SpecBase
 import connectors.error.ApiError
 import models._
 import models.backend.PropertyDetails
-import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchersSugar.eqTo
 import org.mockito.Mockito.when
-import org.mockito.MockitoSugar.{times, verify}
+import org.mockito.Mockito.{times, verify}
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
@@ -114,9 +114,9 @@ class RentalsAndRaRExpensesCheckYourAnswersControllerSpec extends SpecBase with 
       when(
         propertySubmissionService
           .saveUkPropertyJourneyAnswers(
-            ArgumentMatchers.eq(context),
-            ArgumentMatchers.eq(rentalsExpense),
-            ArgumentMatchers.eq("incomeSourceId")
+            eqTo(context),
+            eqTo(rentalsExpense),
+            eqTo("incomeSourceId")
           )(
             any(),
             any()
@@ -139,8 +139,8 @@ class RentalsAndRaRExpensesCheckYourAnswersControllerSpec extends SpecBase with 
         whenReady(result) { _ =>
           status(result) mustEqual SEE_OTHER
           // redirectLocation(result).value mustEqual onwardRoute.url
-          verify(mockAuditService, times(wantedNumberOfInvocations = 1)).sendAuditEvent(any())(any(), any())
-          verify(mockBusinessService, times(wantedNumberOfInvocations = 1)).getUkPropertyDetails(any(), any())(any())
+          verify(mockAuditService, times(1)).sendAuditEvent(any())(any(), any())
+          verify(mockBusinessService, times(1)).getUkPropertyDetails(any(), any())(any())
         }
       }
     }

@@ -16,29 +16,25 @@
 
 package config
 
-import org.scalamock.handlers.CallHandler0
-import org.scalamock.scalatest.MockFactory
-import org.scalatest.TestSuite
+import org.mockito.Mockito.when
+import org.scalatestplus.mockito.MockitoSugar
 
-trait MockAppConfig extends MockFactory { _: TestSuite =>
+trait MockAppConfig extends MockitoSugar {
 
   lazy val mockAppConfig: FrontendAppConfig = mock[FrontendAppConfig]
 
   object MockAppConfig {
 
-    def loginUrl(url: String): CallHandler0[String] =
-      (() => mockAppConfig.loginUrl).expects().returns(url).anyNumberOfTimes()
+    def loginUrl(url: String): Unit =
+      when(mockAppConfig.loginUrl).thenReturn(url)
 
-    def viewAndChangeEnterUtrUrl(url: String): CallHandler0[String] =
-      (() => mockAppConfig.viewAndChangeEnterUtrUrl).expects().returns(url).anyNumberOfTimes()
+    def viewAndChangeEnterUtrUrl(url: String): Unit =
+      when(mockAppConfig.viewAndChangeEnterUtrUrl).thenReturn(url)
 
-    def incomeTaxSubmissionIvRedirect(url: String): CallHandler0[String] =
-      (() => mockAppConfig.incomeTaxSubmissionIvRedirect).expects().returns(url).anyNumberOfTimes()
+    def incomeTaxSubmissionIvRedirect(url: String): Unit =
+      when(mockAppConfig.incomeTaxSubmissionIvRedirect).thenReturn(url)
 
-    def mockSessionServiceEnabled(response: Boolean): CallHandler0[Boolean] =
-      (() => mockAppConfig.sessionCookieServiceEnabled)
-        .expects()
-        .returning(response)
+    def mockSessionServiceEnabled(response: Boolean): Unit =
+      when(mockAppConfig.sessionCookieServiceEnabled).thenReturn(response)
   }
-
 }

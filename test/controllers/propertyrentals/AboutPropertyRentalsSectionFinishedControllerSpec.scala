@@ -21,8 +21,8 @@ import forms.propertyrentals.AboutPropertyRentalsSectionFinishedFormProvider
 import models.JourneyPath.PropertyRentalAbout
 import models.{JourneyContext, NormalMode, User, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
-import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchersSugar.eqTo
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.propertyrentals.AboutPropertyRentalsSectionFinishedPage
@@ -102,11 +102,11 @@ class AboutPropertyRentalsSectionFinishedControllerSpec extends SpecBase with Mo
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
       when(
         mockJourneyAnswersService.setUKPropertyStatus(
-          ArgumentMatchers.eq(
+          eqTo(
             JourneyContext(taxYear, mtditid = "mtditid", nino = "nino", journeyPath = PropertyRentalAbout)
           ),
-          ArgumentMatchers.eq("completed"),
-          ArgumentMatchers.eq(user)
+          eqTo("completed"),
+          eqTo(user)
         )(any())
       ) thenReturn Future.successful(
         Right("")

@@ -41,7 +41,7 @@ class EsbaAddressFormProvider @Inject() extends Mappings {
         "postcode" -> text("esbaAddress.postcode.error.required").verifying(
           pattern(postcodeRegex, "PostCode", "esbaAddress.postcode.error.invalid")
         )
-      )(EsbaAddress.apply)(EsbaAddress.unapply)
+      )(EsbaAddress.apply)(m => Some((m.buildingName, m.buildingNumber, m.postCode)))
         .verifying(
           checkIfAddressAlreadyEntered[EsbaAddress, EsbaAddress](
             getAddresses[EsbaAddress](

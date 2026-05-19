@@ -20,7 +20,7 @@ import base.SpecBase
 import models.IncomeSourcePropertyType.UKProperty
 import models.backend.{BusinessDetails, HttpParserError, PropertyDetails}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.MockitoSugar.when
+import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.inject.bind
 import play.api.test.FakeRequest

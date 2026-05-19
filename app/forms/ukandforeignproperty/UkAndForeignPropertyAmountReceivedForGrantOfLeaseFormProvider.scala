@@ -41,7 +41,7 @@ class UkAndForeignPropertyAmountReceivedForGrantOfLeaseFormProvider @Inject() ex
               )
           )
         }
-      )(UkAndForeignPropertyAmountReceivedForGrantOfLease.apply)(UkAndForeignPropertyAmountReceivedForGrantOfLease.unapply)
+      )(UkAndForeignPropertyAmountReceivedForGrantOfLease.apply)(m => Some(m.amountReceivedForGrantOfLease))
     )
 }
 

@@ -21,8 +21,8 @@ import forms.ukandforeignproperty.SectionCompleteFormProvider
 import models.JourneyPath.UkAndForeignPropertyAbout
 import models.{JourneyContext, User, UserAnswers}
 import navigation.{FakeUKAndForeignPropertyNavigator, UkAndForeignPropertyNavigator}
-import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchersSugar.eqTo
 import org.mockito.Mockito.{doReturn, when}
 import org.scalatest.prop.TableFor1
 import org.scalatest.prop.Tables.Table
@@ -115,7 +115,7 @@ class SectionCompleteControllerSpec extends SpecBase with MockitoSugar {
         doReturn(Future.successful(Right("completed")))
           .when(mockJourneyAnswersService)
           .setUKPropertyStatus(
-            ArgumentMatchers.eq(
+            eqTo(
               JourneyContext(
                 taxYear = taxYear,
                 mtditid = user.mtditid,
@@ -123,8 +123,8 @@ class SectionCompleteControllerSpec extends SpecBase with MockitoSugar {
                 journeyPath = UkAndForeignPropertyAbout
               )
             ),
-            ArgumentMatchers.eq("completed"),
-            ArgumentMatchers.eq(user)
+            eqTo("completed"),
+            eqTo(user)
           )(any())
 
         val application =

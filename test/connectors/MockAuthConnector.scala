@@ -16,27 +16,43 @@
 
 package connectors
 
-import org.scalamock.handlers.CallHandler4
-import org.scalamock.scalatest.MockFactory
-import org.scalatest.TestSuite
+import org.mockito.ArgumentMatchers.any
+import org.mockito.Mockito
+import org.mockito.Mockito.doAnswer
+import org.mockito.invocation.InvocationOnMock
+import org.scalatest.{BeforeAndAfterEach, Suite}
+import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.auth.core.AuthConnector
 import uk.gov.hmrc.auth.core.authorise.Predicate
 import uk.gov.hmrc.auth.core.retrieve.Retrieval
 import uk.gov.hmrc.http.HeaderCarrier
 
+import scala.collection.mutable
 import scala.concurrent.{ExecutionContext, Future}
 
-trait MockAuthConnector extends MockFactory { _: TestSuite =>
+trait MockAuthConnector extends MockitoSugar with BeforeAndAfterEach { self: Suite =>
 
   lazy val mockAuthConnector: AuthConnector = mock[AuthConnector]
 
-  object MockAuthConnector {
+  private val _authResponses: mutable.Queue[Future[Any]] = mutable.Queue.empty
+  private var _answerRegistered: Boolean = false
 
-    def authorise[T](predicate: Predicate)(response: Future[T]): CallHandler4[Predicate, Retrieval[T], HeaderCarrier, ExecutionContext, Future[T]] =
-      (mockAuthConnector
-        .authorise[T](_: Predicate, _: Retrieval[T])(_: HeaderCarrier, _: ExecutionContext))
-        .expects(predicate, *, *, *)
-        .returns(response)
+  abstract override def beforeEach(): Unit = {
+    Mockito.reset(mockAuthConnector)
+    _authResponses.clear()
+    _answerRegistered = false
+    super.beforeEach()
   }
 
+  object MockAuthConnector {
+    def authorise[T](predicate: Predicate)(response: Future[T]): Unit = {
+      _authResponses.enqueue(response.asInstanceOf[Future[Any]])
+      if (!_answerRegistered) {
+        doAnswer { (_: InvocationOnMock) => _authResponses.dequeue() }
+          .when(mockAuthConnector)
+          .authorise(any[Predicate](), any[Retrieval[T]]())(any[HeaderCarrier](), any[ExecutionContext]())
+        _answerRegistered = true
+      }
+    }
+  }
 }

@@ -23,8 +23,8 @@ import controllers.exceptions.InternalErrorFailure
 import models.IncomeSourcePropertyType.{ForeignProperty, UKProperty}
 import models.authorisation.SessionValues
 import models.backend.PropertyDetails
-import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchersSugar.eqTo
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.inject.bind
@@ -64,14 +64,14 @@ class UkAndForeignPropertyDetailsControllerSpec extends SpecBase with MockitoSug
         PropertyDetails(Some(ForeignProperty.toString), Some(LocalDate.now), accrualsOrCash = Some(false), "foreignIncomeSourceId")
       when(
         businessService.getUkPropertyDetails(
-          org.mockito.ArgumentMatchers.eq("nino"),
-          ArgumentMatchers.eq("mtditid")
+          eqTo("nino"),
+          eqTo("mtditid")
         )(any())
       ) thenReturn Future.successful(Right(Some(ukPropertyDetails)))
       when(
         businessService.getForeignPropertyDetails(
-          org.mockito.ArgumentMatchers.eq("nino"),
-          ArgumentMatchers.eq("mtditid")
+          eqTo("nino"),
+          eqTo("mtditid")
         )(any())
       ) thenReturn Future.successful(Right(Some(foreignPropertyDetails)))
       val application =
@@ -105,14 +105,14 @@ class UkAndForeignPropertyDetailsControllerSpec extends SpecBase with MockitoSug
         PropertyDetails(Some(ForeignProperty.toString), Some(LocalDate.now), accrualsOrCash = Some(false), "foreignIncomeSourceId")
       when(
         businessService.getUkPropertyDetails(
-          org.mockito.ArgumentMatchers.eq("nino"),
-          ArgumentMatchers.eq("mtditid")
+          eqTo("nino"),
+          eqTo("mtditid")
         )(any())
       ) thenReturn Future.successful(Right(Some(ukPropertyDetails)))
       when(
         businessService.getForeignPropertyDetails(
-          org.mockito.ArgumentMatchers.eq("nino"),
-          ArgumentMatchers.eq("mtditid")
+          eqTo("nino"),
+          eqTo("mtditid")
         )(any())
       ) thenReturn Future.successful(Right(Some(foreignPropertyDetails)))
       val application =
@@ -144,14 +144,14 @@ class UkAndForeignPropertyDetailsControllerSpec extends SpecBase with MockitoSug
       val businessService = mock[BusinessService]
       when(
         businessService.getUkPropertyDetails(
-          org.mockito.ArgumentMatchers.eq("nino"),
-          ArgumentMatchers.eq("mtditid")
+          eqTo("nino"),
+          eqTo("mtditid")
         )(any())
       ) thenReturn Future.successful(Left(ApiError(INTERNAL_SERVER_ERROR, SingleErrorBody.parsingError)))
       when(
         businessService.getForeignPropertyDetails(
-          org.mockito.ArgumentMatchers.eq("nino"),
-          ArgumentMatchers.eq("mtditid")
+          eqTo("nino"),
+          eqTo("mtditid")
         )(any())
       ) thenReturn Future.successful(Left(ApiError(INTERNAL_SERVER_ERROR, SingleErrorBody.parsingError)))
       val application =

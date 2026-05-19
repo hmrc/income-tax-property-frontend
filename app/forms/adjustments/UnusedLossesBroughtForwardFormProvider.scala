@@ -44,7 +44,7 @@ class UnusedLossesBroughtForwardFormProvider @Inject() extends Mappings {
           )
         }
       )(UnusedLossesBroughtForward.apply)(
-        UnusedLossesBroughtForward.unapply
+        m => Some((m.isUnusedLossesBroughtForward, m.unusedLossesBroughtForwardAmount))
       )
     )
 }

@@ -21,8 +21,8 @@ import forms.ukrentaroom.adjustments.RaRAdjustmentsCompleteFormProvider
 import models.JourneyPath.RentARoomAdjustments
 import models._
 import navigation.{FakeNavigator, Navigator}
-import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchersSugar.eqTo
 import org.mockito.Mockito.{doReturn, when}
 import org.scalatestplus.mockito.MockitoSugar
 import pages.ukrentaroom.adjustments.RaRAdjustmentsCompletePage
@@ -109,7 +109,7 @@ class RaRAdjustmentsCompleteControllerSpec extends SpecBase with MockitoSugar {
       )
         .when(mockJourneyAnswersService)
         .setUKPropertyStatus(
-          ArgumentMatchers.eq(
+          eqTo(
             JourneyContext(
               taxYear = taxYear,
               mtditid = user.mtditid,
@@ -117,8 +117,8 @@ class RaRAdjustmentsCompleteControllerSpec extends SpecBase with MockitoSugar {
               journeyPath = RentARoomAdjustments
             )
           ),
-          ArgumentMatchers.eq("completed"),
-          ArgumentMatchers.eq(user)
+          eqTo("completed"),
+          eqTo(user)
         )(any())
 
       val application =

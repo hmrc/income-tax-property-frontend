@@ -36,7 +36,7 @@ class ForeignStructuresBuildingAllowanceAddressFormProvider @Inject() extends Ma
           .verifying(maxLength(90, "foreignStructuresBuildingAllowanceAddress.error.buildingName.length")),
         "buildingNumber" -> text("foreignStructuresBuildingAllowanceAddress.error.buildingNumber.required"),
         "postcode"       -> text("foreignStructuresBuildingAllowanceAddress.error.postcode.required")
-      )(ForeignStructuresBuildingAllowanceAddress.apply)(ForeignStructuresBuildingAllowanceAddress.unapply)
+      )(ForeignStructuresBuildingAllowanceAddress.apply)(m => Some((m.name, m.number, m.postCode)))
         .verifying(
           checkIfForeignAddressAlreadyEntered[
             ForeignStructuresBuildingAllowanceAddress,

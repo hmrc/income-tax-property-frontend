@@ -21,8 +21,8 @@ import base.SpecBase
 import controllers.foreign.structuresbuildingallowance.routes.ForeignClaimSbaCheckYourAnswersController
 import models.JourneyPath.ForeignStructureBuildingAllowance
 import models.{JourneyContext, UserAnswers}
-import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchersSugar.eqTo
 import org.mockito.Mockito.{times, verify, when}
 import pages.foreign.structurebuildingallowance.{ForeignClaimStructureBuildingAllowancePage, ForeignSbaCompletePage}
 import play.api.inject.bind
@@ -96,7 +96,7 @@ class ForeignClaimSbaCheckYourAnswersControllerSpec extends SpecBase {
 
       when(
         propertySubmissionService
-          .saveForeignPropertyJourneyAnswers(ArgumentMatchers.eq(context), any)(
+          .saveForeignPropertyJourneyAnswers(eqTo(context), any)(
             any(),
             any()
           )

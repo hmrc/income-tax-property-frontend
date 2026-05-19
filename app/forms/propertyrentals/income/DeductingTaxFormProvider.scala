@@ -40,7 +40,7 @@ class DeductingTaxFormProvider @Inject() extends Mappings {
                 "deductingTax.amount.error.outOfRange"))
           )
         }
-      )(DeductingTax.apply)(DeductingTax.unapply)
+      )(DeductingTax.apply)(m => Some((m.isTaxDeducted, m.taxDeductedAmount)))
     )
 }
 

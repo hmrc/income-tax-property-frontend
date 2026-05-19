@@ -39,7 +39,7 @@ class ForeignUnusedLossesPreviousYearsFormProvider @Inject() extends Mappings {
               .verifying(inRange(BigDecimal(0), BigDecimal(100000000), "foreignUnusedLossesPreviousYears.error.outOfRange"))
           )
         }
-      )(UnusedLossesPreviousYears.apply)(UnusedLossesPreviousYears.unapply)
+      )(UnusedLossesPreviousYears.apply)(m => Some((m.isUnusedLossesPreviousYears, m.unusedLossesPreviousYearsAmount)))
     )
   }
 }
