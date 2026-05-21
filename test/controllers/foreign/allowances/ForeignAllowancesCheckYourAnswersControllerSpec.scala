@@ -22,7 +22,7 @@ import models.JourneyPath.ForeignPropertyAllowances
 import models.backend.PropertyDetails
 import models.{JourneyContext, UserAnswers}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchersSugar.eqTo
+import org.mockito.ArgumentMatchers.eq as eqTo
 import org.mockito.Mockito.{times, verify, when}
 import pages.foreign.allowances._
 import play.api.inject.bind

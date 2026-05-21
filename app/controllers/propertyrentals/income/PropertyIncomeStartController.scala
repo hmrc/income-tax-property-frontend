@@ -19,7 +19,6 @@ package controllers.propertyrentals.income
 import controllers.actions._
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import service.CYADiversionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.propertyrentals.income.PropertyIncomeStartView
 
@@ -29,8 +28,6 @@ class PropertyIncomeStartController @Inject() (
   override val messagesApi: MessagesApi,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
-  requireData: DataRequiredAction,
-  diversionService: CYADiversionService,
   val controllerComponents: MessagesControllerComponents,
   view: PropertyIncomeStartView
 ) extends FrontendBaseController with I18nSupport {

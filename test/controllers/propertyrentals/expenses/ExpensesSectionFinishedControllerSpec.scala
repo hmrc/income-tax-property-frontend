@@ -24,7 +24,7 @@ import models.JourneyPath.RentalExpenses
 import models.{JourneyContext, User, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchersSugar.eqTo
+import org.mockito.ArgumentMatchers.eq as eqTo
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.propertyrentals.expenses.ExpensesSectionFinishedPage

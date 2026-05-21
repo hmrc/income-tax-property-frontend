@@ -24,8 +24,8 @@ sealed trait TotalPropertyIncome
 
 object TotalPropertyIncome extends Enumerable.Implicits {
 
-  final case object LessThan extends WithName("lessThan") with TotalPropertyIncome
-  final case object Maximum extends WithName("maximum") with TotalPropertyIncome
+  case object LessThan extends WithName("lessThan") with TotalPropertyIncome
+  case object Maximum extends WithName("maximum") with TotalPropertyIncome
 
   val values: Seq[TotalPropertyIncome] = Seq(
     LessThan, Maximum

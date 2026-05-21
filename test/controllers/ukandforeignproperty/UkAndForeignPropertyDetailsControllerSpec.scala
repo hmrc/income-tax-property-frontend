@@ -24,7 +24,7 @@ import models.IncomeSourcePropertyType.{ForeignProperty, UKProperty}
 import models.authorisation.SessionValues
 import models.backend.PropertyDetails
 import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchersSugar.eqTo
+import org.mockito.ArgumentMatchers.eq as eqTo
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.inject.bind

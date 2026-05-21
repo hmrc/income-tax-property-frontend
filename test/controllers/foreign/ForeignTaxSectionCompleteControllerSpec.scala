@@ -24,7 +24,7 @@ import models.JourneyPath.ForeignPropertyTax
 import models.{JourneyContext, NormalMode, User, UserAnswers}
 import navigation.{FakeForeignPropertyNavigator, ForeignPropertyNavigator}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchersSugar.eqTo
+import org.mockito.ArgumentMatchers.eq as eqTo
 import org.mockito.Mockito.{doReturn, when}
 import org.scalatestplus.mockito.MockitoSugar
 import pages.foreign.ForeignTaxSectionCompletePage

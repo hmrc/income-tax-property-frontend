@@ -24,7 +24,7 @@ import models.IncomeSourcePropertyType.UKProperty
 import models.authorisation.SessionValues
 import models.backend.PropertyDetails
 import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchersSugar.eqTo
+import org.mockito.ArgumentMatchers.eq as eqTo
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import play.api.http.Status.INTERNAL_SERVER_ERROR

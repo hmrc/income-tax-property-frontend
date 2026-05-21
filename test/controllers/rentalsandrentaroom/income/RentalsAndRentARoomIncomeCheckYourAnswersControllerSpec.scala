@@ -119,8 +119,8 @@ class RentalsAndRentARoomIncomeCheckYourAnswersControllerSpec
           val result = route(application, request).value
 
           whenReady(result) { r =>
-            verify(mockAuditService, mockitoTimeout(2000).times(1)).sendAuditEvent(any())(any(), any())
-            verify(mockBusinessService, mockitoTimeout(2000).times(1)).getUkPropertyDetails(any(), any())(any())
+            verify(mockAuditService, mockitoTimeout(1000).times(1)).sendAuditEvent(any())(any(), any())
+            verify(mockBusinessService, mockitoTimeout(1000).times(1)).getUkPropertyDetails(any(), any())(any())
           }
 
         }

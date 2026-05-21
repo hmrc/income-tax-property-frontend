@@ -22,7 +22,7 @@ import connectors.error.ApiError
 import models._
 import models.backend.PropertyDetails
 import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchersSugar.eqTo
+import org.mockito.ArgumentMatchers.eq as eqTo
 import org.mockito.Mockito.when
 import org.mockito.Mockito.{times, verify}
 import org.scalatestplus.mockito.MockitoSugar

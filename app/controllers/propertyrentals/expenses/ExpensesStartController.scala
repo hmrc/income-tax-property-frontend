@@ -21,7 +21,6 @@ import models.TotalIncomeUtils.isTotalIncomeUnder85K
 import models.{NormalMode, PropertyType}
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import service.CYADiversionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.propertyrentals.expenses.ExpensesStartView
 
@@ -32,7 +31,6 @@ class ExpensesStartController @Inject() (
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
-  diversionService: CYADiversionService,
   val controllerComponents: MessagesControllerComponents,
   view: ExpensesStartView
 ) extends FrontendBaseController with I18nSupport {

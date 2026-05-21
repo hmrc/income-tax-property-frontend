@@ -51,7 +51,7 @@ trait FrontendAppConfig {
 }
 
 @Singleton
-class FrontendAppConfigImpl @Inject() (configuration: Configuration) extends FrontendAppConfig {
+class FrontendAppConfigImpl @Inject()(configuration: Configuration) extends FrontendAppConfig {
 
   val host: String = configuration.get[String]("host")
   val appName: String = configuration.get[String]("appName")
@@ -72,6 +72,7 @@ class FrontendAppConfigImpl @Inject() (configuration: Configuration) extends Fro
   lazy val vcSessionServiceBaseUrl: String = configuration.get[Service]("microservice.services.income-tax-session-data").baseUrl
 
   private lazy val incomeTaxSubmissionFrontendUrlKey = "microservice.services.income-tax-submission-frontend.url"
+
   def incomeTaxSubmissionBaseUrl: String = configuration.get[String](incomeTaxSubmissionFrontendUrlKey) +
     configuration.get[String]("microservice.services.income-tax-submission-frontend.context")
 
@@ -88,7 +89,8 @@ class FrontendAppConfigImpl @Inject() (configuration: Configuration) extends Fro
     "en" -> Lang("en"),
     "cy" -> Lang("cy")
   )
-languageMap
+
+  languageMap
   val timeout: Int = configuration.get[Int]("timeout-dialog.timeout")
   val countdown: Int = configuration.get[Int]("timeout-dialog.countdown")
 
@@ -98,6 +100,7 @@ languageMap
   val vcBaseUrl = configuration.get[String]("microservice.services.view-and-change.url")
 
   val viewAndChangeEnterUtrUrl: String = s"$vcBaseUrl/report-quarterly/income-and-expenses/view/agents/client-utr"
+
   def viewAndChangeViewUrlAgent: String = s"$vcBaseUrl/report-quarterly/income-and-expenses/view/agents"
 
 }

@@ -16,12 +16,10 @@
 
 package controllers.enhancedstructuresbuildingallowance
 
-import audit.AuditService
 import controllers.actions._
 import models.PropertyType
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import service.PropertySubmissionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import viewmodels.checkAnswers.enhancedstructurebuildingallowance._
 import viewmodels.govuk.summarylist._
@@ -34,9 +32,7 @@ class EsbaCheckYourAnswersController @Inject() (
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
-  propertySubmissionService: PropertySubmissionService,
   val controllerComponents: MessagesControllerComponents,
-  audit: AuditService,
   view: EsbaCheckYourAnswersView
 )
   extends FrontendBaseController with I18nSupport {

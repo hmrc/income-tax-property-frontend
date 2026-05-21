@@ -20,7 +20,7 @@ import base.SpecBase
 import models.TotalIncome.Under
 import models.{JourneyContext, JourneyPath, PropertyAbout, UKPropertySelect, UserAnswers}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchersSugar.eqTo
+import org.mockito.ArgumentMatchers.eq as eqTo
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.{ReportPropertyIncomePage, TotalIncomePage, UKPropertyPage}

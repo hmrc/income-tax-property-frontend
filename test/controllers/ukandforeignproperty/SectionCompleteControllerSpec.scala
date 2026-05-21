@@ -22,7 +22,7 @@ import models.JourneyPath.UkAndForeignPropertyAbout
 import models.{JourneyContext, User, UserAnswers}
 import navigation.{FakeUKAndForeignPropertyNavigator, UkAndForeignPropertyNavigator}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchersSugar.eqTo
+import org.mockito.ArgumentMatchers.eq as eqTo
 import org.mockito.Mockito.{doReturn, when}
 import org.scalatest.prop.TableFor1
 import org.scalatest.prop.Tables.Table

@@ -19,7 +19,6 @@ package controllers.rentalsandrentaroom.income
 import controllers.actions._
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import service.CYADiversionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.rentalsandrentaroom.income.RentalsAndRentARoomIncomeStartView
 
@@ -30,7 +29,6 @@ class RentalsAndRentARoomIncomeStartController @Inject() (
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
-  diversionService: CYADiversionService,
   val controllerComponents: MessagesControllerComponents,
   view: RentalsAndRentARoomIncomeStartView
 ) extends FrontendBaseController with I18nSupport {

@@ -27,7 +27,7 @@ import service.ForeignIncomeCYADiversionService
 import java.time.LocalDate
 
 class ForeignIncomeNavigatorSpec extends SpecBase {
-  val navigator = new ForeignIncomeNavigator(new ForeignIncomeCYADiversionService())
+  val navigator = new ForeignIncomeNavigator
   private val taxYear = LocalDate.now.getYear
   private val country: Country = Country("Spain", "ESP")
   private val index = 0

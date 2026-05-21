@@ -23,7 +23,7 @@ import models.JourneyPath.PropertyRentalsAndRentARoomIncome
 import models.{JourneyContext, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchersSugar.eqTo
+import org.mockito.ArgumentMatchers.eq as eqTo
 import org.mockito.Mockito.{doReturn, when}
 import org.scalatestplus.mockito.MockitoSugar
 import pages.rentalsandrentaroom.income.RentalsRaRIncomeCompletePage

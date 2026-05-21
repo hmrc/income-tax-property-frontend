@@ -20,7 +20,7 @@ import audit.AuditService
 import base.SpecBase
 import models.{ClaimExpensesOrRelief, RaRAbout, UserAnswers}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchersSugar.eqTo
+import org.mockito.ArgumentMatchers.eq as eqTo
 import org.mockito.Mockito.{times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar
 import pages.ukrentaroom.AboutSectionCompletePage

@@ -23,7 +23,7 @@ import models.JourneyPath.ForeignPropertyAllowances
 import models.{JourneyContext, NormalMode, User, UserAnswers}
 import navigation.{FakeForeignPropertyNavigator, ForeignPropertyNavigator}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchersSugar.eqTo
+import org.mockito.ArgumentMatchers.eq as eqTo
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.foreign.allowances.ForeignAllowancesCompletePage

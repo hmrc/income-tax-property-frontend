@@ -33,8 +33,8 @@ lazy val root = Project(appName, file("."))
     PlayKeys.playDefaultPort := 19161,
     scalacOptions ++= Seq(
       "-feature",
-      "-Wconf:msg=unused import&src=views/.*:s",
-      "-Wconf:cat=feature:ws,cat=optimizer:ws,src=target/.*:s"
+      "-Wconf:src=.*/target/.*:s,src=.*/routes/.*:s", // suppress warnings in generated routes files
+      "-Wconf:msg=unused import&src=.*/views/.*:s"
     ),
     libraryDependencies ++= AppDependencies(),
     retrieveManaged := true,
@@ -99,3 +99,4 @@ lazy val itSettings = DefaultBuildSettings.itSettings() ++ Seq(
   parallelExecution := false,
   fork := true
 )
+

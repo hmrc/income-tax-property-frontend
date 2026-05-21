@@ -24,7 +24,6 @@ import pages.ukandforeignproperty.UkOtherIncomeFromUkPropertyPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
-import service.SessionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.ukandforeignproperty.OtherIncomeFromUkPropertyView
 
@@ -39,7 +38,6 @@ class OtherUkPropertyIncomeController @Inject() (
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
   formProvider: UkAndForeignPropertyOtherIncomeFromUkPropertyFormProvider,
-  sessionService: SessionService,
   val controllerComponents: MessagesControllerComponents,
   view: OtherIncomeFromUkPropertyView
 )(implicit ec: ExecutionContext)

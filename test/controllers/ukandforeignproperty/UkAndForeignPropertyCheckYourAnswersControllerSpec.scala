@@ -23,7 +23,7 @@ import models.TotalPropertyIncome.LessThan
 import models.ukAndForeign.{AboutForeign, AboutUk, AboutUkAndForeign, UkAndForeignAbout}
 import models.{JourneyContext, JourneyPath, TotalPropertyIncome, UserAnswers}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchersSugar.eqTo
+import org.mockito.ArgumentMatchers.eq as eqTo
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.ukandforeignproperty.{ReportIncomePage, TotalPropertyIncomePage}

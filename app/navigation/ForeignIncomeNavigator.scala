@@ -25,12 +25,11 @@ import pages.foreign.Country
 import pages.foreignincome._
 import pages.foreignincome.dividends._
 import play.api.mvc.Call
-import service.ForeignIncomeCYADiversionService
 
 import javax.inject.Inject
 
 @Singleton
-class ForeignIncomeNavigator @Inject() (foreignIncomeCYADiversionService: ForeignIncomeCYADiversionService) {
+class ForeignIncomeNavigator {
   private val normalRoutes: Page => Int => UserAnswers => UserAnswers => Call = {
     case CountryReceiveDividendIncomePage(index) =>
       taxYear => _ => userAnswers => dividendIncomeCountryNavigation(taxYear, index, userAnswers)

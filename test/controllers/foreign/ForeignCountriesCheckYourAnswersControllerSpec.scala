@@ -22,7 +22,7 @@ import controllers.foreign.routes.ForeignCountriesCheckYourAnswersController
 import models.JourneyPath.ForeignSelectCountry
 import models.{ForeignPropertySelectCountry, JourneyContext, TotalIncome, UserAnswers}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchersSugar.eqTo
+import org.mockito.ArgumentMatchers.eq as eqTo
 import org.mockito.Mockito.{times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar
 import pages.foreign.ForeignTaxSectionCompletePage

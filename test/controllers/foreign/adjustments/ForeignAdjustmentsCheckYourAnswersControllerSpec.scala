@@ -23,7 +23,7 @@ import controllers.routes
 import models.JourneyPath.ForeignPropertyAdjustments
 import models.{BalancingCharge, JourneyContext, UnusedLossesPreviousYears, UserAnswers}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchersSugar.eqTo
+import org.mockito.ArgumentMatchers.eq as eqTo
 import org.mockito.Mockito.{times, verify, when}
 import pages.foreign.ClaimPropertyIncomeAllowanceOrExpensesPage
 import pages.foreign.adjustments._

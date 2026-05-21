@@ -19,7 +19,6 @@ package controllers.foreign.allowances
 import controllers.actions._
 import controllers.{PropertyDetailsHandler, routes}
 import models.backend.PropertyDetails
-import navigation.ForeignPropertyNavigator
 import pages.getIncomeCountry
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents, Result}
@@ -36,7 +35,6 @@ class ForeignPropertyAllowancesStartController @Inject() (
   override val messagesApi: MessagesApi,
   identify: IdentifierAction,
   getData: DataRetrievalAction,
-  foreignNavigator: ForeignPropertyNavigator,
   requireData: DataRequiredAction,
   val controllerComponents: MessagesControllerComponents,
   view: ForeignPropertyAllowancesStartView,
