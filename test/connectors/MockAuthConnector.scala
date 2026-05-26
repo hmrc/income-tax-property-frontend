@@ -16,10 +16,9 @@
 
 package connectors
 
-import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.{any, eq as eqTo}
 import org.mockito.Mockito
-import org.mockito.Mockito.doAnswer
-import org.mockito.invocation.InvocationOnMock
+import org.mockito.Mockito.when
 import org.scalatest.{BeforeAndAfterEach, Suite}
 import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.auth.core.AuthConnector
@@ -27,32 +26,21 @@ import uk.gov.hmrc.auth.core.authorise.Predicate
 import uk.gov.hmrc.auth.core.retrieve.Retrieval
 import uk.gov.hmrc.http.HeaderCarrier
 
-import scala.collection.mutable
 import scala.concurrent.{ExecutionContext, Future}
 
-trait MockAuthConnector extends MockitoSugar with BeforeAndAfterEach { self: Suite =>
+trait MockAuthConnector extends MockitoSugar with BeforeAndAfterEach { this: Suite =>
 
   lazy val mockAuthConnector: AuthConnector = mock[AuthConnector]
 
-  private val _authResponses: mutable.Queue[Future[Any]] = mutable.Queue.empty
-  private var _answerRegistered: Boolean = false
-
   abstract override def beforeEach(): Unit = {
     Mockito.reset(mockAuthConnector)
-    _authResponses.clear()
-    _answerRegistered = false
     super.beforeEach()
   }
 
   object MockAuthConnector {
-    def authorise[T](predicate: Predicate)(response: Future[T]): Unit = {
-      _authResponses.enqueue(response.asInstanceOf[Future[Any]])
-      if (!_answerRegistered) {
-        doAnswer { (_: InvocationOnMock) => _authResponses.dequeue() }
-          .when(mockAuthConnector)
-          .authorise(any[Predicate](), any[Retrieval[T]]())(any[HeaderCarrier](), any[ExecutionContext]())
-        _answerRegistered = true
-      }
-    }
+    def authorise[T](predicate: Predicate)(first: Future[T], rest: Future[T]*): Unit =
+      when(
+        mockAuthConnector.authorise[Any](eqTo(predicate), any[Retrieval[Any]])(any[HeaderCarrier], any[ExecutionContext])
+      ).thenReturn(first.asInstanceOf[Future[Any]], rest.map(_.asInstanceOf[Future[Any]]) *)
   }
 }

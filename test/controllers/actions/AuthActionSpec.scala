@@ -84,11 +84,7 @@ class AuthActionSpec extends SpecBase with MockAppConfig with MockAuthConnector 
 
             MockAuthConnector
               .authorise(EmptyPredicate)(
-                Future.successful(new~(Some("internalId"), Some(AffinityGroup.Individual)))
-              )
-
-            MockAuthConnector
-              .authorise(EmptyPredicate)(
+                Future.successful(new~(Some("internalId"), Some(AffinityGroup.Individual))),
                 Future.successful(new~(enrolments, ConfidenceLevel.L250))
               )
 
@@ -109,11 +105,7 @@ class AuthActionSpec extends SpecBase with MockAppConfig with MockAuthConnector 
 
             MockAuthConnector
               .authorise(EmptyPredicate)(
-                Future.successful(new~(Some("internalId"), Some(AffinityGroup.Individual)))
-              )
-
-            MockAuthConnector
-              .authorise(EmptyPredicate)(
+                Future.successful(new~(Some("internalId"), Some(AffinityGroup.Individual))),
                 Future.successful(new~(enrolments, ConfidenceLevel.L250))
               )
 
@@ -135,11 +127,7 @@ class AuthActionSpec extends SpecBase with MockAppConfig with MockAuthConnector 
 
             MockAuthConnector
               .authorise(EmptyPredicate)(
-                Future.successful(new~(Some("internalId"), Some(AffinityGroup.Individual)))
-              )
-
-            MockAuthConnector
-              .authorise(EmptyPredicate)(
+                Future.successful(new~(Some("internalId"), Some(AffinityGroup.Individual))),
                 Future.successful(new~(enrolments, ConfidenceLevel.L250))
               )
 
@@ -173,11 +161,7 @@ class AuthActionSpec extends SpecBase with MockAppConfig with MockAuthConnector 
 
           MockAuthConnector
             .authorise(EmptyPredicate)(
-              Future.successful(new~(Some("internalId"), Some(AffinityGroup.Individual)))
-            )
-
-          MockAuthConnector
-            .authorise(EmptyPredicate)(
+              Future.successful(new~(Some("internalId"), Some(AffinityGroup.Individual))),
               Future.successful(new~(enrolments, ConfidenceLevel.L200))
             )
 
@@ -195,7 +179,7 @@ class AuthActionSpec extends SpecBase with MockAppConfig with MockAuthConnector 
 
         val fakeRequestWithMtditidAndNINO = FakeRequest().withSession(
           SessionValues.ClientMtdid -> mtditid,
-          SessionValues.ClientNino  -> nino,
+          SessionValues.ClientNino -> nino,
           SessionValues.SessionId -> aUser.sessionId
         )
 
@@ -329,7 +313,7 @@ class AuthActionSpec extends SpecBase with MockAppConfig with MockAuthConnector 
 
           MockAuthConnector
             .authorise(EmptyPredicate)(
-              Future.successful(new ~(Some("internalId"), Some(AffinityGroup.Agent)))
+              Future.successful(new~(Some("internalId"), Some(AffinityGroup.Agent)))
             )
 
           val result = controller.onPageLoad()(fakeRequestWithNINO)
@@ -351,7 +335,7 @@ class AuthActionSpec extends SpecBase with MockAppConfig with MockAuthConnector 
 
           MockAuthConnector
             .authorise(EmptyPredicate)(
-              Future.successful(new ~(Some("internalId"), Some(AffinityGroup.Agent)))
+              Future.successful(new~(Some("internalId"), Some(AffinityGroup.Agent)))
             )
 
           val result = controller.onPageLoad()(fakeRequestWithMtditid)
