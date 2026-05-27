@@ -54,7 +54,7 @@ class UkAndForeignPropertyCountryServiceSpec extends SpecBase with FutureAwaits 
   ): OngoingStubbing[Future[Boolean]] =
     when(
       mockSessionRepository.set(
-        argThat { answers: UserAnswers =>
+        argThat { (answers: UserAnswers) =>
           (answers.data \ aboutPath(UKAndForeignProperty) \ "countries").as[List[Country]] == countries
         }
       )

@@ -39,7 +39,7 @@ class UkAndForeignPropertyDeductingTaxFromNonUkResidentLandlordFormProvider @Inj
             .verifying(inRange(BigDecimal(0), BigDecimal(100000000), "ukAndForeignPropertyDeductingTaxFromNonUkResidentLandlord.error.outOfRange"))
         )
       }
-      )(DeductingTaxFromNonUkResidentLandlord.apply)(DeductingTaxFromNonUkResidentLandlord.unapply)
+      )(DeductingTaxFromNonUkResidentLandlord.apply)(m => Some((m.isDeductingTaxFromNonUkResidentLandlord, m.deductingTaxFromNonUkResidentLandlordAmount)))
     )
   }
 }

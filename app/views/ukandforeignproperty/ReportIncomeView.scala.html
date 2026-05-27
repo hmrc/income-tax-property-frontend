@@ -28,7 +28,7 @@
 
 @layout(pageTitle = title(form, messages(s"reportIncome.title.$userType"))) {
 
-    @formHelper(action = controllers.ukandforeignproperty.routes.ReportIncomeController.onSubmit(taxYear, mode), 'autoComplete -> "off") {
+    @formHelper(action = controllers.ukandforeignproperty.routes.ReportIncomeController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
         @if(form.errors.nonEmpty) {
             @govukErrorSummary(ErrorSummaryViewModel(form,  errorLinkOverrides = Map("value" -> "value_0")))

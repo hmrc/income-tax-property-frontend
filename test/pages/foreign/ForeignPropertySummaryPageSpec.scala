@@ -27,7 +27,6 @@ import org.scalatest.OptionValues
 import org.scalatest.concurrent.{IntegrationPatience, ScalaFutures}
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
-import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 import org.scalatestplus.mockito.MockitoSugar
 import pages.foreign.allowances.ForeignAllowancesCompletePage
 import pages.foreign.expenses.ForeignExpensesSectionCompletePage
@@ -99,7 +98,7 @@ class ForeignPropertySummaryPageSpec
         Instant.ofEpochSecond(1)
       )
       val taskList = foreignSummaryPage.foreignPropertyAboutItems(taxYear, Some(userAnswers))
-      taskList.head.taskListTag shouldBe InProgress
+      taskList.head.taskListTag mustBe InProgress
     }
 
     "should show Complete if the user selects true for Have you finished" in {
@@ -111,7 +110,7 @@ class ForeignPropertySummaryPageSpec
         Instant.ofEpochSecond(1)
       )
       val taskList = foreignSummaryPage.foreignPropertyAboutItems(taxYear, Some(userAnswers))
-      taskList.head.taskListTag shouldBe Completed
+      taskList.head.taskListTag mustBe Completed
     }
 
     "should show NotStarted if the user has not selected any value for Have you finished" in {
@@ -123,7 +122,7 @@ class ForeignPropertySummaryPageSpec
         Instant.ofEpochSecond(1)
       )
       val taskList = foreignSummaryPage.foreignPropertyAboutItems(taxYear, Some(userAnswers))
-      taskList.head.taskListTag shouldBe NotStarted
+      taskList.head.taskListTag mustBe NotStarted
     }
 
     "should redirect to the CYA page when the task list tag is 'Completed'" in {
@@ -135,7 +134,7 @@ class ForeignPropertySummaryPageSpec
         Instant.ofEpochSecond(1)
       )
       val taskList = foreignSummaryPage.foreignPropertyAboutItems(taxYear, Some(userAnswers))
-      taskList.head.call shouldBe ForeignCountriesCheckYourAnswersController.onPageLoad(taxYear)
+      taskList.head.call mustBe ForeignCountriesCheckYourAnswersController.onPageLoad(taxYear)
     }
   }
 
@@ -154,7 +153,7 @@ class ForeignPropertySummaryPageSpec
         incomeItem(isComplete = true),
         adjustmentsItem(isClaimingPIA, isIncomeSectionComplete = true)
       )
-      taskList shouldBe res
+      taskList mustBe res
     }
 
     "should show the correct items when claiming PIA and Income section is incomplete" in {
@@ -170,7 +169,7 @@ class ForeignPropertySummaryPageSpec
         incomeItem(),
         adjustmentsItem(isClaimingPIA)
       )
-      taskList shouldBe res
+      taskList mustBe res
     }
 
     "should show the correct items when not claiming PIA with accruals" in {
@@ -188,7 +187,7 @@ class ForeignPropertySummaryPageSpec
         sbaItem,
         adjustmentsItem(isClaimingPIA)
       )
-      taskList shouldBe res
+      taskList mustBe res
     }
 
     "should show the correct items when not claiming PIA with Cash" in {
@@ -203,7 +202,7 @@ class ForeignPropertySummaryPageSpec
         allowancesItem,
         adjustmentsItem(isClaimingPIA)
       )
-      taskList shouldBe res
+      taskList mustBe res
     }
 
     "should not show adjustments when PIA has not been specified" in {
@@ -214,7 +213,7 @@ class ForeignPropertySummaryPageSpec
         foreignTaxItem,
         incomeItem()
       )
-      taskList shouldBe res
+      taskList mustBe res
     }
 
     "should redirect to the CYA page when the task list tag is 'Completed' and SBA is not being claimed" in {
@@ -239,7 +238,7 @@ class ForeignPropertySummaryPageSpec
         sbaItem.copy(taskListTag = Completed, call = ForeignClaimSbaCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
         adjustmentsItem(isClaimingPIA)
       )
-      taskList shouldBe res
+      taskList mustBe res
     }
 
     "should redirect to the CYA page when the task list tag is 'Completed' and SBA is being claimed" in {
@@ -275,7 +274,7 @@ class ForeignPropertySummaryPageSpec
         sbaItem.copy(taskListTag = Completed, call = ForeignStructureBuildingAllowanceClaimsController.onPageLoad(taxYear, countryCode)),
         adjustmentsItem(isClaimingPIA)
       )
-      taskList shouldBe res
+      taskList mustBe res
     }
 
     "should redirect to the CYA page when the task list tag is 'Completed' and with no sba for Cash basis" in {
@@ -298,7 +297,7 @@ class ForeignPropertySummaryPageSpec
         allowancesItem.copy(taskListTag = Completed, call = ForeignAllowancesCheckYourAnswersController.onPageLoad(taxYear, countryCode)),
         adjustmentsItem(isClaimingPIA)
       )
-      taskList shouldBe res
+      taskList mustBe res
     }
   }
 

@@ -24,7 +24,6 @@ import pages.isUkAndForeignAboutJourneyComplete
 import pages.ukandforeignproperty.UkAndForeignPropertyClaimExpensesOrReliefPage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import service.CYADiversionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.rentalsandrentaroom.adjustments.RentalsAndRentARoomAdjustmentsStartView
 
@@ -35,7 +34,6 @@ class RentalsAndRentARoomAdjustmentsStartController @Inject() (
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
-  diversionService: CYADiversionService,
   val controllerComponents: MessagesControllerComponents,
   view: RentalsAndRentARoomAdjustmentsStartView
 ) extends FrontendBaseController with I18nSupport {

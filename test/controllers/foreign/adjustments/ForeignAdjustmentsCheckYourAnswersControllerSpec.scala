@@ -22,8 +22,8 @@ import controllers.foreign.adjustments.routes.{ForeignAdjustmentsCheckYourAnswer
 import controllers.routes
 import models.JourneyPath.ForeignPropertyAdjustments
 import models.{BalancingCharge, JourneyContext, UnusedLossesPreviousYears, UserAnswers}
-import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.eq as eqTo
 import org.mockito.Mockito.{times, verify, when}
 import pages.foreign.ClaimPropertyIncomeAllowanceOrExpensesPage
 import pages.foreign.adjustments._
@@ -120,7 +120,7 @@ class ForeignAdjustmentsCheckYourAnswersControllerSpec extends SpecBase {
 
       when(
         propertySubmissionService
-          .saveForeignPropertyJourneyAnswers(ArgumentMatchers.eq(context), any)(
+          .saveForeignPropertyJourneyAnswers(eqTo(context), any)(
             any(),
             any()
           )

@@ -20,7 +20,6 @@ import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 import play.api.libs.json._
 import models.{ForeignProperty, ForeignPropertySelectCountry, TotalIncome}
-import org.scalatest.matchers.must.Matchers.convertToAnyMustWrapper
 import pages.foreign.Country
 import pages.PageConstants.selectCountryPath
 
@@ -39,7 +38,7 @@ class ForeignPropertySelectCountrySpec extends AnyFreeSpec with Matchers {
           claimPropertyIncomeAllowance = Some(true)
         )
 
-        instance.toString must include("ForeignPropertySelectCountry")
+        instance.toString should include("ForeignPropertySelectCountry")
       }
     }
 
@@ -57,7 +56,7 @@ class ForeignPropertySelectCountrySpec extends AnyFreeSpec with Matchers {
         val json = Json.toJson(instance)
         val deserialized = json.as[ForeignPropertySelectCountry]
 
-        deserialized mustEqual instance
+        deserialized shouldEqual instance
       }
 
       "must handle optional fields correctly" in {
@@ -72,14 +71,14 @@ class ForeignPropertySelectCountrySpec extends AnyFreeSpec with Matchers {
         val json = Json.toJson(instance)
         val deserialized = json.as[ForeignPropertySelectCountry]
 
-        deserialized mustEqual instance
+        deserialized shouldEqual instance
       }
     }
 
     ".path" - {
 
       "must resolve the correct JsPath" in {
-        ForeignPropertySelectCountry.path mustEqual JsPath \ selectCountryPath(ForeignProperty)
+        ForeignPropertySelectCountry.path shouldEqual JsPath \ selectCountryPath(ForeignProperty)
       }
     }
   }

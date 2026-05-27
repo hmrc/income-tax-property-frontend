@@ -21,8 +21,8 @@ import forms.about.AboutPropertyCompleteFormProvider
 import models.JourneyPath.PropertyAbout
 import models.{JourneyContext, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
-import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.eq as eqTo
 import org.mockito.Mockito.{doReturn, when}
 import org.scalatestplus.mockito.MockitoSugar
 import pages.AboutPropertyCompletePage
@@ -109,7 +109,7 @@ class AboutPropertyCompleteControllerSpec extends SpecBase with MockitoSugar {
       )
         .when(mockJourneyAnswersService)
         .setUKPropertyStatus(
-          ArgumentMatchers.eq(
+          eqTo(
             JourneyContext(
               taxYear = taxYear,
               mtditid = user.mtditid,
@@ -117,8 +117,8 @@ class AboutPropertyCompleteControllerSpec extends SpecBase with MockitoSugar {
               journeyPath = PropertyAbout
             )
           ),
-          ArgumentMatchers.eq("completed"),
-          ArgumentMatchers.eq(user)
+          eqTo("completed"),
+          eqTo(user)
         )(any())
 
       val application =

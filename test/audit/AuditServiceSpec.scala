@@ -19,7 +19,7 @@ package audit
 import models.AccountingMethod.Traditional
 import models.{AuditPropertyType, JourneyName, SectionName, TotalIncome, UKPropertySelect, PropertyAbout}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchersSugar.eqTo
+import org.mockito.ArgumentMatchers.{eq as eqTo}
 import org.mockito.Mockito.{times, verify}
 import org.scalatest.wordspec.AnyWordSpec
 import org.scalatestplus.mockito.MockitoSugar

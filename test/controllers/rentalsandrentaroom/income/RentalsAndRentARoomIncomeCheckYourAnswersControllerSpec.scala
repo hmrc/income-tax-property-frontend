@@ -23,7 +23,7 @@ import models.backend.PropertyDetails
 import models.{DeductingTax, RentalsRentARoom, ReversePremiumsReceived, UserAnswers}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.{doNothing, when}
-import org.mockito.MockitoSugar.{times, verify}
+import org.mockito.Mockito.{timeout => mockitoTimeout, times, verify}
 import org.scalatestplus.mockito.MockitoSugar
 import org.scalatestplus.scalacheck.ScalaCheckPropertyChecks._
 import pages.propertyrentals.income._
@@ -119,8 +119,8 @@ class RentalsAndRentARoomIncomeCheckYourAnswersControllerSpec
           val result = route(application, request).value
 
           whenReady(result) { r =>
-            verify(mockAuditService, times(1)).sendAuditEvent(any())(any(), any())
-            verify(mockBusinessService, times(1)).getUkPropertyDetails(any(), any())(any())
+            verify(mockAuditService, mockitoTimeout(1000).times(1)).sendAuditEvent(any())(any(), any())
+            verify(mockBusinessService, mockitoTimeout(1000).times(1)).getUkPropertyDetails(any(), any())(any())
           }
 
         }

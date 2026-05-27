@@ -41,6 +41,6 @@ class RaRBalancingChargeFormProvider @Inject() extends Mappings {
               .verifying(inRange(BigDecimal(0), BigDecimal(100000000), "raRbalancingCharge.amount.error.outOfRange"))
           )
         }
-      )(BalancingCharge.apply)(BalancingCharge.unapply)
+      )(BalancingCharge.apply)(m => Some((m.isBalancingCharge, m.balancingChargeAmount)))
     )
 }

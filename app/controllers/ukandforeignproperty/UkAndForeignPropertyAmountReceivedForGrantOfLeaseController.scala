@@ -24,7 +24,6 @@ import pages.ukandforeignproperty.UkAmountReceivedForGrantOfLeasePage
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
 import repositories.SessionRepository
-import service.SessionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.ukandforeignproperty.UkAndForeignPropertyAmountReceivedForGrantOfLeaseView
 
@@ -39,7 +38,6 @@ class UkAndForeignPropertyAmountReceivedForGrantOfLeaseController @Inject() (
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
   formProvider: UkAndForeignPropertyAmountReceivedForGrantOfLeaseFormProvider,
-  sessionService: SessionService,
   val controllerComponents: MessagesControllerComponents,
   view: UkAndForeignPropertyAmountReceivedForGrantOfLeaseView
 )(implicit ec: ExecutionContext)

@@ -41,6 +41,6 @@ class CapitalAllowancesForACarFormProvider @Inject() extends Mappings {
             .verifying(inRange(BigDecimal(minimum), BigDecimal(maximum), "capitalAllowancesForACar.error.outOfRange"))
         )
       }
-    )(CapitalAllowancesForACar.apply)(CapitalAllowancesForACar.unapply))
+    )(CapitalAllowancesForACar.apply)(m => Some((m.isCapitalAllowancesForACar, m.capitalAllowancesForACarAmount))))
   }
 }

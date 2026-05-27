@@ -46,6 +46,6 @@ class RaRCapitalAllowancesForACarFormProvider @Inject() extends Mappings {
               )
           )
         }
-      )(CapitalAllowancesForACar.apply)(CapitalAllowancesForACar.unapply)
+      )(CapitalAllowancesForACar.apply)(m => Some((m.isCapitalAllowancesForACar, m.capitalAllowancesForACarAmount)))
     )
 }

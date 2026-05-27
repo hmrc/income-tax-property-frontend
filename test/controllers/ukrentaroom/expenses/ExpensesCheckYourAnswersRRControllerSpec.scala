@@ -20,8 +20,8 @@ import audit.{AuditService, RentARoomExpenses}
 import base.SpecBase
 import controllers.ukrentaroom.expenses.routes._
 import models.{JourneyContext, JourneyPath, RentARoom, UserAnswers}
-import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.eq as eqTo
 import org.mockito.Mockito.{times, verify, when}
 import pages.PageConstants.expensesPath
 import play.api.inject.bind
@@ -112,8 +112,8 @@ class ExpensesCheckYourAnswersRRControllerSpec extends SpecBase with SummaryList
       when(
         propertySubmissionService
           .saveUkPropertyJourneyAnswers(
-            ArgumentMatchers.eq(context),
-            ArgumentMatchers.eq(
+            eqTo(context),
+            eqTo(
               RentARoomExpenses(
                 consolidatedExpenses = None,
                 rentsRatesAndInsurance = Some(rentsRatesAndInsurance),

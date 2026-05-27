@@ -21,7 +21,7 @@ import base.SpecBase
 import models.{BalancingCharge, UserAnswers}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
-import org.mockito.MockitoSugar.{times, verify}
+import org.mockito.Mockito.{times, verify}
 import org.scalatestplus.mockito.MockitoSugar.mock
 import pages.ukrentaroom.adjustments.{RaRBalancingChargePage, RaRUnusedResidentialCostsPage}
 import play.api.inject.bind

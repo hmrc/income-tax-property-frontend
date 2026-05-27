@@ -23,8 +23,8 @@ import forms.foreign.ForeignSelectCountriesCompleteFormProvider
 import models.JourneyPath.ForeignSelectCountry
 import models.{JourneyContext, User, UserAnswers}
 import navigation.{FakeForeignPropertyNavigator, ForeignPropertyNavigator}
-import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.eq as eqTo
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.foreign.ForeignSelectCountriesCompletePage
@@ -103,12 +103,12 @@ class ForeignSelectCountriesCompleteControllerSpec extends SpecBase with Mockito
       val mockJourneyAnswersService = mock[JourneyAnswersService]
       when(
         mockJourneyAnswersService.setForeignPropertyStatus(
-          ArgumentMatchers.eq(
+          eqTo(
             JourneyContext(taxYear, mtditid = "mtditid", nino = "nino", journeyPath = ForeignSelectCountry)
           ),
-          ArgumentMatchers.eq("completed"),
-          ArgumentMatchers.eq(user),
-          ArgumentMatchers.eq("")
+          eqTo("completed"),
+          eqTo(user),
+          eqTo("")
         )(any())
       ) thenReturn Future.successful(
         Right("")

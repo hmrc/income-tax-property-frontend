@@ -20,8 +20,8 @@ import audit.RentalsExpense
 import base.SpecBase
 import models.JourneyPath.PropertyRentalExpenses
 import models.{ConsolidatedExpenses, JourneyContext, Rentals, UserAnswers}
-import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.eq as eqTo
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.propertyrentals.expenses.ConsolidatedExpensesPage
@@ -90,7 +90,7 @@ class ExpensesCheckYourAnswersControllerSpec extends SpecBase with MockitoSugar 
 
       when(
         propertySubmissionService
-          .saveUkPropertyJourneyAnswers(ArgumentMatchers.eq(context), ArgumentMatchers.eq(rentalsExpense))(
+          .saveUkPropertyJourneyAnswers(eqTo(context), eqTo(rentalsExpense))(
             any(),
             any()
           )

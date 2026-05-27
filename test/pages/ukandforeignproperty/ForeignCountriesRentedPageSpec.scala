@@ -19,7 +19,6 @@ package pages.ukandforeignproperty
 import org.scalatest.OptionValues
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.must.Matchers
-import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 import pages.foreign.AddCountriesRentedPage
 import play.api.libs.json.JsPath
 
@@ -31,7 +30,7 @@ class ForeignCountriesRentedPageSpec extends AnyFreeSpec with Matchers with Opti
     }
 
     "have the correct toString value" in {
-      AddCountriesRentedPage.toString shouldEqual "addAnotherCountry"
+      AddCountriesRentedPage.toString mustEqual "addAnotherCountry"
     }
   }
 }

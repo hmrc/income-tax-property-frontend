@@ -22,7 +22,6 @@ import models.{NormalMode, Rentals}
 import pages.isUkAndForeignAboutJourneyComplete
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import service.CYADiversionService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import views.html.adjustments.AdjustmentsStartView
 
@@ -33,7 +32,6 @@ class AdjustmentsStartController @Inject() (
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
-  diversionService: CYADiversionService,
   val controllerComponents: MessagesControllerComponents,
   view: AdjustmentsStartView
 ) extends FrontendBaseController with I18nSupport {

@@ -6,7 +6,7 @@ import uk.gov.hmrc.versioning.SbtGitVersioning.autoImport.majorVersion
 lazy val appName: String = "income-tax-property-frontend"
 
 ThisBuild / majorVersion := 0
-ThisBuild / scalaVersion := "2.13.18"
+ThisBuild / scalaVersion := "3.3.7"
 
 lazy val root = Project(appName, file("."))
   .enablePlugins(PlayScala, SbtDistributablesPlugin)
@@ -33,7 +33,8 @@ lazy val root = Project(appName, file("."))
     PlayKeys.playDefaultPort := 19161,
     scalacOptions ++= Seq(
       "-feature",
-      "-Wconf:cat=feature:ws,cat=optimizer:ws,src=target/.*:s"
+      "-Wconf:src=.*/target/.*:s,src=.*/routes/.*:s", // suppress warnings in generated routes files
+      "-Wconf:msg=unused import&src=.*/views/.*:s"
     ),
     libraryDependencies ++= AppDependencies(),
     retrieveManaged := true,
@@ -98,3 +99,4 @@ lazy val itSettings = DefaultBuildSettings.itSettings() ++ Seq(
   parallelExecution := false,
   fork := true
 )
+

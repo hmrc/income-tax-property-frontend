@@ -19,7 +19,6 @@ package pages.propertyrentals
 import base.SpecBase
 import models.TotalIncome.writes
 import models.{ClaimExpensesOrRelief, NormalMode, RentARoom, Rentals, RentalsRentARoom, UKPropertySelect, UserAnswers}
-import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 import pages.adjustments.RentalsAdjustmentsCompletePage
 import pages.propertyrentals.income.IncomeSectionFinishedPage
 import pages.rentalsandrentaroom.RentalsRaRAboutCompletePage
@@ -82,7 +81,7 @@ class SummaryPageSpec extends SpecBase {
     "return empty rows, given an empty user data" in {
       SummaryPage(cyaDiversionService)
         .createUkPropertyRows(Some(emptyUserAnswers), taxYear, cashOrAccruals)
-        .length should be(0)
+        .length must be(0)
     }
 
     "createUkPropertyRows return only one row when user has selected PropertyRentals but not selected ClaimPropertyIncomeAllowancePage" in {
@@ -103,12 +102,12 @@ class SummaryPageSpec extends SpecBase {
 
       SummaryPage(cyaDiversionService)
         .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals)
-        .length should be(
+        .length must be(
         1
       )
       SummaryPage(cyaDiversionService)
         .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals)
-        .head should be(
+        .head must be(
         summaryItem
       )
 
@@ -137,11 +136,11 @@ class SummaryPageSpec extends SpecBase {
 
       SummaryPage(cyaDiversionService)
         .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals)
-        .length should be(
+        .length must be(
         3
       )
       SummaryPage(cyaDiversionService)
-        .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals) should be(res)
+        .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals) must be(res)
     }
 
     "Pia == true incomeSectionFinishedPage == false adjustmentSectionFinished = None adjustment taskListTag should be CanNotStart" in {
@@ -171,11 +170,11 @@ class SummaryPageSpec extends SpecBase {
 
       SummaryPage(cyaDiversionService)
         .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals)
-        .length should be(
+        .length must be(
         3
       )
       SummaryPage(cyaDiversionService)
-        .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals) should be(res)
+        .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals) must be(res)
     }
     "Pia == true incomeSectionFinishedPage == None adjustmentSectionFinished = None adjustment taskListTag should be CanNotStart" in {
 
@@ -201,11 +200,11 @@ class SummaryPageSpec extends SpecBase {
 
       SummaryPage(cyaDiversionService)
         .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals)
-        .length should be(
+        .length must be(
         3
       )
       SummaryPage(cyaDiversionService)
-        .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals) should be(res)
+        .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals) must be(res)
     }
     "Pia == true incomeSectionFinishedPage == true adjustmentSectionFinished = None adjustment taskListTag should be NotStarted" in {
 
@@ -241,11 +240,11 @@ class SummaryPageSpec extends SpecBase {
 
       SummaryPage(cyaDiversionService)
         .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals)
-        .length should be(
+        .length must be(
         3
       )
       SummaryPage(cyaDiversionService)
-        .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals) should be(res)
+        .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals) must be(res)
     }
     "Pia == true incomeSectionFinishedPage == true adjustmentSectionFinished = false adjustment taskListTag should be InProgress" in {
 
@@ -284,11 +283,11 @@ class SummaryPageSpec extends SpecBase {
 
       SummaryPage(cyaDiversionService)
         .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals)
-        .length should be(
+        .length must be(
         3
       )
       SummaryPage(cyaDiversionService)
-        .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals) should be(res)
+        .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals) must be(res)
     }
     "Pia == true incomeSectionFinishedPage == true adjustmentSectionFinished = true adjustment taskListTag should be Completed" in {
 
@@ -329,11 +328,11 @@ class SummaryPageSpec extends SpecBase {
 
       SummaryPage(cyaDiversionService)
         .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals)
-        .length should be(
+        .length must be(
         3
       )
       SummaryPage(cyaDiversionService)
-        .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals) should be(res)
+        .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals) must be(res)
     }
     "Pia == false  adjustmentSectionFinished = None adjustment taskListTag should be NotStarted" in {
 
@@ -367,11 +366,11 @@ class SummaryPageSpec extends SpecBase {
 
       SummaryPage(cyaDiversionService)
         .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals)
-        .length should be(
+        .length must be(
         7
       )
       SummaryPage(cyaDiversionService)
-        .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals) should be(res)
+        .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals) must be(res)
     }
 
     "Pia == false  adjustmentSectionFinished = true adjustment taskListTag should be Completed" in {
@@ -409,11 +408,11 @@ class SummaryPageSpec extends SpecBase {
 
       SummaryPage(cyaDiversionService)
         .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals)
-        .length should be(
+        .length must be(
         7
       )
       SummaryPage(cyaDiversionService)
-        .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals) should be(res)
+        .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals) must be(res)
     }
     "Pia == false  adjustmentSectionFinished = false adjustment taskListTag should be InProgress" in {
 
@@ -450,11 +449,11 @@ class SummaryPageSpec extends SpecBase {
 
       SummaryPage(cyaDiversionService)
         .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals)
-        .length should be(
+        .length must be(
         7
       )
       SummaryPage(cyaDiversionService)
-        .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals) should be(res)
+        .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals) must be(res)
     }
 
     "should return all rows when ClaimPropertyIncomeAllowance is false and CashOrAccurals is true in the user data" in {
@@ -481,11 +480,11 @@ class SummaryPageSpec extends SpecBase {
 
       SummaryPage(cyaDiversionService)
         .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals)
-        .length should be(
+        .length must be(
         7
       )
       SummaryPage(cyaDiversionService)
-        .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals) should be(res)
+        .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccruals) must be(res)
     }
     "should return all rows except structuresAndBuildingAllowance when ClaimPropertyIncomeAllowance is false and CashOrAccurals is false in the user data" in {
       val userAnswersWithPropertyRentals = emptyUserAnswers
@@ -504,11 +503,11 @@ class SummaryPageSpec extends SpecBase {
 
       SummaryPage(cyaDiversionService)
         .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccurals)
-        .length should be(
+        .length must be(
         5
       )
       SummaryPage(cyaDiversionService)
-        .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccurals) should be(res)
+        .createUkPropertyRows(Some(userAnswersWithPropertyRentals), taxYear, cashOrAccurals) must be(res)
     }
 
   }
@@ -539,7 +538,7 @@ class SummaryPageSpec extends SpecBase {
       "rent_a_room_adjustments_link"
     )
     "return empty rows, given an empty user data" in {
-      SummaryPage(cyaDiversionService).createUkRentARoomRows(Some(emptyUserAnswers), taxYear).length should be(0)
+      SummaryPage(cyaDiversionService).createUkRentARoomRows(Some(emptyUserAnswers), taxYear).length must be(0)
     }
 
     "createUkRentARoomRows return only one row when user has selected Rent a room" in {
@@ -553,8 +552,8 @@ class SummaryPageSpec extends SpecBase {
 
       SummaryPage(cyaDiversionService)
         .createUkRentARoomRows(Some(userAnswersWithUkRentARoom), taxYear)
-        .length should be(1)
-      SummaryPage(cyaDiversionService).createUkRentARoomRows(Some(userAnswersWithUkRentARoom), taxYear) should be(
+        .length must be(1)
+      SummaryPage(cyaDiversionService).createUkRentARoomRows(Some(userAnswersWithUkRentARoom), taxYear) must be(
         Seq(summaryAboutItem)
       )
 
@@ -576,8 +575,8 @@ class SummaryPageSpec extends SpecBase {
 
       SummaryPage(cyaDiversionService)
         .createUkRentARoomRows(Some(userAnswersWithUkRentARoom), taxYear)
-        .length should be(1)
-      SummaryPage(cyaDiversionService).createUkRentARoomRows(Some(userAnswersWithUkRentARoom), taxYear) should be(
+        .length must be(1)
+      SummaryPage(cyaDiversionService).createUkRentARoomRows(Some(userAnswersWithUkRentARoom), taxYear) must be(
         Seq(summaryAboutItem)
       )
 
@@ -599,8 +598,8 @@ class SummaryPageSpec extends SpecBase {
 
       SummaryPage(cyaDiversionService)
         .createUkRentARoomRows(Some(userAnswersWithUkRentARoom), taxYear)
-        .length should be(4)
-      SummaryPage(cyaDiversionService).createUkRentARoomRows(Some(userAnswersWithUkRentARoom), taxYear) should be(
+        .length must be(4)
+      SummaryPage(cyaDiversionService).createUkRentARoomRows(Some(userAnswersWithUkRentARoom), taxYear) must be(
         Seq(summaryAboutItem, summaryExpensesItem, summaryAllowancesItem, summaryAdjustmentsItem)
       )
 
@@ -663,7 +662,7 @@ class SummaryPageSpec extends SpecBase {
     "return empty rows, given an empty user data" in {
       SummaryPage(cyaDiversionService)
         .createRentalsAndRentARoomRows(Some(emptyUserAnswers), taxYear, accrualsOrCash = true)
-        .length should be(0)
+        .length must be(0)
     }
 
     "createRentalsAndRentARoomRows return only one row when user has selected Rentals and Rent a room" in {
@@ -677,12 +676,12 @@ class SummaryPageSpec extends SpecBase {
 
       SummaryPage(cyaDiversionService)
         .createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear, accrualsOrCash = true)
-        .length should be(1)
+        .length must be(1)
       SummaryPage(cyaDiversionService).createRentalsAndRentARoomRows(
         Some(userAnswersWithRentalsAndRentARoom),
         taxYear,
         accrualsOrCash = true
-      ) should be(
+      ) must be(
         Seq(summaryAboutItem)
       )
 
@@ -709,12 +708,12 @@ class SummaryPageSpec extends SpecBase {
 
       SummaryPage(cyaDiversionService)
         .createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear, accrualsOrCash = true)
-        .length should be(5)
+        .length must be(5)
       SummaryPage(cyaDiversionService).createRentalsAndRentARoomRows(
         Some(userAnswersWithRentalsAndRentARoom),
         taxYear,
         accrualsOrCash = true
-      ) should be(
+      ) must be(
         Seq(
           summaryAboutItem.copy(
             taskListTag = TaskListTag.Completed,
@@ -756,12 +755,12 @@ class SummaryPageSpec extends SpecBase {
 
       SummaryPage(cyaDiversionService)
         .createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear, accrualsOrCash = true)
-        .length should be(3)
+        .length must be(3)
       SummaryPage(cyaDiversionService).createRentalsAndRentARoomRows(
         Some(userAnswersWithRentalsAndRentARoom),
         taxYear,
         accrualsOrCash = true
-      ) should be(
+      ) must be(
         Seq(
           summaryAboutItem.copy(
             taskListTag = TaskListTag.Completed,
@@ -780,12 +779,12 @@ class SummaryPageSpec extends SpecBase {
 
       SummaryPage(cyaDiversionService)
         .createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear, accrualsOrCash = true)
-        .length should be(5)
+        .length must be(5)
       SummaryPage(cyaDiversionService).createRentalsAndRentARoomRows(
         Some(userAnswersWithRentalsAndRentARoom),
         taxYear,
         accrualsOrCash = true
-      ) should be(
+      ) must be(
         Seq(
           summaryAboutItem.copy(
             taskListTag = TaskListTag.Completed,
@@ -806,12 +805,12 @@ class SummaryPageSpec extends SpecBase {
 
       SummaryPage(cyaDiversionService)
         .createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear, accrualsOrCash = true)
-        .length should be(7)
+        .length must be(7)
       SummaryPage(cyaDiversionService).createRentalsAndRentARoomRows(
         Some(userAnswersWithRentalsAndRentARoom),
         taxYear,
         accrualsOrCash = true
-      ) should be(
+      ) must be(
         Seq(
           summaryAboutItem.copy(
             taskListTag = TaskListTag.Completed,
@@ -838,12 +837,12 @@ class SummaryPageSpec extends SpecBase {
 
       SummaryPage(cyaDiversionService)
         .createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear, accrualsOrCash = false)
-        .length should be(5)
+        .length must be(5)
       SummaryPage(cyaDiversionService).createRentalsAndRentARoomRows(
         Some(userAnswersWithRentalsAndRentARoom),
         taxYear,
         accrualsOrCash = true
-      ) should be(
+      ) must be(
         Seq(
           summaryAboutItem.copy(
             taskListTag = TaskListTag.Completed,
@@ -893,12 +892,12 @@ class SummaryPageSpec extends SpecBase {
 
       SummaryPage(cyaDiversionService)
         .createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear, accrualsOrCash = false)
-        .length should be(5)
+        .length must be(5)
       SummaryPage(cyaDiversionService).createRentalsAndRentARoomRows(
         Some(userAnswersWithRentalsAndRentARoom),
         taxYear,
         accrualsOrCash = false
-      ) should be(
+      ) must be(
         Seq(
           summaryAboutItem,
           summaryIncomeItem,
@@ -945,12 +944,12 @@ class SummaryPageSpec extends SpecBase {
 
       SummaryPage(cyaDiversionService)
         .createRentalsAndRentARoomRows(Some(userAnswersWithRentalsAndRentARoom), taxYear, accrualsOrCash = true)
-        .length should be(7)
+        .length must be(7)
       SummaryPage(cyaDiversionService).createRentalsAndRentARoomRows(
         Some(userAnswersWithRentalsAndRentARoom),
         taxYear,
         accrualsOrCash = true
-      ) should be(
+      ) must be(
         Seq(
           summaryAboutItem,
           summaryIncomeItem,
@@ -974,7 +973,7 @@ class SummaryPageSpec extends SpecBase {
         TaskListTag.NotStarted,
         "property_about_link"
       )
-      SummaryPage(cyaDiversionService).propertyAboutItems(Some(emptyUserAnswers), taxYear) should be(Seq(item))
+      SummaryPage(cyaDiversionService).propertyAboutItems(Some(emptyUserAnswers), taxYear) must be(Seq(item))
 
     }
 

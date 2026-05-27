@@ -44,7 +44,7 @@ class ForeignIncomeTaxFormProvider @Inject() extends Mappings {
           )
         }
       )(ForeignIncomeTax.apply)(
-        ForeignIncomeTax.unapply
+        m => Some((m.isForeignIncomeTax, m.foreignTaxPaidOrDeducted))
       )
     )
 }

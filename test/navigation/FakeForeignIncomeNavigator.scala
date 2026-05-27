@@ -22,7 +22,7 @@ import play.api.mvc.Call
 import service.ForeignIncomeCYADiversionService
 
 class FakeForeignIncomeNavigator(desiredRoute: Call, foreignIncomeCYADiversionService: ForeignIncomeCYADiversionService = new ForeignIncomeCYADiversionService)
-    extends ForeignIncomeNavigator(foreignIncomeCYADiversionService) {
+    extends ForeignIncomeNavigator {
 
   override def nextPage(
     page: Page,

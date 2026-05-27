@@ -26,7 +26,7 @@ object CountryNamesDataSource {
 
   // Adding an empty option as a workaround for the Select component
   def countrySelectItems(lang: String): Seq[SelectItem] = {
-      lazy val countrySelectItems: Seq[SelectItem] = emptyOption +: selectItems(lang) :+ invalidOption
+    lazy val countrySelectItems: Seq[SelectItem] = emptyOption +: selectItems(lang) :+ invalidOption
     countrySelectItems
   }
 
@@ -34,20 +34,22 @@ object CountryNamesDataSource {
   private lazy val loadedCountriesCy: Seq[Country] = loadCountriesCy
 
   private def emptyOption: SelectItem = SelectItem(text = "", value = Some(""))
+
   private def invalidOption: SelectItem = SelectItem(text = "", value = Some("Invalid Country"))
 
   def getCountry(code: String, lang: String): Option[Country] = {
     lang match {
-    case "en" => loadedCountriesEn.find(item => item.code == code)
-    case "cy" => loadedCountriesCy.find(item => item.code == code)
-  }
+      case "en" => loadedCountriesEn.find(item => item.code == code)
+      case "cy" => loadedCountriesCy.find(item => item.code == code)
+    }
   }
 
   private def selectItems(lang: String): Seq[SelectItem] = {
-  lang match {
-    case "en" => loadCountriesEn.map(country => SelectItem(text = country.name, value = Some(country.code)))
-    case "cy" => loadCountriesCy.map(country => SelectItem(text = country.name, value = Some(country.code)))
-  }}
+    lang match {
+      case "en" => loadCountriesEn.map(country => SelectItem(text = country.name, value = Some(country.code)))
+      case "cy" => loadCountriesCy.map(country => SelectItem(text = country.name, value = Some(country.code)))
+    }
+  }
 
   lazy val loadCountriesEn: Seq[Country] =
     CSVReader

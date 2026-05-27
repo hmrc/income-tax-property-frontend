@@ -33,7 +33,7 @@
     <h1 class="govuk-heading-l">@messages(s"foreignTotalIncome.heading.${individualOrAgent}")</h1>
     <p class="govuk-body">@messages(s"foreignTotalIncome.p.${individualOrAgent}")</p>
 
-    @formHelper(action = controllers.foreign.routes.TotalIncomeController.onSubmit(taxYear, mode), 'autoComplete -> "off") {
+    @formHelper(action = controllers.foreign.routes.TotalIncomeController.onSubmit(taxYear, mode), Symbol("autoComplete") -> "off") {
 
         @govukRadios(
             RadiosViewModel(

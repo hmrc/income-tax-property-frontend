@@ -22,7 +22,7 @@ import models.IncomeSourcePropertyType.UKProperty
 import models.backend.PropertyDetails
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.mvc.{Action, AnyContent, MessagesControllerComponents}
-import service.{BusinessService, CYADiversionService}
+import service.BusinessService
 import uk.gov.hmrc.play.bootstrap.frontend.controller.FrontendBaseController
 import uk.gov.hmrc.play.http.HeaderCarrierConverter
 import viewmodels.RRAllowancesStartPage
@@ -36,7 +36,6 @@ class RRAllowancesStartController @Inject() (
   identify: IdentifierAction,
   getData: DataRetrievalAction,
   requireData: DataRequiredAction,
-  diversionService: CYADiversionService,
   val controllerComponents: MessagesControllerComponents,
   view: RRAllowancesStartView,
   businessService: BusinessService

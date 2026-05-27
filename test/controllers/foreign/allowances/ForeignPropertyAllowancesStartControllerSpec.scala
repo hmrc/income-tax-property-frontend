@@ -24,7 +24,7 @@ import models.IncomeSourcePropertyType.ForeignProperty
 import models.UserAnswers
 import models.backend.PropertyDetails
 import org.mockito.ArgumentMatchers.any
-import org.mockito.MockitoSugar.when
+import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.foreign.{Country, IncomeSourceCountries}
 import play.api.inject.bind

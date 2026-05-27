@@ -22,7 +22,7 @@ import models.backend.PropertyDetails
 import models.{CapitalAllowancesForACar, RentalsRentARoom, UserAnswers}
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.when
-import org.mockito.MockitoSugar.{times, verify}
+import org.mockito.Mockito.{times, verify}
 import org.scalatest.concurrent.Eventually
 import org.scalatest.prop.TableFor2
 import org.scalatestplus.mockito.MockitoSugar.mock

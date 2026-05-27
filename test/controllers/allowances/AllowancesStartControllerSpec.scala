@@ -23,8 +23,7 @@ import models.IncomeSourcePropertyType.UKProperty
 import models.backend.PropertyDetails
 import models.{ClaimExpensesOrRelief, NormalMode, Rentals, RentalsRentARoom, UKPropertySelect, UserAnswers}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.MockitoSugar.when
-import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
+import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.UKPropertyPage
 import pages.propertyrentals.ClaimPropertyIncomeAllowancePage
@@ -118,7 +117,7 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
             cashOrAccruals = true,
             userAnswers = userAnswers,
             propertyType = RentalsRentARoom
-          ).nextPageUrl shouldBe controllers.allowances.routes.AnnualInvestmentAllowanceController
+          ).nextPageUrl mustBe controllers.allowances.routes.AnnualInvestmentAllowanceController
             .onPageLoad(taxYear, NormalMode, RentalsRentARoom)
             .url
         }
@@ -166,7 +165,7 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
             cashOrAccruals = true,
             userAnswers = userAnswers,
             propertyType = RentalsRentARoom
-          ).nextPageUrl shouldBe controllers.allowances.routes.AnnualInvestmentAllowanceController
+          ).nextPageUrl mustBe controllers.allowances.routes.AnnualInvestmentAllowanceController
             .onPageLoad(taxYear, NormalMode, RentalsRentARoom)
             .url
         }
@@ -214,7 +213,7 @@ class AllowancesStartControllerSpec extends SpecBase with MockitoSugar {
             cashOrAccruals = false,
             userAnswers = userAnswers,
             propertyType = RentalsRentARoom
-          ).nextPageUrl shouldBe controllers.allowances.routes.CapitalAllowancesForACarController
+          ).nextPageUrl mustBe controllers.allowances.routes.CapitalAllowancesForACarController
             .onPageLoad(taxYear, NormalMode, RentalsRentARoom)
             .url
         }

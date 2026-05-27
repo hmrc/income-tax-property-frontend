@@ -46,7 +46,7 @@ class BusinessPremisesRenovationBalancingChargeFormProvider @Inject() extends Ma
           )
         }
       )(RenovationAllowanceBalancingCharge.apply)(
-        RenovationAllowanceBalancingCharge.unapply
+        m => Some((m.isRenovationAllowanceBalancingCharge, m.renovationAllowanceBalancingChargeAmount))
       )
     )
 }

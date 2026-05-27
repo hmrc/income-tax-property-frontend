@@ -22,6 +22,7 @@ import connectors.response.{CreateOrUpdateJourneyAnswersResponse, DeleteJourneyA
 import models.{DeleteJourneyAnswers, FetchedData, JourneyContext, User}
 import play.api.Logging
 import play.api.libs.json.{Json, Writes}
+import play.api.libs.ws.WSBodyWritables.writeableOf_JsValue
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps}
 
@@ -44,7 +45,7 @@ class PropertySubmissionConnector @Inject() (httpClient: HttpClientV2, appConfig
       .get(url"$propertyUrl")
       .setHeader("mtditid" -> user.mtditid)
       .execute[GetPropertyPeriodicSubmissionResponse]
-      .map { response: GetPropertyPeriodicSubmissionResponse =>
+      .map { (response: GetPropertyPeriodicSubmissionResponse) =>
         if (response.result.isLeft) {
           val correlationId =
             response.httpResponse.header(key = "CorrelationId").map(id => s" CorrelationId: $id").getOrElse("")
@@ -69,7 +70,7 @@ class PropertySubmissionConnector @Inject() (httpClient: HttpClientV2, appConfig
       .get(url"$propertyUrl")
       .setHeader("mtditid" -> user.mtditid)
       .execute[GetForeignIncomeSubmissionResponse]
-      .map { response: GetForeignIncomeSubmissionResponse =>
+      .map { (response: GetForeignIncomeSubmissionResponse) =>
         if (response.result.isLeft) {
           val correlationId =
             response.httpResponse.header(key = "CorrelationId").map(id => s" CorrelationId: $id").getOrElse("")
@@ -99,7 +100,7 @@ class PropertySubmissionConnector @Inject() (httpClient: HttpClientV2, appConfig
       .setHeader("CorrelationId" -> UUID.randomUUID().toString)
       .withBody(Json.toJson(body))
       .execute[CreateOrUpdateJourneyAnswersResponse]
-      .map { response: CreateOrUpdateJourneyAnswersResponse =>
+      .map { (response: CreateOrUpdateJourneyAnswersResponse) =>
         if (response.result.isLeft) {
           val correlationId =
             response.httpResponse.header(key = "CorrelationId").map(id => s" CorrelationId: $id").getOrElse("")
@@ -148,7 +149,7 @@ class PropertySubmissionConnector @Inject() (httpClient: HttpClientV2, appConfig
       .setHeader("CorrelationId" -> UUID.randomUUID().toString)
       .withBody(Json.toJson(deleteJourneyAnswers))
       .execute[DeleteJourneyAnswersResponse]
-      .map { response: DeleteJourneyAnswersResponse =>
+      .map { (response: DeleteJourneyAnswersResponse) =>
         if (response.result.isLeft) {
           val correlationId =
             response.httpResponse.header(key = "CorrelationId").map(id => s" CorrelationId: $id").getOrElse("")

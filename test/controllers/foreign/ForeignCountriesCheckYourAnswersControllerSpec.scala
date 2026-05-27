@@ -21,8 +21,8 @@ import base.SpecBase
 import controllers.foreign.routes.ForeignCountriesCheckYourAnswersController
 import models.JourneyPath.ForeignSelectCountry
 import models.{ForeignPropertySelectCountry, JourneyContext, TotalIncome, UserAnswers}
-import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.eq as eqTo
 import org.mockito.Mockito.{times, verify, when}
 import org.scalatestplus.mockito.MockitoSugar
 import pages.foreign.ForeignTaxSectionCompletePage
@@ -94,7 +94,7 @@ class ForeignCountriesCheckYourAnswersControllerSpec extends SpecBase with Mocki
 
       when(
         propertySubmissionService
-          .saveForeignPropertyJourneyAnswers(ArgumentMatchers.eq(context), any)(
+          .saveForeignPropertyJourneyAnswers(eqTo(context), any)(
             any(),
             any()
           )

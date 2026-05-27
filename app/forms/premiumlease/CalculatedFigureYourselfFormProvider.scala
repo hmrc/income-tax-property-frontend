@@ -39,6 +39,6 @@ class CalculatedFigureYourselfFormProvider @Inject() extends Mappings {
               "calculatedFigureYourselfAmount.amount.error.outOfRange"))
         )
       }
-    )(CalculatedFigureYourself.apply)(CalculatedFigureYourself.unapply))
+    )(CalculatedFigureYourself.apply)(m => Some((m.calculatedFigureYourself, m.amount))))
   }
 }

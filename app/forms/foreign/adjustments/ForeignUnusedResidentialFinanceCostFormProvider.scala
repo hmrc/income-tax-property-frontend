@@ -44,7 +44,7 @@ class ForeignUnusedResidentialFinanceCostFormProvider @Inject() extends Mappings
       )
     }
   )(ForeignUnusedResidentialFinanceCost.apply)(
-    ForeignUnusedResidentialFinanceCost.unapply
+    m => Some((m.isForeignUnusedResidentialFinanceCost, m.foreignUnusedResidentialFinanceCostAmount))
   )
     )
 }

@@ -23,8 +23,8 @@ import controllers.foreign.routes.ForeignTaxSectionCompleteController
 import models.JourneyPath.ForeignPropertyTax
 import models.{JourneyContext, NormalMode, User, UserAnswers}
 import navigation.{FakeForeignPropertyNavigator, ForeignPropertyNavigator}
-import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.eq as eqTo
 import org.mockito.Mockito.{doReturn, when}
 import org.scalatestplus.mockito.MockitoSugar
 import pages.foreign.ForeignTaxSectionCompletePage
@@ -117,7 +117,7 @@ class ForeignTaxSectionCompleteControllerSpec extends SpecBase with MockitoSugar
       )
         .when(mockJourneyAnswersService)
         .setForeignPropertyStatus(
-          ArgumentMatchers.eq(
+          eqTo(
             JourneyContext(
               taxYear = taxYear,
               mtditid = user.mtditid,
@@ -125,9 +125,9 @@ class ForeignTaxSectionCompleteControllerSpec extends SpecBase with MockitoSugar
               journeyPath = ForeignPropertyTax
             )
           ),
-          ArgumentMatchers.eq("completed"),
-          ArgumentMatchers.eq(user),
-          ArgumentMatchers.eq(countryCode)
+          eqTo("completed"),
+          eqTo(user),
+          eqTo(countryCode)
         )(any())
 
       val application =

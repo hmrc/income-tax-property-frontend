@@ -23,7 +23,7 @@ import models.backend.PropertyDetails
 import models.{BalancingCharge, RenovationAllowanceBalancingCharge, RentalsAndRentARoomAdjustment, UserAnswers}
 import org.mockito.ArgumentMatchers.{any, anyString}
 import org.mockito.Mockito.{times, verify}
-import org.mockito.MockitoSugar.when
+import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar.mock
 import play.api.inject.bind
 import play.api.test.FakeRequest

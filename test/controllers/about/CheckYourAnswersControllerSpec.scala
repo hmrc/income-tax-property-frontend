@@ -19,8 +19,8 @@ package controllers.about
 import base.SpecBase
 import models.TotalIncome.Under
 import models.{JourneyContext, JourneyPath, PropertyAbout, UKPropertySelect, UserAnswers}
-import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.eq as eqTo
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.{ReportPropertyIncomePage, TotalIncomePage, UKPropertyPage}
@@ -86,7 +86,7 @@ class CheckYourAnswersControllerSpec extends SpecBase with MockitoSugar with Sum
 
       when(
         propertySubmissionService
-          .saveUkPropertyJourneyAnswers(ArgumentMatchers.eq(context), ArgumentMatchers.eq(propertyAbout))(
+          .saveUkPropertyJourneyAnswers(eqTo(context), eqTo(propertyAbout))(
             any(),
             any()
           )

@@ -17,7 +17,6 @@
 package forms.ukandforeignproperty
 
 import org.scalatest.matchers.must.Matchers
-import org.scalatest.matchers.should.Matchers.convertToAnyShouldWrapper
 import org.scalatest.wordspec.AnyWordSpec
 import play.api.data.FormError
 
@@ -30,7 +29,7 @@ class ForeignCountriesRentedFormProviderSpec extends AnyWordSpec with Matchers {
 
     "bind true" in {
       val result = form.bind(Map("addAnother" -> "true"))
-      result.value shouldBe Some(true)
+      result.value mustBe Some(true)
     }
 
     "bind false" in {

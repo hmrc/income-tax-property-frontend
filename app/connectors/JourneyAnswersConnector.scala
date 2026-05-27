@@ -22,6 +22,7 @@ import models.{JourneyPath, User}
 import play.api.Logging
 import play.api.http.Status._
 import play.api.libs.json.{JsString, Json}
+import play.api.libs.ws.WSBodyWritables.writeableOf_JsValue
 import uk.gov.hmrc.http.client.HttpClientV2
 import uk.gov.hmrc.http.{HeaderCarrier, HttpReads, HttpResponse, StringContextOps}
 
@@ -61,7 +62,7 @@ class JourneyAnswersConnector @Inject() (httpClient: HttpClientV2, appConfig: Fr
       .setHeader("mtditid" -> user.mtditid)
       .withBody(Json.obj("status" -> JsString(status)))
       .execute[UpdateStatusResponse]
-      .map { response: UpdateStatusResponse =>
+      .map { (response: UpdateStatusResponse) =>
         if (response.result.isLeft) {
           logger.error(
             s"Error updating the status of the journey" +
@@ -83,7 +84,7 @@ class JourneyAnswersConnector @Inject() (httpClient: HttpClientV2, appConfig: Fr
       .setHeader("mtditid" -> user.mtditid)
       .withBody(Json.obj("status" -> JsString(status)))
       .execute[UpdateStatusResponse]
-      .map { response: UpdateStatusResponse =>
+      .map { (response: UpdateStatusResponse) =>
         if (response.result.isLeft) {
           logger.error(
             s"Error updating the status of the journey" +

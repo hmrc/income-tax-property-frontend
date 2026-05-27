@@ -22,8 +22,8 @@ import controllers.foreign.income.routes._
 import controllers.routes
 import models.JourneyPath.ForeignPropertyIncome
 import models.{JourneyContext, PremiumCalculated, UserAnswers}
-import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.eq as eqTo
 import org.mockito.Mockito.{times, verify, when}
 import pages.foreign.income._
 import pages.foreign.{CalculatedPremiumLeaseTaxablePage, ForeignReceivedGrantLeaseAmountPage, TwelveMonthPeriodsInLeasePage}
@@ -121,7 +121,7 @@ class ForeignIncomeCheckYourAnswersControllerSpec extends SpecBase with SummaryL
 
       when(
         propertySubmissionService
-          .saveForeignPropertyJourneyAnswers(ArgumentMatchers.eq(context), any)(
+          .saveForeignPropertyJourneyAnswers(eqTo(context), any)(
             any(),
             any()
           )

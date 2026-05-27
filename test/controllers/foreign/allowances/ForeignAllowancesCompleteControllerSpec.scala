@@ -22,8 +22,8 @@ import forms.foreign.allowances.ForeignAllowancesCompleteFormProvider
 import models.JourneyPath.ForeignPropertyAllowances
 import models.{JourneyContext, NormalMode, User, UserAnswers}
 import navigation.{FakeForeignPropertyNavigator, ForeignPropertyNavigator}
-import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.eq as eqTo
 import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.foreign.allowances.ForeignAllowancesCompletePage
@@ -107,12 +107,12 @@ class ForeignAllowancesCompleteControllerSpec extends SpecBase with MockitoSugar
       when(mockSessionRepository.set(any())) thenReturn Future.successful(true)
       when(
         mockJourneyAnswersService.setForeignPropertyStatus(
-          ArgumentMatchers.eq(
+          eqTo(
             JourneyContext(taxYear, mtditid = "mtditid", nino = "nino", journeyPath = ForeignPropertyAllowances)
           ),
-          ArgumentMatchers.eq("completed"),
-          ArgumentMatchers.eq(user),
-          ArgumentMatchers.eq("AUS")
+          eqTo("completed"),
+          eqTo(user),
+          eqTo("AUS")
         )(any())
       ) thenReturn Future.successful(Right(""))
 

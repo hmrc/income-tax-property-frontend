@@ -22,8 +22,8 @@ import controllers.foreign.expenses.routes._
 import controllers.routes
 import models.JourneyPath.ForeignPropertyExpenses
 import models.{ConsolidatedOrIndividualExpenses, JourneyContext, UserAnswers}
-import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.eq as eqTo
 import org.mockito.Mockito.{times, verify, when}
 import pages.foreign.expenses._
 import play.api.inject.bind
@@ -112,7 +112,7 @@ class ForeignPropertyExpensesCheckYourAnswersControllerSpec extends SpecBase wit
 
       when(
         propertySubmissionService
-          .saveForeignPropertyJourneyAnswers(ArgumentMatchers.eq(context), any)(
+          .saveForeignPropertyJourneyAnswers(eqTo(context), any)(
             any(),
             any()
           )

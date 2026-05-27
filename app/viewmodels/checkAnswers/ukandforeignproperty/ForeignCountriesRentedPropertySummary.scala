@@ -30,8 +30,8 @@ import viewmodels.implicits._
 object ForeignCountriesRentedPropertySummary {
 
   def rowList(taxYear: Int, answers: UserAnswers, individualOrAgent: String)(implicit messages: Messages): Option[SummaryListRow] =
-    answers.get(SelectCountryPage).map { country: List[Country] =>
-      val value: Seq[String] = country.map { c: Country =>
+    answers.get(SelectCountryPage).map { (country: List[Country]) =>
+      val value: Seq[String] = country.map { (c: Country) =>
         s"${c.name}"
       }
       val countryList: String = value.mkString("<br>")

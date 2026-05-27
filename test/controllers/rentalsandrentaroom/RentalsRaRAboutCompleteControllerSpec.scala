@@ -22,8 +22,8 @@ import forms.rentalsandrentaroom.RentalsAndRaRAboutCompleteFormProvider
 import models.JourneyPath.PropertyRentalsAndRentARoomAbout
 import models.{JourneyContext, NormalMode, UserAnswers}
 import navigation.{FakeNavigator, Navigator}
-import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.eq as eqTo
 import org.mockito.Mockito.{doReturn, when}
 import org.scalatestplus.mockito.MockitoSugar
 import pages.rentalsandrentaroom.RentalsRaRAboutCompletePage
@@ -47,7 +47,7 @@ class RentalsRaRAboutCompleteControllerSpec extends SpecBase with MockitoSugar {
   val formProvider = new RentalsAndRaRAboutCompleteFormProvider()
   val form = formProvider()
   val taxYear = 2024
-  implicit val hc = HeaderCarrier()
+  implicit val hc: HeaderCarrier = HeaderCarrier()
   val user = aUser.copy(
     mtditid = "mtditid",
     nino = "nino",
@@ -109,7 +109,7 @@ class RentalsRaRAboutCompleteControllerSpec extends SpecBase with MockitoSugar {
       )
         .when(mockJourneyAnswersService)
         .setUKPropertyStatus(
-          ArgumentMatchers.eq(
+          eqTo(
             JourneyContext(
               taxYear = taxYear,
               mtditid = user.mtditid,
@@ -117,8 +117,8 @@ class RentalsRaRAboutCompleteControllerSpec extends SpecBase with MockitoSugar {
               journeyPath = PropertyRentalsAndRentARoomAbout
             )
           ),
-          ArgumentMatchers.eq("completed"),
-          ArgumentMatchers.eq(user)
+          eqTo("completed"),
+          eqTo(user)
         )(any())
 
       val application =

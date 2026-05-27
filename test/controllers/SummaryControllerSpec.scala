@@ -24,7 +24,7 @@ import models.backend.{ForeignPropertyDetailsError, PropertyDetails}
 import models.requests.OptionalDataRequest
 import models.{UKPropertySelect, UserAnswers}
 import org.mockito.ArgumentMatchers.any
-import org.mockito.MockitoSugar.when
+import org.mockito.Mockito.when
 import org.scalatestplus.mockito.MockitoSugar
 import pages.foreign.{Country, ForeignPropertySummaryPage}
 import pages.foreignincome.ForeignIncomeSummaryViewModel

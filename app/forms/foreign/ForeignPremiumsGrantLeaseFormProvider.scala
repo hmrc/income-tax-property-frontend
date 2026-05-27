@@ -43,6 +43,6 @@ class ForeignPremiumsGrantLeaseFormProvider @Inject() extends Mappings {
               .verifying(inRange(minimum, maximum, "foreignPremiumsGrantLease.error.outOfRange"))
           )
         }
-      )(ForeignPremiumsGrantLease.apply)(ForeignPremiumsGrantLease.unapply)
+      )(ForeignPremiumsGrantLease.apply)(m => Some((m.premiumsOfLeaseGrantAgreed, m.premiumsOfLeaseGrant)))
     )
 }

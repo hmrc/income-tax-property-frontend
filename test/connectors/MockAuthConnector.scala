@@ -16,9 +16,11 @@
 
 package connectors
 
-import org.scalamock.handlers.CallHandler4
-import org.scalamock.scalatest.MockFactory
-import org.scalatest.TestSuite
+import org.mockito.ArgumentMatchers.{any, eq as eqTo}
+import org.mockito.Mockito
+import org.mockito.Mockito.when
+import org.scalatest.{BeforeAndAfterEach, Suite}
+import org.scalatestplus.mockito.MockitoSugar
 import uk.gov.hmrc.auth.core.AuthConnector
 import uk.gov.hmrc.auth.core.authorise.Predicate
 import uk.gov.hmrc.auth.core.retrieve.Retrieval
@@ -26,17 +28,19 @@ import uk.gov.hmrc.http.HeaderCarrier
 
 import scala.concurrent.{ExecutionContext, Future}
 
-trait MockAuthConnector extends MockFactory { _: TestSuite =>
+trait MockAuthConnector extends MockitoSugar with BeforeAndAfterEach { this: Suite =>
 
   lazy val mockAuthConnector: AuthConnector = mock[AuthConnector]
 
-  object MockAuthConnector {
-
-    def authorise[T](predicate: Predicate)(response: Future[T]): CallHandler4[Predicate, Retrieval[T], HeaderCarrier, ExecutionContext, Future[T]] =
-      (mockAuthConnector
-        .authorise[T](_: Predicate, _: Retrieval[T])(_: HeaderCarrier, _: ExecutionContext))
-        .expects(predicate, *, *, *)
-        .returns(response)
+  abstract override def beforeEach(): Unit = {
+    Mockito.reset(mockAuthConnector)
+    super.beforeEach()
   }
 
+  object MockAuthConnector {
+    def authorise[T](predicate: Predicate)(first: Future[T], rest: Future[T]*): Unit =
+      when(
+        mockAuthConnector.authorise[Any](eqTo(predicate), any[Retrieval[Any]])(any[HeaderCarrier], any[ExecutionContext])
+      ).thenReturn(first.asInstanceOf[Future[Any]], rest.map(_.asInstanceOf[Future[Any]]) *)
+  }
 }
